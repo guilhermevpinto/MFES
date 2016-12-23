@@ -7,7 +7,6 @@ values
 -- TODO Define values here
 instance variables
 	public static board : seq of seq of Slot := [];
-	
 			operations
 				public Board : () ==> Board
 				Board() == 
@@ -59,31 +58,8 @@ instance variables
 					];
 				);
 				
-				public move(new_x: nat, new_y: nat, player: Player) ==
-				player.setPosition(new_x, new_y);
-					
-				public addWall : nat1 * nat1 ==> ()
-				addWall(row, col) == 
-				(
-					if row mod 2 = 1
-						then 
-						(
-							if row < 17 and board(row)(col) = <NOWALL> and board(row+2)(col) = <NOWALL>
-								then
-								(
-									board(row) := board(row) ++ {col |-> <WALL>};
-									board(row+2) := board(row+2) ++ {col |-> <WALL>};
-								)
-						)
-						else
-						(
-							if col < 9 and board(row)(col) = <NOWALL> and board(row)(col+1) = <NOWALL>
-								then
-								(
-									board(row) := board(row) ++ {col |-> <WALL>, col+1 |-> <WALL>};
-								)
-						)
-				);
+				
+				
 functions
 -- TODO Define functiones here
 traces
