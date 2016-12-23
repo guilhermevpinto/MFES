@@ -32,6 +32,31 @@ operations
 			[1, <NOWALL>, 2, <NOWALL>, 3, <NOWALL>, 4, <NOWALL>, 5, <NOWALL>, 6, <NOWALL>, 7, <NOWALL>, 8, <NOWALL>, 9]
 		];
 	);
+	
+	public reset : () ==> ()
+	reset() == 
+	(
+		board := 
+		[
+			[1, <NOWALL>, 2, <NOWALL>, 3, <NOWALL>, 4, <NOWALL>, 5, <NOWALL>, 6, <NOWALL>, 7, <NOWALL>, 8, <NOWALL>, 9],
+			[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
+			[1, <NOWALL>, 2, <NOWALL>, 3, <NOWALL>, 4, <NOWALL>, 5, <NOWALL>, 6, <NOWALL>, 7, <NOWALL>, 8, <NOWALL>, 9],
+			[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
+			[1, <NOWALL>, 2, <NOWALL>, 3, <NOWALL>, 4, <NOWALL>, 5, <NOWALL>, 6, <NOWALL>, 7, <NOWALL>, 8, <NOWALL>, 9],
+			[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
+			[1, <NOWALL>, 2, <NOWALL>, 3, <NOWALL>, 4, <NOWALL>, 5, <NOWALL>, 6, <NOWALL>, 7, <NOWALL>, 8, <NOWALL>, 9],
+			[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
+			[1, <NOWALL>, 2, <NOWALL>, 3, <NOWALL>, 4, <NOWALL>, 5, <NOWALL>, 6, <NOWALL>, 7, <NOWALL>, 8, <NOWALL>, 9],
+			[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
+			[1, <NOWALL>, 2, <NOWALL>, 3, <NOWALL>, 4, <NOWALL>, 5, <NOWALL>, 6, <NOWALL>, 7, <NOWALL>, 8, <NOWALL>, 9],
+			[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
+			[1, <NOWALL>, 2, <NOWALL>, 3, <NOWALL>, 4, <NOWALL>, 5, <NOWALL>, 6, <NOWALL>, 7, <NOWALL>, 8, <NOWALL>, 9],
+			[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
+			[1, <NOWALL>, 2, <NOWALL>, 3, <NOWALL>, 4, <NOWALL>, 5, <NOWALL>, 6, <NOWALL>, 7, <NOWALL>, 8, <NOWALL>, 9],
+			[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
+			[1, <NOWALL>, 2, <NOWALL>, 3, <NOWALL>, 4, <NOWALL>, 5, <NOWALL>, 6, <NOWALL>, 7, <NOWALL>, 8, <NOWALL>, 9]
+		];
+	);
 functions
 -- TODO Define functiones here
 traces

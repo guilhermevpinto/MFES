@@ -58,8 +58,7 @@ instance variables
 					];
 				);
 				
-				public move(new_x: nat, new_y: nat, player: Player) ==
-				player.setPosition(new_x, new_y);
+				
 				
 functions
 -- TODO Define functiones here
