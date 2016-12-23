@@ -64,23 +64,15 @@ operations
 		if row mod 2 = 1
 			then 
 			(
-				if row < 17 and board(row)(col) = <NOWALL> and board(row+2)(col) = <NOWALL>
+				if board(row)(col) = <NOWALL> and board(row+2)(col) = <NOWALL>
 					then
 					(
 						board(row) := board(row) ++ {col |-> <WALL>};
 						board(row+2) := board(row+2) ++ {col |-> <WALL>};
 					)
-			)
-			else
-			(
-				if col < 9 and board(row)(col) = <NOWALL> and board(row)(col+1) = <NOWALL>
-					then
-					(
-						board(row) := board(row) ++ {col |-> <WALL>, col+1 |-> <WALL>};
-					)
-			)
+				
+			)	
 	);
-	
 functions
 -- TODO Define functiones here
 traces

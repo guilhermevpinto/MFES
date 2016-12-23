@@ -70,17 +70,14 @@ operations
 						board(row) := board(row) ++ {col |-> <WALL>};
 						board(row+2) := board(row+2) ++ {col |-> <WALL>};
 					)
-			)
-			else
-			(
-				if col < 9 and board(row)(col) = <NOWALL> and board(row)(col+1) = <NOWALL>
-					then
-					(
-						board(row) := board(row) ++ {col |-> <WALL>, col+1 |-> <WALL>};
-					)
-			)
+			)	
 	);
 	
+	public display : () ==> ()
+	display() ==
+	(
+		IO`println(board(1));
+	);
 functions
 -- TODO Define functiones here
 traces
