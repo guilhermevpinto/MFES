@@ -4,7 +4,7 @@ class Player
 			-- coordinates of the player's current location
 			private position: Point;
 			-- walls the player has placed on the map
-			private walls : seq of int := [];
+			private walls : nat := 10;
 			operations
 			-- TODO Define operations here
 			public getPosition() pos: Point ==
