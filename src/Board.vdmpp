@@ -2,11 +2,13 @@ class Board
 types
 	public Wall = <TRUE> | <NOWALL>;
 	public Position = seq of nat1;
-	public Slot = nat1 | <WALL> | <NOWALL>;
+	public Slot = <FREE> | <VISITED> | <WALL> | <NOWALL>;
 values
 -- TODO Define values here
 instance variables
 	public static board : seq of seq of Slot := [];
+	private conectivity : seq of seq of Slot := [];
+	
 	
 			operations
 				public Board : () ==> Board
@@ -14,50 +16,53 @@ instance variables
 				(
 					board := 
 					[
-						[1, <NOWALL>, 2, <NOWALL>, 3, <NOWALL>, 4, <NOWALL>, 5, <NOWALL>, 6, <NOWALL>, 7, <NOWALL>, 8, <NOWALL>, 9],
-						[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
-						[1, <NOWALL>, 2, <NOWALL>, 3, <NOWALL>, 4, <NOWALL>, 5, <NOWALL>, 6, <NOWALL>, 7, <NOWALL>, 8, <NOWALL>, 9],
-						[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
-						[1, <NOWALL>, 2, <NOWALL>, 3, <NOWALL>, 4, <NOWALL>, 5, <NOWALL>, 6, <NOWALL>, 7, <NOWALL>, 8, <NOWALL>, 9],
-						[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
-						[1, <NOWALL>, 2, <NOWALL>, 3, <NOWALL>, 4, <NOWALL>, 5, <NOWALL>, 6, <NOWALL>, 7, <NOWALL>, 8, <NOWALL>, 9],
-						[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
-						[1, <NOWALL>, 2, <NOWALL>, 3, <NOWALL>, 4, <NOWALL>, 5, <NOWALL>, 6, <NOWALL>, 7, <NOWALL>, 8, <NOWALL>, 9],
-						[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
-						[1, <NOWALL>, 2, <NOWALL>, 3, <NOWALL>, 4, <NOWALL>, 5, <NOWALL>, 6, <NOWALL>, 7, <NOWALL>, 8, <NOWALL>, 9],
-						[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
-						[1, <NOWALL>, 2, <NOWALL>, 3, <NOWALL>, 4, <NOWALL>, 5, <NOWALL>, 6, <NOWALL>, 7, <NOWALL>, 8, <NOWALL>, 9],
-						[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
-						[1, <NOWALL>, 2, <NOWALL>, 3, <NOWALL>, 4, <NOWALL>, 5, <NOWALL>, 6, <NOWALL>, 7, <NOWALL>, 8, <NOWALL>, 9],
-						[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
-						[1, <NOWALL>, 2, <NOWALL>, 3, <NOWALL>, 4, <NOWALL>, 5, <NOWALL>, 6, <NOWALL>, 7, <NOWALL>, 8, <NOWALL>, 9]
+						[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
+						[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
+						[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
+						[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
+						[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
+						[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
+						[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
+						[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
+						[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
+						[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
+						[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
+						[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
+						[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
+						[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
+						[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
+						[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
+						[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>]
+					];
+					
+					conectivity := 
+					[
+						[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
+						[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
+						[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
+						[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
+						[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
+						[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
+						[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
+						[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
+						[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
+						[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
+						[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
+						[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
+						[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
+						[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
+						[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
+						[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
+						[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>]
 					];
 				);
 				
-				public reset : () ==> ()
-				reset() == 
+				public resetConectivity : () ==> ()
+				resetConectivity() == 
 				(
-					board := 
-					[
-						[1, <NOWALL>, 2, <NOWALL>, 3, <NOWALL>, 4, <NOWALL>, 5, <NOWALL>, 6, <NOWALL>, 7, <NOWALL>, 8, <NOWALL>, 9],
-						[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
-						[1, <NOWALL>, 2, <NOWALL>, 3, <NOWALL>, 4, <NOWALL>, 5, <NOWALL>, 6, <NOWALL>, 7, <NOWALL>, 8, <NOWALL>, 9],
-						[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
-						[1, <NOWALL>, 2, <NOWALL>, 3, <NOWALL>, 4, <NOWALL>, 5, <NOWALL>, 6, <NOWALL>, 7, <NOWALL>, 8, <NOWALL>, 9],
-						[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
-						[1, <NOWALL>, 2, <NOWALL>, 3, <NOWALL>, 4, <NOWALL>, 5, <NOWALL>, 6, <NOWALL>, 7, <NOWALL>, 8, <NOWALL>, 9],
-						[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
-						[1, <NOWALL>, 2, <NOWALL>, 3, <NOWALL>, 4, <NOWALL>, 5, <NOWALL>, 6, <NOWALL>, 7, <NOWALL>, 8, <NOWALL>, 9],
-						[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
-						[1, <NOWALL>, 2, <NOWALL>, 3, <NOWALL>, 4, <NOWALL>, 5, <NOWALL>, 6, <NOWALL>, 7, <NOWALL>, 8, <NOWALL>, 9],
-						[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
-						[1, <NOWALL>, 2, <NOWALL>, 3, <NOWALL>, 4, <NOWALL>, 5, <NOWALL>, 6, <NOWALL>, 7, <NOWALL>, 8, <NOWALL>, 9],
-						[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
-						[1, <NOWALL>, 2, <NOWALL>, 3, <NOWALL>, 4, <NOWALL>, 5, <NOWALL>, 6, <NOWALL>, 7, <NOWALL>, 8, <NOWALL>, 9],
-						[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
-						[1, <NOWALL>, 2, <NOWALL>, 3, <NOWALL>, 4, <NOWALL>, 5, <NOWALL>, 6, <NOWALL>, 7, <NOWALL>, 8, <NOWALL>, 9]
-					];
+					conectivity := board;
 				);
+				
 				
 				public move(new_x: nat, new_y: nat, player: Player) ==
 				player.setPosition(new_x, new_y);
@@ -65,25 +70,121 @@ instance variables
 				public addWall : nat1 * nat1 ==> ()
 				addWall(row, col) == 
 				(
+					resetConectivity();
 					if row mod 2 = 1
 						then 
 						(
-							if row < 17 and board(row)(col) = <NOWALL> and board(row+2)(col) = <NOWALL>
+							if row < 17 and board(row)(col) = <NOWALL> and board(row+1)(col) = <NOWALL> and board(row+2)(col) = <NOWALL>
 								then
 								(
-									board(row) := board(row) ++ {col |-> <WALL>};
-									board(row+2) := board(row+2) ++ {col |-> <WALL>};
+									conectivity(row) := conectivity(row) ++ {col |-> <WALL>};
+									conectivity(row+2) := conectivity(row+1) ++ {col |-> <WALL>};
+									conectivity(row+2) := conectivity(row+2) ++ {col |-> <WALL>};
+									if pathToDestination(17, 1,1)
+									then
+									(
+										board(row) := board(row) ++ {col |-> <WALL>};
+										board(row+2) := board(row+1) ++ {col |-> <WALL>};
+										board(row+2) := board(row+2) ++ {col |-> <WALL>};
+									)
+									else
+									(
+										conectivity(row) := conectivity(row) ++ {col |-> <NOWALL>};
+										conectivity(row+2) := conectivity(row+1) ++ {col |-> <NOWALL>};
+										conectivity(row+2) := conectivity(row+2) ++ {col |-> <NOWALL>};
+									);
 								)
 						)
 						else
 						(
-							if col < 9 and board(row)(col) = <NOWALL> and board(row)(col+1) = <NOWALL>
+							if col < 9 and board(row)(col) = <NOWALL> and board(row)(col+1) = <NOWALL> and board(row)(col+2) = <NOWALL>
 								then
 								(
-									board(row) := board(row) ++ {col |-> <WALL>, col+1 |-> <WALL>};
+									conectivity(row) := conectivity(row) ++ {col |-> <WALL>, col+1 |-> <WALL>, col+2 |-> <WALL>};
+									if pathToDestination(17, 1,1)
+									then
+									(
+										board(row) := board(row) ++ {col |-> <WALL>, col+1 |-> <WALL>, col+2 |-> <WALL>};
+									)
+									else
+									(
+										conectivity(row) := conectivity(row) ++ {col |-> <WALL>, col+1 |-> <WALL>, col+2 |-> <WALL>};
+									);
 								)
 						)
 				);
+				
+				
+				private pathToDestination : nat1 * nat1 * nat1 ==> bool
+				pathToDestination(rowDest, row, col) ==
+				(
+					if row = rowDest
+						then return true;
+						
+					if conectivity(row)(col) <> <FREE>
+						then return false;
+					
+					conectivity(row) := conectivity(row) ++ {col |-> <VISITED>};
+				
+					if row = 1
+					then
+					(
+						if col = 1
+							then return checkRight(rowDest, row, col + 1) or checkDown(rowDest, row + 1, col)
+						else if col = 17
+							then return checkLeft(rowDest, row, col - 1) or checkDown(rowDest, row + 1, col)
+						else return checkLeft(rowDest, row, col - 1) or checkRight(rowDest, row, col + 1) or checkDown(rowDest, row + 1, col)
+					);
+					
+					if row = 17
+					then
+					(
+						if col = 1
+							then return checkRight(rowDest, row, col + 1) or checkUp(rowDest, row - 1, col)
+						else if col = 17
+							then return checkLeft(rowDest, row, col - 1) or checkUp(rowDest, row - 1, col)
+						else return checkLeft(rowDest, row, col - 1) or checkRight(rowDest, row, col + 1) or checkUp(rowDest, row - 1, col)
+					);
+					
+					if col = 1
+					then return checkRight(rowDest, row, col + 1) or checkUp(rowDest, row - 1, col) or checkDown(rowDest, row + 1, col)
+					else if col = 17
+					then return checkLeft(rowDest, row, col - 1) or checkUp(rowDest, row - 1, col) or checkDown(rowDest, row + 1, col)
+					else return checkLeft(rowDest, row, col - 1) or checkRight(rowDest, row, col + 1) or checkUp(rowDest, row - 1, col) or checkDown(rowDest, row + 1, col);
+				);
+				
+				private checkDown : nat1 * nat1 * nat1 ==> bool
+				checkDown(rowDest, row, col) ==
+				(
+					if conectivity(row)(col) <> <WALL>
+						then return pathToDestination(rowDest, row + 1, col)
+					else return false;
+				);
+				
+				private checkUp : nat1 * nat1 * nat1 ==> bool
+				checkUp(rowDest, row, col) ==
+				(
+					if conectivity(row)(col) <> <WALL>
+						then return pathToDestination(rowDest, row - 1, col)
+					else return false;
+				);
+				
+				private checkRight : nat1 * nat1 * nat1 ==> bool
+				checkRight(rowDest, row, col) ==
+				(
+					if conectivity(row)(col) <> <WALL>
+						then return pathToDestination(rowDest, row, col + 1)
+					else return false;
+				);
+				
+				private checkLeft : nat1 * nat1 * nat1 ==> bool
+				checkLeft(rowDest, row, col) ==
+				(
+					if conectivity(row)(col) <> <WALL>
+						then return pathToDestination(rowDest, row, col - 1)
+					else return false;
+				);
+				
 functions
 -- TODO Define functiones here
 traces
