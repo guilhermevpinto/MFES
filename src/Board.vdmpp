@@ -19,7 +19,7 @@ instance variables
 						[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
 						[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
 						[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
-						[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
+						[<WALL>, <WALL>, <WALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
 						[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
 						[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
 						[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
@@ -40,7 +40,7 @@ instance variables
 						[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
 						[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
 						[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
-						[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
+						[<WALL>, <WALL>, <WALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
 						[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
 						[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
 						[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
@@ -74,41 +74,41 @@ instance variables
 					if row mod 2 = 1
 						then 
 						(
-							if row < 17 and board(row)(col) = <NOWALL> and board(row+1)(col) = <NOWALL> and board(row+2)(col) = <NOWALL>
+							if col < 18 and row < 16 and board(row)(col) = <NOWALL> and board(row+1)(col) = <NOWALL> and board(row+2)(col) = <NOWALL>
 								then
 								(
 									conectivity(row) := conectivity(row) ++ {col |-> <WALL>};
-									conectivity(row+2) := conectivity(row+1) ++ {col |-> <WALL>};
+									conectivity(row+1) := conectivity(row+1) ++ {col |-> <WALL>};
 									conectivity(row+2) := conectivity(row+2) ++ {col |-> <WALL>};
-									if pathToDestination(17, 1,1)
+									if pathToDestination(17, 3,1)
 									then
 									(
 										board(row) := board(row) ++ {col |-> <WALL>};
-										board(row+2) := board(row+1) ++ {col |-> <WALL>};
+										board(row+1) := board(row+1) ++ {col |-> <WALL>};
 										board(row+2) := board(row+2) ++ {col |-> <WALL>};
 									)
 									else
 									(
 										conectivity(row) := conectivity(row) ++ {col |-> <NOWALL>};
-										conectivity(row+2) := conectivity(row+1) ++ {col |-> <NOWALL>};
+										conectivity(row+1) := conectivity(row+1) ++ {col |-> <NOWALL>};
 										conectivity(row+2) := conectivity(row+2) ++ {col |-> <NOWALL>};
 									);
 								)
 						)
 						else
 						(
-							if col < 9 and board(row)(col) = <NOWALL> and board(row)(col+1) = <NOWALL> and board(row)(col+2) = <NOWALL>
+							if col < 16 and row < 18 and board(row)(col) = <NOWALL> and board(row)(col+1) = <NOWALL> and board(row)(col+2) = <NOWALL>
 								then
 								(
 									conectivity(row) := conectivity(row) ++ {col |-> <WALL>, col+1 |-> <WALL>, col+2 |-> <WALL>};
-									if pathToDestination(17, 1,1)
+									if pathToDestination(17, 3,1)
 									then
 									(
 										board(row) := board(row) ++ {col |-> <WALL>, col+1 |-> <WALL>, col+2 |-> <WALL>};
 									)
 									else
 									(
-										conectivity(row) := conectivity(row) ++ {col |-> <WALL>, col+1 |-> <WALL>, col+2 |-> <WALL>};
+										conectivity(row) := conectivity(row) ++ {col |-> <NOWALL>, col+1 |-> <NOWALL>, col+2 |-> <NOWALL>};
 									);
 								)
 						)
