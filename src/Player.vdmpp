@@ -1,19 +1,50 @@
 class Player
-			instance variables
-			-- TODO Define instance variables here
+instance variables
+			-- identifier of the player
+			private numberID : [nat];
 			-- coordinates of the player's current location
-			private position: Point;
-			-- walls the player has placed on the map
-			private walls : nat := 10;
-			operations
-			-- TODO Define operations here
-			public getPosition() pos: Point ==
-			return position;
-			public setPosition(new_x: nat, new_y: nat) ==
-			position := new Point(new_x, new_y);
+			private position: [Point];
+			-- remaining walls that the player can still placed in the map
+			private walls : [nat] := 10;
+			-- row that the player aims to reach in order to complete the objective
+			private targetRow : [nat];
+operations
+			-- constructor
+			public Player: nat ==> Player
+			Player(id) ==
+			(
+				if id = 0
+				then (
+					position := new Point(1,7);
+					targetRow := 17;
+					numberID := id;
+				)
+				else if id = 1
+				then (
+					position := new Point(17,11);
+					targetRow := 1;
+					numberID := id;
+				);
+			)
+			pre id = 1 or id = 0
+			post position <> nil and targetRow <> nil and numberID <> nil and walls = 10;
+			
+			-- getting the current position of the player
+			public pure getPosition : () ==> Point 
+			getPosition() ==
+				return position
+			pre position <> nil;
+			
+			-- editing the position of the player
+			public setPosition: nat1 * nat1 ==> ()
+			setPosition(new_x, new_y) ==
+			(
+				position := new Point(new_x, new_y);
+			)
+			post position <> nil;
 			
 functions
--- TODO Define functiones here
+-- TODO Define	 functiones here
 traces
 -- TODO Define Combinatorial Test Traces here
 end Player
