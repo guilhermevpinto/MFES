@@ -1,0 +1,26 @@
+class Game
+types
+
+
+values
+
+
+instance variables
+	private players : seq of Player := [];
+	private currentPlayerID : nat1 := 1;
+	private board : [Board];
+operations
+	
+		-- sets a new position in the board for a given player
+		public move(new_x: nat, new_y: nat, player: [Player]) ==
+			player.setPosition(new_x, new_y)
+		pre player <> nil
+		post player.getPosition().getX() = new_x and player.getPosition().getY() = new_y;	
+
+functions
+
+
+traces
+
+
+end Game

@@ -1,73 +1,56 @@
 class Board
 	types
+	
 		-- type representing each area segment of the board
 		public Slot = <FREE> | <VISITED> | <WALL> | <NOWALL>;
+		
 	values
 
 	instance variables
+	
 		-- the representation of the board
-		public static board : seq of seq of Slot := [];
+		public static board : seq of seq of Slot := [
+				[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
+				[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
+				[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
+				[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
+				[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
+				[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
+				[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
+				[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
+				[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
+				[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
+				[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
+				[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
+				[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
+				[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
+				[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
+				[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
+				[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>]
+			];
 		-- an auxiliary board to validate logical plays (droping walls)
-		private conectivity : seq of seq of Slot := [];
+		private conectivity : seq of seq of Slot;
 		
 	
 	operations
+	
 		-- constructor
 		public Board : () ==> Board
 		Board() == 
 		(
-			board := 
-			[
-				[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
-				[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
-				[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
-				[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
-				[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
-				[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
-				[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
-				[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
-				[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
-				[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
-				[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
-				[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
-				[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
-				[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
-				[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
-				[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
-				[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>]
-			];
-			
-			conectivity := 
-			[
-				[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
-				[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
-				[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
-				[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
-				[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
-				[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
-				[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
-				[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
-				[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
-				[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
-				[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
-				[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
-				[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
-				[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
-				[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>],
-				[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
-				[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>]
-			];
-		);
+			conectivity := board;
+		)
+		post conectivity = board;
 		
+		-- resets the auxiliar board with the current board status to future path processing, 
 		public resetConectivity : () ==> ()
 		resetConectivity() == 
 		(
 			conectivity := board;
-		);
+		)
+		post conectivity = board;
 		
-		public move(new_x: nat, new_y: nat, player: Player) ==
-		player.setPosition(new_x, new_y);
-			
+		-- adds a new wall to the board, if possible
 		public addWall : nat1 * nat1 ==> ()
 		addWall(row, col) == 
 		(
@@ -113,8 +96,8 @@ class Board
 							);
 						)
 				)
-		);
-		
+		)
+		pre row >= 1 and row <= 17 and col >= 1 and col <= 17;
 		
 		private pathToDestination : nat1 * nat1 * nat1 ==> bool
 		pathToDestination(rowDest, row, col) ==
@@ -152,7 +135,8 @@ class Board
 			else if col = 17
 			then return checkLeft(rowDest, row, col - 1) or checkUp(rowDest, row - 1, col) or checkDown(rowDest, row + 1, col)
 			else return checkLeft(rowDest, row, col - 1) or checkRight(rowDest, row, col + 1) or checkUp(rowDest, row - 1, col) or checkDown(rowDest, row + 1, col);
-		);
+		)
+		pre (rowDest = 1 or rowDest = 17) and row mod 2 = 1 and col mod 2 = 1 and row >= 1 and col >= 1 and row <= 17 and col <> 17;
 		
 		private checkDown : nat1 * nat1 * nat1 ==> bool
 		checkDown(rowDest, row, col) ==
@@ -187,7 +171,8 @@ class Board
 		);
 		
 functions
--- TODO Define functiones here
+	
+	
 traces
 -- TODO Define Combinatorial Test Traces here		
 end Board

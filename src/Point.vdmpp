@@ -1,9 +1,12 @@
 class Point
 instance variables
+
 			-- Coordinates of the point
 			private x : [nat1];
 			private y : [nat1];
+			
 operations
+
 			-- constructor
 			public Point: nat1 * nat1 ==> Point
       	Point(x_input, y_input) == (x := x_input; y := y_input)
@@ -23,10 +26,11 @@ operations
       public pure getY() coordinateY: nat1 ==
       	return y
       pre y <> nil;
-      
 			
 functions
--- TODO Define functiones here
+
+
 traces
--- TODO Define Combinatorial Test Traces here
+
+
 end Point

@@ -1,33 +1,37 @@
 class Player
 instance variables
+
 			-- identifier of the player
-			private numberID : [nat];
+			private numberID : [nat1];
 			-- coordinates of the player's current location
 			private position: [Point];
 			-- remaining walls that the player can still placed in the map
 			private walls : [nat] := 10;
 			-- row that the player aims to reach in order to complete the objective
-			private targetRow : [nat];
+			private targetRow : [nat1];
+			
 operations
+
 			-- constructor
 			public Player: nat ==> Player
 			Player(id) ==
 			(
-				if id = 0
+				if id = 1
 				then (
 					position := new Point(1,7);
 					targetRow := 17;
 					numberID := id;
 				)
-				else if id = 1
+				else if id = 2
 				then (
 					position := new Point(17,11);
 					targetRow := 1;
 					numberID := id;
 				);
 			)
-			pre id = 1 or id = 0
-			post position <> nil and targetRow <> nil and numberID <> nil and walls = 10;
+			pre id = 1 or id = 2
+			post position <> nil and targetRow <> nil and numberID <> nil and walls = 10 
+			and if self.numberID = 1 then targetRow = 17 else if self.numberID = 2 then targetRow = 1 else targetRow = nil;
 			
 			-- getting the current position of the player
 			public pure getPosition : () ==> Point 
@@ -44,7 +48,9 @@ operations
 			post position <> nil;
 			
 functions
--- TODO Define	 functiones here
+
+
 traces
--- TODO Define Combinatorial Test Traces here
+
+
 end Player
