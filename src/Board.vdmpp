@@ -191,7 +191,9 @@ class Board
 			return result; 
 		);
 		
-		private getAdvancedMoves: 
+		private getAdvancedMoves: nat1 * nat1 ==> seq of seq of nat1
+		getAdvancedMoves(row, col) == return [[1,1]];
+		
 functions
 			
 	

@@ -31,26 +31,17 @@ operations
 			)
 			pre id = 1 or id = 2
 			post position <> nil and targetRow <> nil and numberID <> nil and walls = 10 
-			and if self.numberID = 1 then targetRow = 17 else if self.numberID = 2 then targetRow = 1 else targetRow = nil;
+			and if self.numberID = 1 then targetRow = 17 else self.numberID = 2 and targetRow = 1;
 			
 			-- getting the current position of the player
 			public pure getPosition : () ==> Point 
 			getPosition() ==
-				return position
-			pre position <> nil;
+				return position;
 			
 			-- editing the position of the player
 			public setPosition: nat1 * nat1 ==> ()
 			setPosition(new_x, new_y) ==
-			(
-				position := new Point(new_x, new_y);
-			)
+				position := new Point(new_x, new_y)
 			post position <> nil;
-			
-functions
-
-
-traces
-
 
 end Player
