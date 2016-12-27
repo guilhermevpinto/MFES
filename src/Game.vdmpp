@@ -1,26 +1,46 @@
 class Game
 types
 
-
 values
-
 
 instance variables
 	private players : seq of Player := [];
 	private currentPlayerID : nat1 := 1;
 	private board : [Board];
-operations
-	
+
+operations	
 		-- sets a new position in the board for a given player
 		public move(new_x: nat, new_y: nat, player: [Player]) ==
 			player.setPosition(new_x, new_y)
 		pre player <> nil
 		post player.getPosition().getX() = new_x and player.getPosition().getY() = new_y;	
 
+		public switchPlayer() ==
+		if currentPlayerID = 1 then currentPlayerID := 2 
+		else currentPlayerID := 1;
+		
+		public getPlayer(id: nat1) p: Player ==
+		return iota player in seq players & player.getPlayerID() = id;
+		
+		public getCurrentPlayer() currentPlayer: nat ==
+		return currentPlayerID;
+		
+		public currentPlayerWin() win: bool ==
+		(
+			if (getPlayer(currentPlayerID).getPosition().getX() = getPlayer(currentPlayerID).getTargetRow()) 
+					then (return true)
+			else return false;		
+		);
+		
+		public addPlayer: Player ==> ()
+			addPlayer(p) ==
+			(
+				players := players^[p];
+			)
+			post len players <> 0;
+		
 functions
 
-
 traces
-
 
 end Game

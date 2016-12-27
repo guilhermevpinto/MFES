@@ -47,6 +47,26 @@ operations
 			)
 			post position <> nil;
 			
+			-- get the player id
+			public pure getPlayerID : () ==> nat1
+			getPlayerID() ==
+				return numberID
+			pre numberID <> nil;
+			
+			-- get the player targetRow
+			public pure getTargetRow : () ==> nat1
+			getTargetRow() ==
+				return targetRow
+			pre targetRow <> nil;
+			
+			-- set the player targetRow
+			public setTargetRow: nat1 ==> ()
+			setTargetRow(target) ==
+			(
+				targetRow := target;
+			)
+			post targetRow <> nil;
+			
 functions
 
 
