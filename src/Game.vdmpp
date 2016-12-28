@@ -1,9 +1,4 @@
 class Game
-types
-
-
-values
-
 
 instance variables
 	private players : seq of Player := [];
@@ -11,20 +6,24 @@ instance variables
 	private board : [Board];
 operations
 	
+		public Game : () ==> Game
+		Game() ==
+		(
+			players := [new Player(1), new Player(2)];
+			currentPlayerID := 1;
+			board := new Board(self);
+		);
+		
 		-- sets a new position in the board for a given player
 		public move(new_x: nat, new_y: nat, player: [Player]) ==
 			player.setPosition(new_x, new_y)
 		pre player <> nil
 		post player.getPosition().getX() = new_x and player.getPosition().getY() = new_y;	
 
-		-- retrieve the sequence of players in the game
-		public getPlayers : () ==> seq of Player
-		getPlayers() == return self.players;
+		-- retrieve board from game instance
+		public getBoard : () ==> Board
+		getBoard() == return self.board;
 		
-functions
-
-
-traces
-
-
+		public addWall : nat1 * nat1 ==> ()
+		addWall(row, col) == board.addWall(row,col,players);
 end Game
