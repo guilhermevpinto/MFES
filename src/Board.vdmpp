@@ -3,10 +3,10 @@ class Board
 	
 		-- type representing each area segment of the board
 		public Slot = <FREE> | <OCCUPIED> | <VISITED> | <WALL> | <NOWALL>;
-		
-	values
 
 	instance variables
+	
+		private game : Game;
 	
 		-- the representation of the board
 		public static board : seq of seq of Slot := [
@@ -29,16 +29,17 @@ class Board
 				[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>]
 			];
 		-- an auxiliary board to validate logical plays (droping walls)
-		private conectivity : seq of seq of Slot;
+		public conectivity : seq of seq of Slot;
 		
 	
 	operations
 	
 		-- constructor
-		public Board : () ==> Board
-		Board() == 
+		public Board : Game ==> Board
+		Board(gameObj) == 
 		(
 			conectivity := board;
+			game := gameObj;
 		)
 		post conectivity = board;
 		
@@ -64,7 +65,7 @@ class Board
 							conectivity(row) := conectivity(row) ++ {col |-> <WALL>};
 							conectivity(row+1) := conectivity(row+1) ++ {col |-> <WALL>};
 							conectivity(row+2) := conectivity(row+2) ++ {col |-> <WALL>};
-							if pathToDestination(17, 3,1)
+							if forall p in seq game.getPlayers() & pathToDestination(p.getTargetRow(), p.getPosition().getX() , p.getPosition().getY())
 							then
 							(
 								board(row) := board(row) ++ {col |-> <WALL>};

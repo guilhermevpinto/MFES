@@ -17,6 +17,10 @@ operations
 		pre player <> nil
 		post player.getPosition().getX() = new_x and player.getPosition().getY() = new_y;	
 
+		-- retrieve the sequence of players in the game
+		public getPlayers : () ==> seq of Player
+		getPlayers() == return self.players;
+		
 functions
 
 

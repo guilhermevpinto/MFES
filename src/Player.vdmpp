@@ -35,13 +35,16 @@ operations
 			
 			-- getting the current position of the player
 			public pure getPosition : () ==> Point 
-			getPosition() ==
-				return position;
+			getPosition() == return position;
 			
 			-- editing the position of the player
 			public setPosition: nat1 * nat1 ==> ()
 			setPosition(new_x, new_y) ==
 				position := new Point(new_x, new_y)
 			post position <> nil;
+			
+			-- retrieves the index of the row the player has to reach
+			public getTargetRow : () ==> nat1
+			getTargetRow() == return self.targetRow;
 
 end Player
