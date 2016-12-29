@@ -13,13 +13,18 @@ operations
 			players := [new Player(1), new Player(2)];
 			currentPlayerID := 1;
 			board := new Board(self);
+			updateBoard();
 		);
 		
 		-- sets a new position in the board for a given player
 		public move(new_x: nat, new_y: nat, player: [Player]) ==
-			player.setPosition(new_x, new_y)
+		(
+			eraseOldPosition(player.getPosition());
+			player.setPosition(new_x, new_y);
+			updateBoard();
+		)
 		pre player <> nil
-		post player.getPosition().getX() = new_x and player.getPosition().getY() = new_y;	
+		post player.getPosition().getX() = new_x and player.getPosition().getY() = new_y;
 
 		-- switches to another player
 		public switchPlayer() ==
@@ -53,5 +58,99 @@ operations
 		
 		public addWall : nat1 * nat1 ==> ()
 		addWall(row, col) == board.addWall(row,col,players);
+		
+		public getPossibleMoves() moves: seq of Point ==
+		(
+			dcl moves: seq of Point := [],
+			p: Player := getPlayer(currentPlayerID),
+			p_x: nat1 := p.getPosition().getX(),
+			p_y: nat1 := p.getPosition().getY(),
+			x: nat1, y: nat1;
+			
+			-- upper position exists 
+			if(p_x <> 1)
+			then
+			(
+				if board.board(p_x-1)(p_y) = <NOWALL>
+				then
+				(
+					if board.board(p_x-2)(p_y) = <FREE>
+					then
+					(
+						x := (p_x-2);
+						y := p_y;
+						moves := moves^[new Point(x, y)];
+					);
+				);
+			);
+			-- left position exists
+			if(p_y <> 1)
+			then
+			(
+				if board.board(p_x)(p_y-1) = <NOWALL>
+				then
+				(
+					if board.board(p_x)(p_y-2) = <FREE>
+					then
+					(
+						x := p_x;
+						y := (p_y-2);
+						moves := moves^[new Point(x, y)];
+					);
+				);
+			);
+			-- right position exists
+			if(p_y <> 17)
+			then
+			(
+				if board.board(p_x)(p_y+1) = <NOWALL>
+				then
+				(
+					if board.board(p_x)(p_y+2) = <FREE>
+					then
+					(
+						x := p_x;
+						y := (p_y+2);
+						moves := moves^[new Point(x, y)];
+					);
+				);
+			);
+			-- bottom position exists
+			if(p_x <> 17)
+			then
+			(
+				if board.board(p_x+1)(p_y) = <NOWALL>
+				then
+				(
+					if board.board(p_x+2)(p_y) = <FREE>
+					then
+					(
+						x := (p_x+2);
+						y := p_y;
+						moves := moves^[new Point(x, y)];
+					);
+				);
+			);
+			
+			return moves;
+		);
+		
+		-- update board according to players positions
+		public updateBoard() ==
+		(
+			dcl player1: Player := getPlayer(1),
+			player2: Player := getPlayer(2),
+			p1_position: Point := player1.getPosition(),
+			p2_position: Point := player2.getPosition();
+			
+			board.setBoardPosition(p1_position);
+			board.setBoardPosition(p2_position);
+		);
+		
+		-- update board by erasing the old position
+		public eraseOldPosition(old_position: Point) ==
+		(
+			board.unsetBoardPosition(old_position);
+		);
 
 end Game
