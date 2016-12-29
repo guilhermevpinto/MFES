@@ -1,8 +1,5 @@
 class Game
 
-types
-
-values
 instance variables
 	private players : seq of Player := [];
 	private currentPlayerID : nat1 := 1;
