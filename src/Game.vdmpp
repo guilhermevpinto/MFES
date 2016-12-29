@@ -1,20 +1,30 @@
 class Game
+
 types
 
 values
-
 instance variables
 	private players : seq of Player := [];
 	private currentPlayerID : nat1 := 1;
 	private board : [Board];
 
-operations	
+operations
+	
+		public Game : () ==> Game
+		Game() ==
+		(
+			players := [new Player(1), new Player(2)];
+			currentPlayerID := 1;
+			board := new Board(self);
+		);
+		
 		-- sets a new position in the board for a given player
 		public move(new_x: nat, new_y: nat, player: [Player]) ==
 			player.setPosition(new_x, new_y)
 		pre player <> nil
 		post player.getPosition().getX() = new_x and player.getPosition().getY() = new_y;	
 
+		-- switches to another player
 		public switchPlayer() ==
 		if currentPlayerID = 1 then currentPlayerID := 2 
 		else currentPlayerID := 1;
@@ -25,6 +35,7 @@ operations
 		public getCurrentPlayer() currentPlayer: nat ==
 		return currentPlayerID;
 		
+		-- verify wether the player won
 		public currentPlayerWin() win: bool ==
 		(
 			if (getPlayer(currentPlayerID).getPosition().getX() = getPlayer(currentPlayerID).getTargetRow()) 
@@ -38,9 +49,12 @@ operations
 				players := players^[p];
 			)
 			post len players <> 0;
-		
-functions
 
-traces
+		-- retrieve board from game instance
+		public getBoard : () ==> Board
+		getBoard() == return self.board;
+		
+		public addWall : nat1 * nat1 ==> ()
+		addWall(row, col) == board.addWall(row,col,players);
 
 end Game

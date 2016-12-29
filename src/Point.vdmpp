@@ -13,24 +13,20 @@ operations
       post x <> nil and y <> nil;
       
       -- setting new x and y parameters of the class
-      public setPoint(x_set: nat1, y_set: nat1) ==
+      public setPoint : nat1 * nat1 ==> ()
+      setPoint(x_set, y_set) ==
     	(
     		x := x_set; y := y_set;
     	)
     	post x <> nil and y <> nil;
     	
     	-- getters of the parameters of the class
-      public pure getX() coordinateX: nat1 ==
-      	return x
-      pre x <> nil;
-      public pure getY() coordinateY: nat1 ==
-      	return y
-      pre y <> nil;
-			
-functions
-
-
-traces
-
+      public pure getX : () ==> nat1
+      getX() ==
+      	return x;
+      
+      public pure getY : () ==> nat1
+      getY() ==
+      	return y;
 
 end Point

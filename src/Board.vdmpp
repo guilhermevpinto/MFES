@@ -2,11 +2,11 @@ class Board
 	types
 	
 		-- type representing each area segment of the board
-		public Slot = <FREE> | <VISITED> | <WALL> | <NOWALL>;
-		
-	values
+		public Slot = <FREE> | <OCCUPIED> | <VISITED> | <WALL> | <NOWALL>;
 
 	instance variables
+	
+		private game : Game;
 	
 		-- the representation of the board
 		public static board : seq of seq of Slot := [
@@ -28,74 +28,66 @@ class Board
 				[<NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>, <NOWALL>],
 				[<FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>, <NOWALL>, <FREE>]
 			];
+			
 		-- an auxiliary board to validate logical plays (droping walls)
-		private conectivity : seq of seq of Slot;
+		public conectivity : seq of seq of Slot;
 		
 	
 	operations
 	
 		-- constructor
-		public Board : () ==> Board
-		Board() == 
+		public Board : Game ==> Board
+		Board(gameObj) == 
 		(
 			conectivity := board;
+			game := gameObj;
 		)
 		post conectivity = board;
 		
 		-- resets the auxiliar board with the current board status to future path processing, 
-		public resetConectivity : () ==> ()
+		public resetConectivity : () ==> bool
 		resetConectivity() == 
 		(
 			conectivity := board;
+			return true;
 		)
 		post conectivity = board;
 		
 		-- adds a new wall to the board, if possible
-		public addWall : nat1 * nat1 ==> ()
-		addWall(row, col) == 
+		public addWall : nat1 * nat1 * seq of Player ==> ()
+		addWall(row, col, players) == 
 		(
-			resetConectivity();
 			if row mod 2 = 1
-				then 
+			then 
+			(
+				if col < 18 and row < 16 and board(row)(col) = <NOWALL> and board(row+1)(col) = <NOWALL> and board(row+2)(col) = <NOWALL>
+				then
 				(
-					if col < 18 and row < 16 and board(row)(col) = <NOWALL> and board(row+1)(col) = <NOWALL> and board(row+2)(col) = <NOWALL>
-						then
-						(
-							conectivity(row) := conectivity(row) ++ {col |-> <WALL>};
-							conectivity(row+1) := conectivity(row+1) ++ {col |-> <WALL>};
-							conectivity(row+2) := conectivity(row+2) ++ {col |-> <WALL>};
-							if pathToDestination(17, 3,1)
-							then
-							(
-								board(row) := board(row) ++ {col |-> <WALL>};
-								board(row+1) := board(row+1) ++ {col |-> <WALL>};
-								board(row+2) := board(row+2) ++ {col |-> <WALL>};
-							)
-							else
-							(
-								conectivity(row) := conectivity(row) ++ {col |-> <NOWALL>};
-								conectivity(row+1) := conectivity(row+1) ++ {col |-> <NOWALL>};
-								conectivity(row+2) := conectivity(row+2) ++ {col |-> <NOWALL>};
-							);
-						)
+					board(row) := board(row) ++ {col |-> <WALL>};
+					board(row+1) := board(row+1) ++ {col |-> <WALL>};
+					board(row+2) := board(row+2) ++ {col |-> <WALL>};
+					if exists1 p in seq players & resetConectivity() and not pathToDestination(p.getTargetRow(), p.getPosition().getX() , p.getPosition().getY())
+					then
+					(
+						board(row) := board(row) ++ {col |-> <NOWALL>};
+						board(row+1) := board(row+1) ++ {col |-> <NOWALL>};
+						board(row+2) := board(row+2) ++ {col |-> <NOWALL>};
+					);
 				)
-				else
+			)
+			else
+			(
+				if col < 16 and row < 18 and board(row)(col) = <NOWALL> and board(row)(col+1) = <NOWALL> and board(row)(col+2) = <NOWALL>
+				then
 				(
-					if col < 16 and row < 18 and board(row)(col) = <NOWALL> and board(row)(col+1) = <NOWALL> and board(row)(col+2) = <NOWALL>
-						then
-						(
-							conectivity(row) := conectivity(row) ++ {col |-> <WALL>, col+1 |-> <WALL>, col+2 |-> <WALL>};
-							if pathToDestination(17, 3,1)
-							then
-							(
-								board(row) := board(row) ++ {col |-> <WALL>, col+1 |-> <WALL>, col+2 |-> <WALL>};
-							)
-							else
-							(
-								conectivity(row) := conectivity(row) ++ {col |-> <NOWALL>, col+1 |-> <NOWALL>, col+2 |-> <NOWALL>};
-							);
-						)
+					board(row) := board(row) ++ {col |-> <WALL>, col+1 |-> <WALL>, col+2 |-> <WALL>};
+					if exists1 p in seq players & resetConectivity() and not pathToDestination(p.getTargetRow(), p.getPosition().getX() , p.getPosition().getY())
+					then
+					(
+						board(row) := board(row) ++ {col |-> <NOWALL>, col+1 |-> <NOWALL>, col+2 |-> <NOWALL>};
+					);
 				)
+			)
 		)
 		pre row >= 1 and row <= 17 and col >= 1 and col <= 17;
 		
@@ -136,7 +128,7 @@ class Board
 			then return checkLeft(rowDest, row, col - 1) or checkUp(rowDest, row - 1, col) or checkDown(rowDest, row + 1, col)
 			else return checkLeft(rowDest, row, col - 1) or checkRight(rowDest, row, col + 1) or checkUp(rowDest, row - 1, col) or checkDown(rowDest, row + 1, col);
 		)
-		pre (rowDest = 1 or rowDest = 17) and row mod 2 = 1 and col mod 2 = 1 and row >= 1 and col >= 1 and row <= 17 and col <> 17;
+		pre (rowDest = 1 or rowDest = 17) and row mod 2 = 1 and col mod 2 = 1 and row >= 1 and col >= 1 and row <= 17 and col <= 17;
 		
 		private checkDown : nat1 * nat1 * nat1 ==> bool
 		checkDown(rowDest, row, col) ==
@@ -170,8 +162,32 @@ class Board
 			else return false;
 		);
 		
+		public getValidMoves: nat1 * nat1 ==> seq of seq of nat1
+		getValidMoves(row, col) ==
+		(
+			dcl result : seq of seq of nat1 := [];
+			
+			if row = 1 and board(row+1)(col) = <NOWALL>
+			then 
+			(
+				if board(row+2)(col) = <OCCUPIED>
+				then 
+				(
+					dcl temp : seq of seq of nat1 := getAdvancedMoves(row+2, col);
+					result := result ^ temp;
+				)
+				else result := result ^ [[row+2, col]];
+			);
+			
+			
+			return result; 
+		);
+		
+		private getAdvancedMoves: nat1 * nat1 ==> seq of seq of nat1
+		getAdvancedMoves(row, col) == return [[1,1]];
+		
 functions
-	
+			
 	
 traces
 -- TODO Define Combinatorial Test Traces here		
