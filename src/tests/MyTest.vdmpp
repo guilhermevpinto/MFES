@@ -1,0 +1,17 @@
+class MyTest
+
+operations
+
+	protected assertTrue : bool ==> ()
+		assertTrue(a) == return
+		pre a;
+		
+	protected assertEqual : ? * ? ==> ()
+	assertEqual(e,a) == return
+	pre e = a;
+	
+	protected assertNotEqual : ? * ? ==> ()
+	assertNotEqual(e,a) == return
+	pre e <> a;
+
+end MyTest
