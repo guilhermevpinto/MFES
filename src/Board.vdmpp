@@ -66,6 +66,7 @@ class Board
 					board(row) := board(row) ++ {col |-> <WALL>};
 					board(row+1) := board(row+1) ++ {col |-> <WALL>};
 					board(row+2) := board(row+2) ++ {col |-> <WALL>};
+					
 					if exists1 p in seq players & resetConectivity() and not pathToDestination(p.getTargetRow(), p.getPosition().getX() , p.getPosition().getY())
 					then
 					(
@@ -81,6 +82,7 @@ class Board
 				then
 				(
 					board(row) := board(row) ++ {col |-> <WALL>, col+1 |-> <WALL>, col+2 |-> <WALL>};
+					
 					if exists1 p in seq players & resetConectivity() and not pathToDestination(p.getTargetRow(), p.getPosition().getX() , p.getPosition().getY())
 					then
 					(
