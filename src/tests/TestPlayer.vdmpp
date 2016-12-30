@@ -1,0 +1,19 @@
+class TestPlayer is subclass of MyTest
+
+operations
+
+	public test : () ==> ()
+	test() == 
+	(
+		dcl p1 : Player := new Player(1);
+		dcl p2 : Player := new Player(2);
+		
+		dcl point : Point := new Point(1,7);
+		assertTrue(p1.getPosition().getX() = point.getX() and p1.getPosition().getY() = point.getY());
+		point := new Point(17,11);
+		assertTrue(p2.getPosition().getX() = point.getX() and p2.getPosition().getY() = point.getY());
+		p1.setPosition(5,7);
+		assertTrue(p1.getPosition().getX() = 5 and p1.getPosition().getY() = 7);
+	);
+
+end TestPlayer

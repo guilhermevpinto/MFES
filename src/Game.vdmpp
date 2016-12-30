@@ -56,12 +56,17 @@ operations
 		public getBoard : () ==> Board
 		getBoard() == return self.board;
 		
+		-- retrieve board from game instance
+		public getPlayers : () ==> seq of Player
+		getPlayers() == return self.players;
+		
 		public addWall : nat1 * nat1 ==> ()
 		addWall(row, col) == board.addWall(row,col,players);
 		
 		public getPossibleMoves() moves: seq of Point ==
 		(
 			dcl moves: seq of Point := [],
+			special_moves: seq of Point := [],
 			p: Player := getPlayer(currentPlayerID),
 			p_x: nat1 := p.getPosition().getX(),
 			p_y: nat1 := p.getPosition().getY(),
@@ -84,13 +89,8 @@ operations
 					else
 					(
 						-- jump over another player
-						if verifyPlayerJump(p_x-2, p_y, "up") = true
-						then
-						(
-							x := (p_x-4);
-							y := p_y;
-							moves := moves^[new Point(x, y)];
-						)
+						special_moves := special_moves^verifyPlayerJump(p_x-2, p_y, "up");
+						moves := moves^special_moves;
 					);
 				);
 			);
@@ -111,13 +111,8 @@ operations
 					else
 					(
 						-- jump over another player
-						if verifyPlayerJump(p_x, p_y-2, "left") = true
-						then
-						(
-							x := p_x;
-							y := (p_y-4);
-							moves := moves^[new Point(x, y)];
-						)
+						special_moves := special_moves^verifyPlayerJump(p_x, p_y-2, "left");
+						moves := moves^special_moves;
 					);
 				);
 			);
@@ -138,13 +133,8 @@ operations
 					else
 					(
 						-- jump over another player
-						if verifyPlayerJump(p_x, p_y+2, "right") = true
-						then
-						(
-							x := p_x;
-							y := (p_y+4);
-							moves := moves^[new Point(x, y)];
-						)
+						special_moves := special_moves^verifyPlayerJump(p_x, p_y+2, "right");
+						moves := moves^special_moves;
 					);
 				);
 			);
@@ -165,13 +155,8 @@ operations
 					else
 					(
 						-- jump over another player
-						if verifyPlayerJump(p_x+2, p_y, "down") = true
-						then
-						(
-							x := (p_x+4);
-							y := p_y;
-							moves := moves^[new Point(x, y)];
-						)
+						special_moves := special_moves^verifyPlayerJump(p_x+2, p_y, "down");
+						moves := moves^special_moves;
 					);
 				);
 			);
@@ -180,7 +165,7 @@ operations
 		);
 		
 		-- verifies whether the player can jump over another player
-		public verifyPlayerJump(x: nat, y: nat, direction: seq of char) verification: bool ==
+		public verifyPlayerJump(x: nat, y: nat, direction: seq of char) special: seq of Point ==
 		(
 			if board.board(x)(y) = <OCCUPIED>
 			then
@@ -213,7 +198,7 @@ operations
 							)
 							else
 							(
-								return false;
+								return [];
 							);
 						);
 					);
@@ -221,13 +206,16 @@ operations
 			)
 			else
 			(
-				return false;
+				return [];
 			);
 		);
 		
 		-- check possible up movement
-		private checkUpMove(x: nat, y: nat) result: bool ==
+		private checkUpMove(x: nat, y: nat) special: seq of Point ==
 		(
+		
+			dcl special: seq of Point := [];
+			
 			if(x <> 1)
 			then
 			(
@@ -237,27 +225,26 @@ operations
 					if board.board(x-2)(y) = <FREE>
 					then
 					(
-						return true;
+						special := special^[new Point(x-2, y)];
 					)
-					else
-					(
-						return false;
-					);
 				)
+				-- check special case with oponent + wall followed by each other
 				else
 				(
-					return false;
+					special := special^checkDiagonalHorizontal(x, y);
 				);
-			)
-			else
-			(
-				return false;
 			);
+			
+			return special;
+				
 		);
 		
 		-- check possible left movement
-		private checkLeftMove(x: nat, y: nat) result: bool ==
+		private checkLeftMove(x: nat, y: nat) special: seq of Point ==
 		(
+			
+			dcl special: seq of Point := [];
+			
 			if(y <> 1)
 			then
 			(
@@ -267,27 +254,26 @@ operations
 					if board.board(x)(y-2) = <FREE>
 					then
 					(
-						return true;
+						special := special^[new Point(x, y-2)];
 					)
-					else
-					(
-						return false;
-					);
 				)
+				-- check special case with oponent + wall followed by each other
 				else
 				(
-					return false;
+					special := special^checkDiagonalVertical(x, y);
 				);
-			)
-			else
-			(
-				return false;
 			);
+			
+			return special;
+			
 		);
 		
 		-- check possible right movement
-		private checkRightMove(x: nat, y: nat) result: bool ==
-		(
+		private checkRightMove(x: nat, y: nat) special: seq of Point ==
+		(	
+		
+			dcl special: seq of Point := [];
+			
 			if(y <> 17)
 			then
 			(
@@ -297,52 +283,129 @@ operations
 					if board.board(x)(y+2) = <FREE>
 					then
 					(
-						return true;
+						special := special^[new Point(x, y+2)];
 					)
-					else
-					(
-						return false;
-					);
 				)
+				-- check special case with oponent + wall followed by each other
 				else
 				(
-					return false;
+					special := special^checkDiagonalVertical(x, y);
 				);
-			)
-			else
-			(
-				return false;
 			);
+			
+			return special;
+			
 		);
 		
 		-- check possible down movement
-		private checkDownMove(x: nat, y: nat) result: bool ==
+		private checkDownMove(x: nat, y: nat) special: seq of Point ==
 		(
+		
+			dcl special: seq of Point := [];
+		
 			if(x <> 17)
 			then
 			(
+				if board.board(x+1)(y) = <NOWALL>
+				then
+				(
+					if board.board(x+2)(y) = <FREE>
+					then
+					(
+						special := special^[new Point(x+2, y)];
+					)
+				)
+				-- check special case with oponent + wall followed by each other
+				else
+				(
+					special := special^checkDiagonalHorizontal(x, y);
+				);
+			);
+			
+			return special;
+			
+		);
+		
+		-- check diagonal movement direction horizontal in special cases
+		private checkDiagonalHorizontal(x: nat, y: nat) special: seq of Point ==
+		(
+		
+			dcl special: seq of Point := [];
+			
+			-- check if the movement to the left is possible
+			if y <> 1
+			then
+			(
+				-- check for walls on the left
+				if board.board(x)(y-1) = <NOWALL>
+				then
+				(
+					if board.board(x)(y-2) = <FREE>
+					then
+					(
+						special := special^[new Point(x, y-2)];
+					)
+				);
+			);
+			-- check if the movement to the right is possible
+			if y <> 17
+			then
+			(
+				-- check for walls on the right
+				if board.board(x)(y+1) = <NOWALL>
+				then
+				(
+					if board.board(x)(y+2) = <FREE>
+					then
+					(
+						special := special^[new Point(x, y+2)];
+					)
+				);
+			);
+			
+			return special;
+			
+		);
+		
+		-- check diagonal movement direction vertical in special cases
+		private checkDiagonalVertical(x: nat, y: nat) special: seq of Point ==
+		(
+		
+			dcl special: seq of Point := [];
+			
+			-- check if the movement up is possible
+			if x <> 1
+			then
+			(
+				-- check for walls up
 				if board.board(x-1)(y) = <NOWALL>
 				then
 				(
 					if board.board(x-2)(y) = <FREE>
 					then
 					(
-						return true;
+						special := special^[new Point(x-2, y)];
 					)
-					else
-					(
-						return false;
-					);
-				)
-				else
-				(
-					return false;
 				);
-			)
-			else
-			(
-				return false;
 			);
+			-- check if the movement down is possible
+			if x <> 17
+			then
+			(
+				-- check for walls down
+				if board.board(x+1)(y) = <NOWALL>
+				then
+				(
+					if board.board(x+2)(y) = <FREE>
+					then
+					(
+						special := special^[new Point(x+2, y)];
+					)
+				);
+			);
+		
+			return special;
+			
 		);
 		
 		-- update board according to players positions
