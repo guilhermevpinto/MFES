@@ -79,7 +79,7 @@ operations
 		game.move(5, 9, game.getPlayer(1));
 		game.move(3, 9, game.getPlayer(2));
 		moves := game.getPossibleMoves();
-		assertTrue(len moves = 4);
+		assertTrue(len moves = 5);
 		
 		b.addWall(2, 9, game.getPlayers());
 		moves := game.getPossibleMoves();
@@ -99,22 +99,21 @@ operations
 		game.move(5, 7, game.getPlayer(1));
 		game.move(5, 9, game.getPlayer(2));
 		moves := game.getPossibleMoves();
-		assertTrue(len moves = 4);
+		assertTrue(len moves = 3);
 		
 		b.addWall(5, 10, game.getPlayers());
 		moves := game.getPossibleMoves();
-		assertTrue(len moves = 5);
+		assertTrue(len moves = 4);
 		
 		-- player down + wall down
 		game.move(3, 9, game.getPlayer(1));
 		game.move(5, 9, game.getPlayer(2));
 		moves := game.getPossibleMoves();
-		assertTrue(len moves = 4);
+		assertTrue(len moves = 3);
 		
 		b.addWall(6, 9, game.getPlayers());
 		moves := game.getPossibleMoves();
-		assertTrue(len moves = 5);
-		
+		assertTrue(len moves = 3);
 		
 	);
 	
