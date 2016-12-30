@@ -99,7 +99,7 @@ class Board
 			if row = rowDest
 				then return true;
 				
-			if conectivity(row)(col) <> <FREE>
+			if conectivity(row)(col) = <VISITED>
 				then return false;
 			
 			conectivity(row) := conectivity(row) ++ {col |-> <VISITED>};
