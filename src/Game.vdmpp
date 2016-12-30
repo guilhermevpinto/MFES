@@ -4,6 +4,7 @@ instance variables
 	private players : seq of Player := [];
 	private currentPlayerID : nat1 := 1;
 	private board : [Board];
+
 operations
 	
 		public Game : () ==> Game
@@ -12,13 +13,44 @@ operations
 			players := [new Player(1), new Player(2)];
 			currentPlayerID := 1;
 			board := new Board(self);
+			updateBoard();
 		);
 		
 		-- sets a new position in the board for a given player
 		public move(new_x: nat, new_y: nat, player: [Player]) ==
-			player.setPosition(new_x, new_y)
+		(
+			eraseOldPosition(player.getPosition());
+			player.setPosition(new_x, new_y);
+			updateBoard();
+		)
 		pre player <> nil
-		post player.getPosition().getX() = new_x and player.getPosition().getY() = new_y;	
+		post player.getPosition().getX() = new_x and player.getPosition().getY() = new_y;
+
+		-- switches to another player
+		public switchPlayer() ==
+		if currentPlayerID = 1 then currentPlayerID := 2 
+		else currentPlayerID := 1;
+		
+		public getPlayer(id: nat1) p: Player ==
+		return iota player in seq players & player.getPlayerID() = id;
+		
+		public getCurrentPlayer() currentPlayer: nat ==
+		return currentPlayerID;
+		
+		-- verify wether the player won
+		public currentPlayerWin() win: bool ==
+		(
+			if (getPlayer(currentPlayerID).getPosition().getX() = getPlayer(currentPlayerID).getTargetRow()) 
+					then (return true)
+			else return false;		
+		);
+		
+		public addPlayer: Player ==> ()
+			addPlayer(p) ==
+			(
+				players := players^[p];
+			)
+			post len players <> 0;
 
 		-- retrieve board from game instance
 		public getBoard : () ==> Board
@@ -26,4 +58,309 @@ operations
 		
 		public addWall : nat1 * nat1 ==> ()
 		addWall(row, col) == board.addWall(row,col,players);
+		
+		public getPossibleMoves() moves: seq of Point ==
+		(
+			dcl moves: seq of Point := [],
+			p: Player := getPlayer(currentPlayerID),
+			p_x: nat1 := p.getPosition().getX(),
+			p_y: nat1 := p.getPosition().getY(),
+			x: nat1, y: nat1;
+			
+			-- upper position exists 
+			if(p_x <> 1)
+			then
+			(
+				if board.board(p_x-1)(p_y) = <NOWALL>
+				then
+				(
+					if board.board(p_x-2)(p_y) = <FREE>
+					then
+					(
+						x := (p_x-2);
+						y := p_y;
+						moves := moves^[new Point(x, y)];
+					)
+					else
+					(
+						-- jump over another player
+						if verifyPlayerJump(p_x-2, p_y, "up") = true
+						then
+						(
+							x := (p_x-4);
+							y := p_y;
+							moves := moves^[new Point(x, y)];
+						)
+					);
+				);
+			);
+			-- left position exists
+			if(p_y <> 1)
+			then
+			(
+				if board.board(p_x)(p_y-1) = <NOWALL>
+				then
+				(
+					if board.board(p_x)(p_y-2) = <FREE>
+					then
+					(
+						x := p_x;
+						y := (p_y-2);
+						moves := moves^[new Point(x, y)];
+					)
+					else
+					(
+						-- jump over another player
+						if verifyPlayerJump(p_x, p_y-2, "left") = true
+						then
+						(
+							x := p_x;
+							y := (p_y-4);
+							moves := moves^[new Point(x, y)];
+						)
+					);
+				);
+			);
+			-- right position exists
+			if(p_y <> 17)
+			then
+			(
+				if board.board(p_x)(p_y+1) = <NOWALL>
+				then
+				(
+					if board.board(p_x)(p_y+2) = <FREE>
+					then
+					(
+						x := p_x;
+						y := (p_y+2);
+						moves := moves^[new Point(x, y)];
+					)
+					else
+					(
+						-- jump over another player
+						if verifyPlayerJump(p_x, p_y+2, "right") = true
+						then
+						(
+							x := p_x;
+							y := (p_y+4);
+							moves := moves^[new Point(x, y)];
+						)
+					);
+				);
+			);
+			-- bottom position exists
+			if(p_x <> 17)
+			then
+			(
+				if board.board(p_x+1)(p_y) = <NOWALL>
+				then
+				(
+					if board.board(p_x+2)(p_y) = <FREE>
+					then
+					(
+						x := (p_x+2);
+						y := p_y;
+						moves := moves^[new Point(x, y)];
+					)
+					else
+					(
+						-- jump over another player
+						if verifyPlayerJump(p_x+2, p_y, "down") = true
+						then
+						(
+							x := (p_x+4);
+							y := p_y;
+							moves := moves^[new Point(x, y)];
+						)
+					);
+				);
+			);
+			
+			return moves;
+		);
+		
+		-- verifies whether the player can jump over another player
+		public verifyPlayerJump(x: nat, y: nat, direction: seq of char) verification: bool ==
+		(
+			if board.board(x)(y) = <OCCUPIED>
+			then
+			(
+				if direction = "up"
+				then
+				(
+					return checkUpMove(x, y);
+				)
+				else
+				(
+					if direction = "left"
+					then
+					(
+						return checkLeftMove(x, y);
+					)
+					else
+					(
+						if direction = "right"
+						then
+						(
+							return checkRightMove(x, y);
+						)
+						else
+						(
+							if direction = "down"
+							then
+							(
+								return checkDownMove(x, y);
+							)
+							else
+							(
+								return false;
+							);
+						);
+					);
+				);
+			)
+			else
+			(
+				return false;
+			);
+		);
+		
+		-- check possible up movement
+		private checkUpMove(x: nat, y: nat) result: bool ==
+		(
+			if(x <> 1)
+			then
+			(
+				if board.board(x-1)(y) = <NOWALL>
+				then
+				(
+					if board.board(x-2)(y) = <FREE>
+					then
+					(
+						return true;
+					)
+					else
+					(
+						return false;
+					);
+				)
+				else
+				(
+					return false;
+				);
+			)
+			else
+			(
+				return false;
+			);
+		);
+		
+		-- check possible left movement
+		private checkLeftMove(x: nat, y: nat) result: bool ==
+		(
+			if(y <> 1)
+			then
+			(
+				if board.board(x)(y-1) = <NOWALL>
+				then
+				(
+					if board.board(x)(y-2) = <FREE>
+					then
+					(
+						return true;
+					)
+					else
+					(
+						return false;
+					);
+				)
+				else
+				(
+					return false;
+				);
+			)
+			else
+			(
+				return false;
+			);
+		);
+		
+		-- check possible right movement
+		private checkRightMove(x: nat, y: nat) result: bool ==
+		(
+			if(y <> 17)
+			then
+			(
+				if board.board(x)(y+1) = <NOWALL>
+				then
+				(
+					if board.board(x)(y+2) = <FREE>
+					then
+					(
+						return true;
+					)
+					else
+					(
+						return false;
+					);
+				)
+				else
+				(
+					return false;
+				);
+			)
+			else
+			(
+				return false;
+			);
+		);
+		
+		-- check possible down movement
+		private checkDownMove(x: nat, y: nat) result: bool ==
+		(
+			if(x <> 17)
+			then
+			(
+				if board.board(x-1)(y) = <NOWALL>
+				then
+				(
+					if board.board(x-2)(y) = <FREE>
+					then
+					(
+						return true;
+					)
+					else
+					(
+						return false;
+					);
+				)
+				else
+				(
+					return false;
+				);
+			)
+			else
+			(
+				return false;
+			);
+		);
+		
+		-- update board according to players positions
+		public updateBoard() ==
+		(
+			dcl player1: Player := getPlayer(1),
+			player2: Player := getPlayer(2),
+			p1_position: Point := player1.getPosition(),
+			p2_position: Point := player2.getPosition();
+			
+			board.setBoardPosition(p1_position);
+			board.setBoardPosition(p2_position);
+		);
+		
+		-- update board by erasing the old position
+		public eraseOldPosition(old_position: Point) ==
+		(
+			board.unsetBoardPosition(old_position);
+		);
+
 end Game

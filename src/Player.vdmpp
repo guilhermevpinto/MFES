@@ -18,13 +18,13 @@ operations
 			(
 				if id = 1
 				then (
-					position := new Point(1,7);
+					position := new Point(1,9);
 					targetRow := 17;
 					numberID := id;
 				)
 				else if id = 2
 				then (
-					position := new Point(17,11);
+					position := new Point(17,9);
 					targetRow := 1;
 					numberID := id;
 				);
@@ -42,6 +42,20 @@ operations
 			setPosition(new_x, new_y) ==
 				position := new Point(new_x, new_y)
 			post position <> nil;
+
+			-- get the player id
+			public pure getPlayerID : () ==> nat1
+			getPlayerID() ==
+				return numberID
+			pre numberID <> nil;
+			
+			-- set the player targetRow
+			public setTargetRow: nat1 ==> ()
+			setTargetRow(target) ==
+			(
+				targetRow := target;
+			)
+			post targetRow <> nil;
 			
 			-- retrieves the index of the row the player has to reach
 			public getTargetRow : () ==> nat1

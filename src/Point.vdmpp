@@ -2,18 +2,18 @@ class Point
 instance variables
 
 			-- Coordinates of the point
-			private x : [nat1];
-			private y : [nat1];
+			private x : [nat];
+			private y : [nat];
 			
 operations
 
 			-- constructor
-			public Point: nat1 * nat1 ==> Point
+			public Point: nat * nat ==> Point
       	Point(x_input, y_input) == (x := x_input; y := y_input)
       post x <> nil and y <> nil;
       
       -- setting new x and y parameters of the class
-      public setPoint : nat1 * nat1 ==> ()
+      public setPoint : nat * nat ==> ()
       setPoint(x_set, y_set) ==
     	(
     		x := x_set; y := y_set;
@@ -21,11 +21,11 @@ operations
     	post x <> nil and y <> nil;
     	
     	-- getters of the parameters of the class
-      public pure getX : () ==> nat1
+      public pure getX : () ==> nat
       getX() ==
       	return x;
       
-      public pure getY : () ==> nat1
+      public pure getY : () ==> nat
       getY() ==
       	return y;
 

@@ -186,6 +186,18 @@ class Board
 		private getAdvancedMoves: nat1 * nat1 ==> seq of seq of nat1
 		getAdvancedMoves(row, col) == return [[1,1]];
 		
+		-- Sets the board position as occupied
+		public setBoardPosition(p: Point) ==
+		(
+			board(p.getX()) := board(p.getX()) ++ {p.getY() |-> <OCCUPIED>};
+		);
+		
+		-- Sets the occupied board cell back to free
+		public unsetBoardPosition(p: Point) ==
+		(
+			board(p.getX()) := board(p.getX()) ++ {p.getY() |-> <FREE>}; 
+		);
+		
 functions
 			
 	
