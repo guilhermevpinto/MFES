@@ -35,28 +35,54 @@ public class QuaridorGui {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 		
-		buildBoard();		
+		setup();		
 
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
-		
+
 	}
+	
+	
+	public static void setup() {
+		JPanel main = new JPanel();
+		main.setLayout(null);
+		main.setPreferredSize(new Dimension(WT*9*4 + WT*8, WT*9*4 + WT*8));
+		loadPlayers(main);
+		loadBoard(main);
+		frame.add(main);
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public static void loadPlayers(JPanel main) {
+		
+		ArrayList<Quaridor.Player> players = (ArrayList<Quaridor.Player>) game.getPlayers();
+		
+		for(Quaridor.Player p : players) {
+
+			int col = p.getPosition().getY().intValue();
+			int row = (int)p.getPosition().getX().intValue();
+
+			gui.Player playerGUI = new gui.Player((int)p.getPlayerID().intValue(), col, row, QuaridorGui.WT*4*((col-1) / 2) + QuaridorGui.WT*((col-1) / 2), QuaridorGui.WT*4*((row-1) / 2) + QuaridorGui.WT*((row-1) / 2));
+			
+			main.add(playerGUI);
+			playerGUI.draw();
+		}
+	}
+	
 	
 	/**
 	 * Constructing the board positions
 	 * @param JFrame frame
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static void buildBoard() {
+	public static void loadBoard(JPanel main) {		
 
 		//fetching the VDM Board structure
 		ArrayList<ArrayList> board = Board.board;
 		
 		//creating the main JPanel where the graphics will be drawn
-		JPanel main = new JPanel();
-		main.setLayout(null);
-		main.setPreferredSize(new Dimension(WT*9*4 + WT*8, WT*9*4 + WT*8));
 		
 		//designing the board according to the VDM board structure
 		int rowPixel = 0; //y-axis pixels progression
@@ -71,7 +97,7 @@ public class QuaridorGui {
 
 					if(board.get(row).get(col) instanceof FREEQuote | board.get(row).get(col) instanceof OCCUPIEDQuote) {
 						
-						Position p = new Position(col, row, colPixel, rowPixel);
+						Position p = new Position(col + 1, row + 1, colPixel, rowPixel);
 						main.add(p);
 						rowGUI.add(p);
 						p.draw();
@@ -80,7 +106,7 @@ public class QuaridorGui {
 					}
 					else if(board.get(row).get(col) instanceof NOWALLQuote) {
 						
-						Wall w = new Wall(col, row, colPixel, rowPixel, Wall.Orientation.VER);
+						Wall w = new Wall(col + 1, row + 1, colPixel, rowPixel, Wall.Orientation.VER);
 						main.add(w);
 						rowGUI.add(w);
 						w.draw();
@@ -92,7 +118,7 @@ public class QuaridorGui {
 					
 					if(board.get(row).get(col) instanceof NOWALLQuote & (col % 2) == 0) {
 
-						Wall w = new Wall(col, row, colPixel, rowPixel, Wall.Orientation.HOR);
+						Wall w = new Wall(col + 1, row + 1, colPixel, rowPixel, Wall.Orientation.HOR);
 						main.add(w);
 						rowGUI.add(w);
 						w.draw();
@@ -111,7 +137,6 @@ public class QuaridorGui {
 				rowPixel += QuaridorGui.WT;
 		}
 		
-		frame.add(main);
 	}
 	
 	public void setWall(int row, int col) {
