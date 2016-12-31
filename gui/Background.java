@@ -7,10 +7,10 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JComponent;
 
-class Background extends JComponent implements MouseListener{
+class Background extends JComponent {
 	
     private Image image;
-    
+
     public Background(Image image) {
         this.image = image;
     }
@@ -20,34 +20,5 @@ class Background extends JComponent implements MouseListener{
         super.paintComponent(g);
         g.drawImage(image, 0, 0, this);
     }
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 }
