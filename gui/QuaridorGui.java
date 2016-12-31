@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.Dimension;
+import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -13,15 +14,19 @@ public class QuaridorGui {
 	 */
 	public static void main(String[] args) {
 		
-		JFrame frame = new JFrame("Quaridor");
+		// entry menu
+		Menu ex = new Menu("images/quaridor.jpg");
+       	ex.setVisible(true);
+		
+		/*JFrame frame = new JFrame("Quaridor");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 		
-		buildBoard(frame);
+		//buildBoard(frame);
 
 		frame.pack();
 		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
+		frame.setVisible(true);*/
 	}
 	
 	/**
