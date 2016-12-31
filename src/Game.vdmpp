@@ -32,7 +32,7 @@ operations
 		else currentPlayerID := 1;
 		
 		public getPlayer(id: nat1) p: Player ==
-		return iota player in seq players & player.getPlayerID() = id;
+		return [player | player in seq players  &  player.getPlayerID() = id](1);
 		
 		public getCurrentPlayer() currentPlayer: nat ==
 		return currentPlayerID;
