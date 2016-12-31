@@ -164,30 +164,6 @@ class Board
 			else return false;
 		);
 		
-		public getValidMoves: nat1 * nat1 ==> seq of seq of nat1
-		getValidMoves(row, col) ==
-		(
-			dcl result : seq of seq of nat1 := [];
-			
-			if row = 1 and board(row+1)(col) = <NOWALL>
-			then 
-			(
-				if board(row+2)(col) = <OCCUPIED>
-				then 
-				(
-					dcl temp : seq of seq of nat1 := getAdvancedMoves(row+2, col);
-					result := result ^ temp;
-				)
-				else result := result ^ [[row+2, col]];
-			);
-			
-			
-			return result; 
-		);
-		
-		private getAdvancedMoves: nat1 * nat1 ==> seq of seq of nat1
-		getAdvancedMoves(row, col) == return [[1,1]];
-		
 		-- Sets the board position as occupied
 		public setBoardPosition(p: Point) ==
 		(

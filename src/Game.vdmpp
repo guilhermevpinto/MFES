@@ -17,7 +17,8 @@ operations
 		);
 		
 		-- sets a new position in the board for a given player
-		public move(new_x: nat, new_y: nat, player: [Player]) ==
+		public move: nat1 * nat1 * [Player] ==> ()
+		move(new_x, new_y, player) ==
 		(
 			eraseOldPosition(player.getPosition());
 			player.setPosition(new_x, new_y);
@@ -27,18 +28,22 @@ operations
 		post player.getPosition().getX() = new_x and player.getPosition().getY() = new_y;
 
 		-- switches to another player
-		public switchPlayer() ==
+		public switchPlayer : () ==> ()
+		switchPlayer() == 
 		if currentPlayerID = 1 then currentPlayerID := 2 
 		else currentPlayerID := 1;
 		
-		public getPlayer(id: nat1) p: Player ==
+		public getPlayer :nat1 ==>Player 
+		getPlayer(id) ==
 		return [player | player in seq players  &  player.getPlayerID() = id](1);
 		
-		public getCurrentPlayer() currentPlayer: nat ==
+		public getCurrentPlayer : () ==> nat1
+		getCurrentPlayer() ==
 		return currentPlayerID;
 		
 		-- verify wether the player won
-		public currentPlayerWin() win: bool ==
+		public currentPlayerWin : () ==> bool
+		currentPlayerWin() ==
 		(
 			if (getPlayer(currentPlayerID).getPosition().getX() = getPlayer(currentPlayerID).getTargetRow()) 
 					then (return true)
@@ -63,7 +68,8 @@ operations
 		public addWall : nat1 * nat1 ==> ()
 		addWall(row, col) == board.addWall(row,col,players);
 		
-		public getPossibleMoves() moves: seq of Point ==
+		public getPossibleMoves: () ==> seq of Point
+		getPossibleMoves() ==
 		(
 			dcl moves: seq of Point := [],
 			special_moves: seq of Point := [],
@@ -165,7 +171,8 @@ operations
 		);
 		
 		-- verifies whether the player can jump over another player
-		public verifyPlayerJump(x: nat, y: nat, direction: seq of char) special: seq of Point ==
+		public verifyPlayerJump: nat1 * nat1 * seq of char ==> seq of Point
+		verifyPlayerJump(x, y, direction) ==
 		(
 			if board.board(x)(y) = <OCCUPIED>
 			then
@@ -211,7 +218,8 @@ operations
 		);
 		
 		-- check possible up movement
-		private checkUpMove(x: nat, y: nat) special: seq of Point ==
+		private checkUpMove : nat1 * nat1 ==> seq of Point
+		checkUpMove(x, y) ==
 		(
 		
 			dcl special: seq of Point := [];
@@ -240,7 +248,8 @@ operations
 		);
 		
 		-- check possible left movement
-		private checkLeftMove(x: nat, y: nat) special: seq of Point ==
+		private checkLeftMove : nat1 * nat1 ==> seq of Point
+		checkLeftMove(x, y) ==
 		(
 			
 			dcl special: seq of Point := [];
@@ -269,7 +278,8 @@ operations
 		);
 		
 		-- check possible right movement
-		private checkRightMove(x: nat, y: nat) special: seq of Point ==
+		private checkRightMove : nat1 * nat1 ==> seq of Point
+		checkRightMove(x, y) ==
 		(	
 		
 			dcl special: seq of Point := [];
@@ -298,7 +308,8 @@ operations
 		);
 		
 		-- check possible down movement
-		private checkDownMove(x: nat, y: nat) special: seq of Point ==
+		private checkDownMove : nat1 * nat1 ==> seq of Point
+		checkDownMove(x, y) ==
 		(
 		
 			dcl special: seq of Point := [];
@@ -327,7 +338,8 @@ operations
 		);
 		
 		-- check diagonal movement direction horizontal in special cases
-		private checkDiagonalHorizontal(x: nat, y: nat) special: seq of Point ==
+		private checkDiagonalHorizontal : nat1 * nat1 ==> seq of Point
+		checkDiagonalHorizontal(x, y) ==
 		(
 		
 			dcl special: seq of Point := [];
@@ -368,7 +380,8 @@ operations
 		);
 		
 		-- check diagonal movement direction vertical in special cases
-		private checkDiagonalVertical(x: nat, y: nat) special: seq of Point ==
+		private checkDiagonalVertical : nat1 * nat1 ==> seq of Point
+		checkDiagonalVertical(x, y) ==
 		(
 		
 			dcl special: seq of Point := [];
@@ -409,7 +422,8 @@ operations
 		);
 		
 		-- update board according to players positions
-		public updateBoard() ==
+		public updateBoard : () ==> () 
+		updateBoard() ==
 		(
 			dcl player1: Player := getPlayer(1),
 			player2: Player := getPlayer(2),
