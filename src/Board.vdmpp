@@ -165,13 +165,15 @@ class Board
 		);
 		
 		-- Sets the board position as occupied
-		public setBoardPosition(p: Point) ==
+		public setBoardPosition: Point ==> () 
+		setBoardPosition(p) ==
 		(
 			board(p.getX()) := board(p.getX()) ++ {p.getY() |-> <OCCUPIED>};
 		);
 		
 		-- Sets the occupied board cell back to free
-		public unsetBoardPosition(p: Point) ==
+		public unsetBoardPosition: Point ==> ()
+		unsetBoardPosition(p) ==
 		(
 			board(p.getX()) := board(p.getX()) ++ {p.getY() |-> <FREE>}; 
 		);

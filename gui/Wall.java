@@ -11,15 +11,23 @@ public class Wall extends JPanel {
 	
 	private int x;
 	private int y;
+	private int row;
+	private int col;
 	private int width;
 	private int height;
 	private Orientation orientation;
 	private boolean set = false;
 	private boolean hover = false;
-	public Wall(int x, int y, Orientation or) {
+	
+	public Wall(int col, int row, int x, int y, Orientation or) {
 		this.x = x;
 		this.y = y;
+		
+		this.col = col;
+		this.row = row;
+		
 		this.orientation = or;
+		
 		if (this.orientation == Orientation.HOR) {
 			this.width = QuaridorGui.WT * 4;
 			this.height = QuaridorGui.WT;
@@ -53,5 +61,9 @@ public class Wall extends JPanel {
 		else
 			g.setColor(new Color(250,150,120,100));
 		g.fillRect(0, 0, width, height);
+	}
+	
+	public void setWall() {
+		this.set = true;
 	}
 }

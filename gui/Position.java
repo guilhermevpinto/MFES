@@ -16,12 +16,12 @@ public class Position extends JPanel {
 	private int row;
 	private int col;
 	
-	public Position(int x, int y) {
-		this.x = x*QuaridorGui.WT*4 + x*QuaridorGui.WT;
-		this.y = y*QuaridorGui.WT*4 + y*QuaridorGui.WT;		
+	public Position(int col, int row, int x, int y) {
+		this.x = x;
+		this.y = y;		
 
-		this.row = 2*y + 1;
-		this.col = 2*x + 1;
+		this.col = col;
+		this.row = row;
 		
 		this.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
