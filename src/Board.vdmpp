@@ -57,22 +57,26 @@ class Board
 		public addWall : nat1 * nat1 * seq of Player ==> [bool]
 		addWall(row, col, players) == 
 		(
+			dcl oneRow : nat1 := row + 1;
+			dcl twoRow : nat1 := row + 2;
+			dcl oneCol : nat1 := col + 1;
+			dcl twoCol : nat1 := col + 2;
 			if row mod 2 = 1
 			then 
 			(
-				if col < 18 and row < 16 and board(row)(col) = <NOWALL> and board(row+1)(col) = <NOWALL> and board(row+2)(col) = <NOWALL>
+				if col < 18 and row < 16 and board(row)(col) = <NOWALL> and board(oneRow)(col) = <NOWALL> and board(oneRow)(col) = <NOWALL>
 				then
 				(
 					board(row) := board(row) ++ {col |-> <WALL>};
-					board(row+1) := board(row+1) ++ {col |-> <WALL>};
-					board(row+2) := board(row+2) ++ {col |-> <WALL>};
+					board(oneRow) := board(oneRow) ++ {col |-> <WALL>};
+					board(twoRow) := board(twoRow) ++ {col |-> <WALL>};
 					
 					if exists1 p in seq players & resetConectivity() and not pathToDestination(p, p.getPosition().getX() , p.getPosition().getY())
 					then
 					(
 						board(row) := board(row) ++ {col |-> <NOWALL>};
-						board(row+1) := board(row+1) ++ {col |-> <NOWALL>};
-						board(row+2) := board(row+2) ++ {col |-> <NOWALL>};
+						board(oneRow) := board(oneRow) ++ {col |-> <NOWALL>};
+						board(twoRow) := board(twoRow) ++ {col |-> <NOWALL>};
 						return false;
 					)
 					else return true;
@@ -81,15 +85,15 @@ class Board
 			)
 			else
 			(
-				if col < 16 and row < 18 and board(row)(col) = <NOWALL> and board(row)(col+1) = <NOWALL> and board(row)(col+2) = <NOWALL>
+				if col < 16 and row < 18 and board(row)(col) = <NOWALL> and board(row)(oneCol) = <NOWALL> and board(row)(twoCol) = <NOWALL>
 				then
 				(
-					board(row) := board(row) ++ {col |-> <WALL>, col+1 |-> <WALL>, col+2 |-> <WALL>};
+					board(row) := board(row) ++ {col |-> <WALL>, oneCol |-> <WALL>, twoCol |-> <WALL>};
 					
 					if exists1 p in seq players & resetConectivity() and not pathToDestination(p, p.getPosition().getX() , p.getPosition().getY())
 					then
 					(
-						board(row) := board(row) ++ {col |-> <NOWALL>, col+1 |-> <NOWALL>, col+2 |-> <NOWALL>};
+						board(row) := board(row) ++ {col |-> <NOWALL>, oneCol |-> <NOWALL>, twoCol |-> <NOWALL>};
 						return false;
 					)
 					else return true;

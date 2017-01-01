@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 import org.overture.codegen.runtime.VDMSeq;
-
+import java.lang.*;
 @SuppressWarnings("serial")
 public class Wall extends JPanel {
 	
@@ -44,6 +44,34 @@ public class Wall extends JPanel {
 		}
 		
 		this.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent evt) {
+				if(hover) {
+					Number rownum = row; 
+					Number colnum = col;
+					if(QuaridorGui.game.addWall(rownum, colnum))
+					{
+						QuaridorGui.setWall(row, col);
+						if(dependenthover != null) {
+							int first, second;
+							if((row%2) == 0) {
+								first = (Integer)dependenthover.get(0);
+								second = ((Long)dependenthover.get(1)).intValue();
+							}
+							else
+							{
+								first = ((Long)dependenthover.get(0)).intValue();
+								second = (Integer)dependenthover.get(1);
+							}
+							
+							QuaridorGui.setWall(first, second);
+							
+							hover = true;
+							draw();
+							
+						}
+					}
+				}
+			}
 			@SuppressWarnings("unchecked")
 			public void mouseEntered(java.awt.event.MouseEvent evt) {
 				if(row != 17 & col != 17){

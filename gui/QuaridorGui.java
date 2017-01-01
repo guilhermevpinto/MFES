@@ -152,7 +152,7 @@ public class QuaridorGui {
 		
 	}
 	
-	public void setWall(int row, int col) {
+	public static void setWall(int row, int col) {
 		((Wall)boardGUI.get(row).get(col)).setWall();
 	}
 }
