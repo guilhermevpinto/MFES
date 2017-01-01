@@ -108,10 +108,10 @@ operations
 			if(p_x <> 1)
 			then
 			(
-				if board.board(p_x-1)(p_y) = <NOWALL>
+				if board.board([p_x-1,p_y]) = <NOWALL>
 				then
 				(
-					if board.board(p_x-2)(p_y) = <FREE>
+					if board.board([p_x-2,p_y]) = <FREE>
 					then
 					(
 						x := (p_x-2);
@@ -130,10 +130,10 @@ operations
 			if(p_y <> 1)
 			then
 			(
-				if board.board(p_x)(p_y-1) = <NOWALL>
+				if board.board([p_x,p_y-1]) = <NOWALL>
 				then
 				(
-					if board.board(p_x)(p_y-2) = <FREE>
+					if board.board([p_x,p_y-2]) = <FREE>
 					then
 					(
 						x := p_x;
@@ -152,10 +152,10 @@ operations
 			if(p_y <> 17)
 			then
 			(
-				if board.board(p_x)(p_y+1) = <NOWALL>
+				if board.board([p_x,p_y+1]) = <NOWALL>
 				then
 				(
-					if board.board(p_x)(p_y+2) = <FREE>
+					if board.board([p_x,p_y+2]) = <FREE>
 					then
 					(
 						x := p_x;
@@ -174,10 +174,10 @@ operations
 			if(p_x <> 17)
 			then
 			(
-				if board.board(p_x+1)(p_y) = <NOWALL>
+				if board.board([p_x+1,p_y]) = <NOWALL>
 				then
 				(
-					if board.board(p_x+2)(p_y) = <FREE>
+					if board.board([p_x+2,p_y]) = <FREE>
 					then
 					(
 						x := (p_x+2);
@@ -200,7 +200,7 @@ operations
 		public verifyPlayerJump: nat1 * nat1 * seq of char ==> seq of Point
 		verifyPlayerJump(x, y, direction) ==
 		(
-			if board.board(x)(y) = <OCCUPIED>
+			if board.board([x,y]) = <OCCUPIED>
 			then
 			(
 				if direction = "up"
@@ -253,10 +253,10 @@ operations
 			if(x <> 1)
 			then
 			(
-				if board.board(x-1)(y) = <NOWALL>
+				if board.board([x-1,y]) = <NOWALL>
 				then
 				(
-					if board.board(x-2)(y) = <FREE>
+					if board.board([x-2,y]) = <FREE>
 					then
 					(
 						special := special^[new Point(x-2, y)];
@@ -283,10 +283,10 @@ operations
 			if(y <> 1)
 			then
 			(
-				if board.board(x)(y-1) = <NOWALL>
+				if board.board([x,y-1]) = <NOWALL>
 				then
 				(
-					if board.board(x)(y-2) = <FREE>
+					if board.board([x,y-2]) = <FREE>
 					then
 					(
 						special := special^[new Point(x, y-2)];
@@ -313,10 +313,10 @@ operations
 			if(y <> 17)
 			then
 			(
-				if board.board(x)(y+1) = <NOWALL>
+				if board.board([x,y+1]) = <NOWALL>
 				then
 				(
-					if board.board(x)(y+2) = <FREE>
+					if board.board([x,y+2]) = <FREE>
 					then
 					(
 						special := special^[new Point(x, y+2)];
@@ -343,10 +343,10 @@ operations
 			if(x <> 17)
 			then
 			(
-				if board.board(x+1)(y) = <NOWALL>
+				if board.board([x+1,y]) = <NOWALL>
 				then
 				(
-					if board.board(x+2)(y) = <FREE>
+					if board.board([x+2,y]) = <FREE>
 					then
 					(
 						special := special^[new Point(x+2, y)];
@@ -375,10 +375,10 @@ operations
 			then
 			(
 				-- check for walls on the left
-				if board.board(x)(y-1) = <NOWALL>
+				if board.board([x,y-1]) = <NOWALL>
 				then
 				(
-					if board.board(x)(y-2) = <FREE>
+					if board.board([x,y-2]) = <FREE>
 					then
 					(
 						special := special^[new Point(x, y-2)];
@@ -390,10 +390,10 @@ operations
 			then
 			(
 				-- check for walls on the right
-				if board.board(x)(y+1) = <NOWALL>
+				if board.board([x,y+1]) = <NOWALL>
 				then
 				(
-					if board.board(x)(y+2) = <FREE>
+					if board.board([x,y+2]) = <FREE>
 					then
 					(
 						special := special^[new Point(x, y+2)];
@@ -417,10 +417,10 @@ operations
 			then
 			(
 				-- check for walls up
-				if board.board(x-1)(y) = <NOWALL>
+				if board.board([x-1,y]) = <NOWALL>
 				then
 				(
-					if board.board(x-2)(y) = <FREE>
+					if board.board([x-2,y]) = <FREE>
 					then
 					(
 						special := special^[new Point(x-2, y)];
@@ -432,10 +432,10 @@ operations
 			then
 			(
 				-- check for walls down
-				if board.board(x+1)(y) = <NOWALL>
+				if board.board([x+1,y]) = <NOWALL>
 				then
 				(
-					if board.board(x+2)(y) = <FREE>
+					if board.board([x+2,y]) = <FREE>
 					then
 					(
 						special := special^[new Point(x+2, y)];
