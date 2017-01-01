@@ -1,25 +1,18 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
-<<<<<<< HEAD
 import Quaridor.Board;
 import Quaridor.Game;
 import Quaridor.quotes.FREEQuote;
 import Quaridor.quotes.NOWALLQuote;
 import Quaridor.quotes.OCCUPIEDQuote;
-=======
-import MFES.*;
-import MFES.quotes.*;
->>>>>>> master
 
 public class QuaridorGui {
 	
@@ -35,16 +28,8 @@ public class QuaridorGui {
 	
 	public static void main(String[] args) {
 		
-<<<<<<< HEAD
+		//game = new Game(2);
 		game = new Game(4);
-				
-		// entry menu
-		/*
-		Menu ex = new Menu("images/quaridor.jpg");
-       	ex.setVisible(true);
-		*/
-=======
-		game = new Game();
 		
 		startMenu();
 		
@@ -150,7 +135,6 @@ public class QuaridorGui {
 	 * Start the game
 	 */
 	private static void startGame() {
->>>>>>> master
 		
 		frame = new JFrame("Quaridor");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -177,9 +161,9 @@ public class QuaridorGui {
 	@SuppressWarnings("unchecked")
 	public static void loadPlayers(JPanel main) {
 		
-		ArrayList<MFES.Player> players = (ArrayList<MFES.Player>) game.getPlayers();
+		ArrayList<Quaridor.Player> players = (ArrayList<Quaridor.Player>) game.getPlayers();
 		
-		for(MFES.Player p : players) {
+		for(Quaridor.Player p : players) {
 
 			int col = p.getPosition().getY().intValue();
 			int row = (int)p.getPosition().getX().intValue();

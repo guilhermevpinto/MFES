@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 
 import org.overture.codegen.runtime.VDMSeq;
 import java.lang.*;
+
 @SuppressWarnings("serial")
 public class Wall extends JPanel {
 	
@@ -136,7 +137,6 @@ public class Wall extends JPanel {
 	public void setWall() {
 		this.set = true;
 	}
-<<<<<<< HEAD
 	
 	public void hoverWall() {
 		this.hover = true;
@@ -148,6 +148,3 @@ public class Wall extends JPanel {
 		draw();
 	}
 }
-=======
-}
->>>>>>> master
