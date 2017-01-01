@@ -136,6 +136,7 @@ public class Wall extends JPanel {
 	public void setWall() {
 		this.set = true;
 	}
+<<<<<<< HEAD
 	
 	public void hoverWall() {
 		this.hover = true;
@@ -147,3 +148,6 @@ public class Wall extends JPanel {
 		draw();
 	}
 }
+=======
+}
+>>>>>>> master

@@ -1,16 +1,25 @@
 package gui;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
+<<<<<<< HEAD
 import Quaridor.Board;
 import Quaridor.Game;
 import Quaridor.quotes.FREEQuote;
 import Quaridor.quotes.NOWALLQuote;
 import Quaridor.quotes.OCCUPIEDQuote;
+=======
+import MFES.*;
+import MFES.quotes.*;
+>>>>>>> master
 
 public class QuaridorGui {
 	
@@ -26,6 +35,7 @@ public class QuaridorGui {
 	
 	public static void main(String[] args) {
 		
+<<<<<<< HEAD
 		game = new Game(4);
 				
 		// entry menu
@@ -33,6 +43,114 @@ public class QuaridorGui {
 		Menu ex = new Menu("images/quaridor.jpg");
        	ex.setVisible(true);
 		*/
+=======
+		game = new Game();
+		
+		startMenu();
+		
+	}
+	
+	/**
+	 * Start the menu
+	 */
+	private static void startMenu() {
+		
+		JLayeredPane lpane = new JLayeredPane();
+	    JPanel panelQuaridor = new Background("quaridor");
+	    HoverPanel panelJogar = new HoverPanel("jogar");
+	    HoverPanel panelRegras = new HoverPanel("regras");
+		
+	    frame = new JFrame("Quaridor Menu");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setResizable(false);
+		frame.setPreferredSize(new Dimension(605, 356));
+        frame.setLayout(new BorderLayout());
+        frame.add(lpane, BorderLayout.CENTER);
+        
+        lpane.setBounds(0, 0, 615, 365);
+        panelQuaridor.setBounds(0, 0, 615, 365);
+        panelQuaridor.setOpaque(true);
+        
+        panelJogar.setBounds(210, 180, 180, 60);
+        panelJogar.setOpaque(false);
+        
+        panelRegras.setBounds(252, 240, 100, 30);
+        panelRegras.setOpaque(false);
+        
+        lpane.add(panelQuaridor, new Integer(0), 0);
+        lpane.add(panelJogar, new Integer(1), 0);
+        lpane.add(panelRegras, new Integer(2), 0);
+        
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+        
+        // AVISO código trolha
+        while(true){
+        	if(panelJogar.getState()){
+            	break;
+        	}
+            else if(panelRegras.getState()){
+            	break;
+            }
+        }
+        // AVISO código trolha
+        
+        frame.setVisible(false);
+        
+        if(panelJogar.getState())
+        	startGame();
+        else if(panelRegras.getState())
+        	displayRegras();
+		
+	}
+	
+	public static void displayRegras(){
+		
+		JLayeredPane layerPane = new JLayeredPane();
+	    JPanel panelRegrasBackground = new Background("back");
+	    HoverPanel back = new HoverPanel("back");
+		
+	    frame = new JFrame("Quaridor Regras");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setResizable(false);
+		frame.setPreferredSize(new Dimension(605, 356));
+        frame.setLayout(new BorderLayout());
+        frame.add(layerPane, BorderLayout.CENTER);
+        
+        layerPane.setBounds(0, 0, 615, 365);
+        panelRegrasBackground.setBounds(0, 0, 615, 365);
+        panelRegrasBackground.setOpaque(true);
+        
+        back.setBounds(-1, -1, 50, 50);
+        back.setOpaque(false);
+        
+        layerPane.add(panelRegrasBackground, new Integer(0), 0);
+        layerPane.add(back, new Integer(1), 0);
+        
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+        
+        // AVISO código trolha
+        while(true){
+        	if(back.getState()){
+            	break;
+        	}
+        }
+        // AVISO código trolha
+        
+        frame.setVisible(false);
+        
+        startMenu();
+		
+	}
+	
+	/**
+	 * Start the game
+	 */
+	private static void startGame() {
+>>>>>>> master
 		
 		frame = new JFrame("Quaridor");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -43,9 +161,8 @@ public class QuaridorGui {
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
-
+		
 	}
-	
 	
 	public static void setup() {
 		JPanel main = new JPanel();
@@ -60,9 +177,9 @@ public class QuaridorGui {
 	@SuppressWarnings("unchecked")
 	public static void loadPlayers(JPanel main) {
 		
-		ArrayList<Quaridor.Player> players = (ArrayList<Quaridor.Player>) game.getPlayers();
+		ArrayList<MFES.Player> players = (ArrayList<MFES.Player>) game.getPlayers();
 		
-		for(Quaridor.Player p : players) {
+		for(MFES.Player p : players) {
 
 			int col = p.getPosition().getY().intValue();
 			int row = (int)p.getPosition().getX().intValue();
