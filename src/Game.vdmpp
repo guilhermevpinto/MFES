@@ -7,10 +7,13 @@ instance variables
 
 operations
 	
-		public Game : () ==> Game
-		Game() ==
+		public Game : nat1 ==> Game
+		Game(number) ==
 		(
-			players := [new Player(1), new Player(2)];
+			if number = 2
+			then players := [new Player(1), new Player(2)]
+			else if number = 4 
+			then players := [new Player(1), new Player(2), new Player(3), new Player(4)];
 			currentPlayerID := 1;
 			board := new Board(self);
 			updateBoard();
@@ -30,8 +33,20 @@ operations
 		-- switches to another player
 		public switchPlayer : () ==> ()
 		switchPlayer() == 
-		if currentPlayerID = 1 then currentPlayerID := 2 
-		else currentPlayerID := 1;
+		if len players = 2
+		then
+		(
+			if currentPlayerID = 1 then currentPlayerID := 2 
+			else currentPlayerID := 1;
+		)
+		else if len players = 4
+		then
+		(
+			if currentPlayerID = 1 then currentPlayerID := 2 
+			else if currentPlayerID = 2 then currentPlayerID := 3
+			else if currentPlayerID = 3 then currentPlayerID := 4 
+			else currentPlayerID := 1;
+		);
 		
 		public getPlayer :nat1 ==>Player 
 		getPlayer(id) ==
@@ -45,8 +60,10 @@ operations
 		public currentPlayerWin : () ==> bool
 		currentPlayerWin() ==
 		(
-			if (getPlayer(currentPlayerID).getPosition().getX() = getPlayer(currentPlayerID).getTargetRow()) 
-					then (return true)
+			if (getPlayer(currentPlayerID).getTargetRow() <> nil and getPlayer(currentPlayerID).getPosition().getX() = getPlayer(currentPlayerID).getTargetRow()) 
+					or 
+				(getPlayer(currentPlayerID).getTargetCol() <> nil and getPlayer(currentPlayerID).getPosition().getY() = getPlayer(currentPlayerID).getTargetCol())
+					then return true
 			else return false;		
 		);
 		

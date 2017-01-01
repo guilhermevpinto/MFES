@@ -2,7 +2,7 @@ class TestBoard is subclass of MyTest
 
 instance variables
 
-	private board : [Board];
+	private board : [Board] := nil;
 	
 operations
 
@@ -61,7 +61,7 @@ operations
 	private testMove : () ==> ()
 	testMove() ==
 	(
-		dcl game: Game := new Game(),
+		dcl game: Game := new Game(2),
 		b: [Board] := game.getBoard(),
 		p1: Player := game.getPlayer(1),
 		p2: Player := game.getPlayer(2),
