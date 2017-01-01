@@ -57,26 +57,30 @@ class Board
 		public addWall : nat1 * nat1 * seq of Player ==> [bool]
 		addWall(row, col, players) == 
 		(
-			dcl oneRow : nat1 := row + 1;
-			dcl twoRow : nat1 := row + 2;
-			dcl oneCol : nat1 := col + 1;
-			dcl twoCol : nat1 := col + 2;
+			dcl oneRow : int := row + 1;
+			dcl twoRow : int := row + 2;
+			dcl oneCol : int := col + 1;
+			dcl twoCol : int := col + 2;
 			if row mod 2 = 1
 			then 
 			(
 				if col < 18 and row < 16 and board(row)(col) = <NOWALL> and board(oneRow)(col) = <NOWALL> and board(oneRow)(col) = <NOWALL>
 				then
 				(
-					board(row) := board(row) ++ {col |-> <WALL>};
-					board(oneRow) := board(oneRow) ++ {col |-> <WALL>};
-					board(twoRow) := board(twoRow) ++ {col |-> <WALL>};
+					dcl first : seq of Slot := board(row) ++ {col |-> <WALL>};
+					dcl second : seq of Slot := board(oneRow) ++ {col |-> <WALL>};
+					dcl third : seq of Slot := board(twoRow) ++ {col |-> <WALL>};
+					
+					board := board ++ {row |-> first , oneRow |-> second, twoRow |-> third};
 					
 					if exists1 p in seq players & resetConectivity() and not pathToDestination(p, p.getPosition().getX() , p.getPosition().getY())
 					then
 					(
-						board(row) := board(row) ++ {col |-> <NOWALL>};
-						board(oneRow) := board(oneRow) ++ {col |-> <NOWALL>};
-						board(twoRow) := board(twoRow) ++ {col |-> <NOWALL>};
+						dcl first2 : seq of Slot := board(row) ++ {col |-> <NOWALL>};
+						dcl second2 : seq of Slot := board(oneRow) ++ {col |-> <NOWALL>};
+						dcl third2 : seq of Slot := board(twoRow) ++ {col |-> <NOWALL>};
+						
+						board := board ++ {row |-> first2 , oneRow |-> second2, twoRow |-> third2};
 						return false;
 					)
 					else return true;
@@ -88,12 +92,16 @@ class Board
 				if col < 16 and row < 18 and board(row)(col) = <NOWALL> and board(row)(oneCol) = <NOWALL> and board(row)(twoCol) = <NOWALL>
 				then
 				(
-					board(row) := board(row) ++ {col |-> <WALL>, oneCol |-> <WALL>, twoCol |-> <WALL>};
+					dcl first : seq of Slot := board(row) ++ {col |-> <WALL>, oneCol |-> <WALL>, twoCol |-> <WALL>};
+					
+					board := board ++ {row |-> first};
 					
 					if exists1 p in seq players & resetConectivity() and not pathToDestination(p, p.getPosition().getX() , p.getPosition().getY())
 					then
 					(
-						board(row) := board(row) ++ {col |-> <NOWALL>, oneCol |-> <NOWALL>, twoCol |-> <NOWALL>};
+						dcl first2 : seq of Slot := board(row) ++ {col |-> <NOWALL>, oneCol |-> <NOWALL>, twoCol |-> <NOWALL>};
+					
+						board := board ++ {row |-> first2};
 						return false;
 					)
 					else return true;
