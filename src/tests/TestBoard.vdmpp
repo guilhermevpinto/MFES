@@ -12,7 +12,7 @@ operations
 		testConstructor();
 		testResetConectivity();
 		testAddWall();
-		testMove();
+		--testMove();
 	);
 	
 	private testConstructor : () ==> ()
@@ -38,23 +38,23 @@ operations
 	testAddWall() ==
 	(
 		board := new Board(new Game());
-		board.addWall(1,6,[new Player(1),new Player(2)]);
+		assertTrue(board.addWall(1,6,[new Player(1),new Player(2)]));
 		assertTrue(board.board(1)(6) = <WALL> and board.board(2)(6) = <WALL> and board.board(3)(6) = <WALL>);
-		board.addWall(3,6,[new Player(1),new Player(2)]);
+		assertFalse(board.addWall(3,6,[new Player(1),new Player(2)]));
 		assertTrue(board.board(3)(6) = <WALL> and board.board(4)(6) = <NOWALL> and board.board(5)(6) = <NOWALL>);
-		board.addWall(2,7,[new Player(1),new Player(2)]);
+		assertTrue(board.addWall(2,7,[new Player(1),new Player(2)]));
 		assertTrue(board.board(2)(7) = <WALL> and board.board(2)(8) = <WALL> and board.board(2)(9) = <WALL>);
-		board.addWall(1,10,[new Player(1),new Player(2)]);
+		assertFalse(board.addWall(1,10,[new Player(1),new Player(2)]));
 		assertTrue(board.board(1)(10) = <NOWALL> and board.board(2)(10) = <NOWALL> and board.board(3)(10) = <NOWALL>);
-		board.addWall(2,9,[new Player(1),new Player(2)]);
+		assertFalse(board.addWall(2,9,[new Player(1),new Player(2)]));
 		assertTrue(board.board(2)(9) = <WALL> and board.board(2)(10) = <NOWALL> and board.board(2)(11) = <NOWALL>);
-		board.addWall(15,8,[new Player(1),new Player(2)]);
+		assertTrue(board.addWall(15,8,[new Player(1),new Player(2)]));
 		assertTrue(board.board(15)(8) = <WALL> and board.board(16)(8) = <WALL> and board.board(17)(8) = <WALL>);
-		board.addWall(16,9,[new Player(1),new Player(2)]);
+		assertTrue(board.addWall(16,9,[new Player(1),new Player(2)]));
 		assertTrue(board.board(16)(9) = <WALL> and board.board(16)(10) = <WALL> and board.board(16)(11) = <WALL>);
-		board.addWall(16,12,[new Player(1),new Player(2)]);
+		assertTrue(board.addWall(16,12,[new Player(1),new Player(2)]));
 		assertTrue(board.board(16)(12) = <WALL> and board.board(16)(13) = <WALL> and board.board(16)(14) = <WALL>);
-		board.addWall(16,15,[new Player(1),new Player(2)]);
+		assertFalse(board.addWall(16,15,[new Player(1),new Player(2)]));
 		assertTrue(board.board(16)(15) = <NOWALL> and board.board(16)(16) = <NOWALL> and board.board(16)(17) = <NOWALL>);
 	);
 	
@@ -81,7 +81,7 @@ operations
 		moves := game.getPossibleMoves();
 		assertTrue(len moves = 5);
 		
-		b.addWall(2, 9, game.getPlayers());
+		assertFalse(b.addWall(2, 9, game.getPlayers()));
 		moves := game.getPossibleMoves();
 		assertTrue(len moves = 5);
 		
@@ -91,7 +91,7 @@ operations
 		moves := game.getPossibleMoves();
 		assertTrue(len moves = 4);
 		
-		b.addWall(5, 6, game.getPlayers());
+		assertTrue(b.addWall(5, 6, game.getPlayers()));
 		moves := game.getPossibleMoves();
 		assertTrue(len moves = 5);
 		
@@ -101,7 +101,7 @@ operations
 		moves := game.getPossibleMoves();
 		assertTrue(len moves = 3);
 		
-		b.addWall(5, 10, game.getPlayers());
+		assertTrue(b.addWall(5, 10, game.getPlayers()));
 		moves := game.getPossibleMoves();
 		assertTrue(len moves = 4);
 		
@@ -111,7 +111,7 @@ operations
 		moves := game.getPossibleMoves();
 		assertTrue(len moves = 3);
 		
-		b.addWall(6, 9, game.getPlayers());
+		assertFalse(b.addWall(6, 9, game.getPlayers()));
 		moves := game.getPossibleMoves();
 		assertTrue(len moves = 3);
 		

@@ -1,8 +1,13 @@
 package gui;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
+import java.util.ArrayList;
+
+import javax.swing.JPanel;
+
+import org.overture.codegen.runtime.VDMSeq;
 
 @SuppressWarnings("serial")
 public class Wall extends JPanel {
@@ -18,6 +23,7 @@ public class Wall extends JPanel {
 	private Orientation orientation;
 	private boolean set = false;
 	private boolean hover = false;
+	private VDMSeq dependenthover = null;
 	
 	public Wall(int col, int row, int x, int y, Orientation or) {
 		this.x = x;
@@ -38,11 +44,47 @@ public class Wall extends JPanel {
 		}
 		
 		this.addMouseListener(new MouseAdapter() {
+			@SuppressWarnings("unchecked")
 			public void mouseEntered(java.awt.event.MouseEvent evt) {
-				hover = true;
-				draw();
+				if(row != 17 & col != 17){
+					dependenthover = QuaridorGui.game.getBoard().dropableWall(row, col);
+					if(dependenthover != null) {
+						int first, second;
+						if((row%2) == 0) {
+							first = (Integer)dependenthover.get(0);
+							second = ((Long)dependenthover.get(1)).intValue();
+						}
+						else
+						{
+							first = ((Long)dependenthover.get(0)).intValue();
+							second = (Integer)dependenthover.get(1);
+						}
+						
+						((Wall)QuaridorGui.boardGUI.get(first-1).get(second-1)).hoverWall();
+						
+					
+						hover = true;
+						draw();
+						
+					}
+				}
             }
 			public void mouseExited(java.awt.event.MouseEvent evt) {
+				if(dependenthover != null){
+					int first, second;
+					if((row%2) == 0) {
+						first = (Integer)dependenthover.get(0);
+						second = ((Long)dependenthover.get(1)).intValue();
+					}
+					else
+					{
+						first = ((Long)dependenthover.get(0)).intValue();
+						second = (Integer)dependenthover.get(1);
+					}
+						
+					((Wall)QuaridorGui.boardGUI.get(first-1).get(second-1)).unhoverWall();
+					dependenthover = null;
+				}
 				hover = false;
 				draw();
             }
@@ -65,5 +107,15 @@ public class Wall extends JPanel {
 	
 	public void setWall() {
 		this.set = true;
+	}
+	
+	public void hoverWall() {
+		this.hover = true;
+		draw();
+	}
+	
+	public void unhoverWall() {
+		this.hover = false;
+		draw();
 	}
 }

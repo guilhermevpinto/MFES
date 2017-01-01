@@ -33,14 +33,14 @@ operations
 				)
 				else if id = 3
 				then (
-					position := new Point(17,9);
+					position := new Point(9,1);
 					targetCol := 17;
 					targetRow := nil;
 					numberID := id;
 				)
 				else if id = 4
 				then (
-					position := new Point(17,9);
+					position := new Point(9,17);
 					targetCol := 1;
 					targetRow := nil;
 					numberID := id;

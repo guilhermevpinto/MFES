@@ -5,7 +5,11 @@ operations
 	protected assertTrue : bool ==> ()
 		assertTrue(a) == return
 		pre a;
-		
+	
+	protected assertFalse : bool ==> ()
+		assertFalse(a) == return
+		pre not a;
+	
 	protected assertEqual : ? * ? ==> ()
 	assertEqual(e,a) == return
 	pre e = a;

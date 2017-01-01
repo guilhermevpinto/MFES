@@ -82,7 +82,7 @@ operations
 		public getPlayers : () ==> seq of Player
 		getPlayers() == return self.players;
 		
-		public addWall : nat1 * nat1 ==> ()
+		public addWall : nat1 * nat1 ==> bool
 		addWall(row, col) == board.addWall(row,col,players);
 		
 		public getPossibleMoves: () ==> seq of Point

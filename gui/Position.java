@@ -6,7 +6,7 @@ import java.awt.event.MouseAdapter;
 
 import javax.swing.JPanel;
 
-@SuppressWarnings("serial")
+@SuppressWarnings({"serial","unused"})
 public class Position extends JPanel {
 	
 	private int x;

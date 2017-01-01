@@ -54,7 +54,7 @@ class Board
 		post conectivity = board;
 		
 		-- adds a new wall to the board, if possible
-		public addWall : nat1 * nat1 * seq of Player ==> ()
+		public addWall : nat1 * nat1 * seq of Player ==> [bool]
 		addWall(row, col, players) == 
 		(
 			if row mod 2 = 1
@@ -73,8 +73,11 @@ class Board
 						board(row) := board(row) ++ {col |-> <NOWALL>};
 						board(row+1) := board(row+1) ++ {col |-> <NOWALL>};
 						board(row+2) := board(row+2) ++ {col |-> <NOWALL>};
-					);
+						return false;
+					)
+					else return true;
 				)
+				else return false;
 			)
 			else
 			(
@@ -87,8 +90,11 @@ class Board
 					then
 					(
 						board(row) := board(row) ++ {col |-> <NOWALL>, col+1 |-> <NOWALL>, col+2 |-> <NOWALL>};
-					);
+						return false;
+					)
+					else return true;
 				)
+				else return false;
 			)
 		)
 		pre row >= 1 and row <= 17 and col >= 1 and col <= 17;
@@ -180,6 +186,25 @@ class Board
 			board(p.getX()) := board(p.getX()) ++ {p.getY() |-> <FREE>}; 
 		);
 		
+		
+		public dropableWall: nat1 * nat1 ==> [seq of nat1]
+		dropableWall(row, col) == 
+		(
+			if (col mod 2) = 0
+			then
+			(
+				if (board(row)(col) = <NOWALL> and board(row+1)(col) = <NOWALL> and board(row+2)(col) = <NOWALL>)
+				then return [row+2,col];
+			)
+			else if (row mod 2) = 0
+			then
+			(
+				if (board(row)(col) = <NOWALL> and board(row)(col+1) = <NOWALL> and board(row)(col+2) = <NOWALL>)
+				then return [row,col+2];
+			);
+			
+			return nil;
+		);
 functions
 			
 	
