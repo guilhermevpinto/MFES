@@ -1,25 +1,26 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
-import MFES.*;
-import MFES.quotes.*;
+import Quaridor.Board;
+import Quaridor.Game;
+import Quaridor.quotes.FREEQuote;
+import Quaridor.quotes.NOWALLQuote;
+import Quaridor.quotes.OCCUPIEDQuote;
 
 public class QuaridorGui {
 	
 	public static int WT = 15;
-	private static Game game;
+	public static Game game;
 	
 	private static JFrame frame;
-	private static ArrayList<ArrayList<JPanel>> boardGUI = new ArrayList<ArrayList<JPanel>>();
+	public static ArrayList<ArrayList<JPanel>> boardGUI = new ArrayList<ArrayList<JPanel>>();
 	
 	/**
 	 * Launch the application.
@@ -27,7 +28,8 @@ public class QuaridorGui {
 	
 	public static void main(String[] args) {
 		
-		game = new Game();
+		//game = new Game(2);
+		game = new Game(4);
 		
 		startMenu();
 		
@@ -159,9 +161,9 @@ public class QuaridorGui {
 	@SuppressWarnings("unchecked")
 	public static void loadPlayers(JPanel main) {
 		
-		ArrayList<MFES.Player> players = (ArrayList<MFES.Player>) game.getPlayers();
+		ArrayList<Quaridor.Player> players = (ArrayList<Quaridor.Player>) game.getPlayers();
 		
-		for(MFES.Player p : players) {
+		for(Quaridor.Player p : players) {
 
 			int col = p.getPosition().getY().intValue();
 			int row = (int)p.getPosition().getX().intValue();
@@ -170,6 +172,8 @@ public class QuaridorGui {
 			
 			main.add(playerGUI);
 			playerGUI.draw();
+			
+			System.out.println("player");
 		}
 	}
 	
@@ -227,7 +231,15 @@ public class QuaridorGui {
 						
 						colPixel += QuaridorGui.WT * 4;
 					}
-					else colPixel += QuaridorGui.WT;
+					else 
+					{
+						Joint j = new Joint(colPixel, rowPixel);
+						main.add(j);
+						rowGUI.add(j);
+						j.draw();
+						
+						colPixel += QuaridorGui.WT;
+					}
 				}
 			}
 			
@@ -241,7 +253,7 @@ public class QuaridorGui {
 		
 	}
 	
-	public void setWall(int row, int col) {
+	public static void setWall(int row, int col) {
 		((Wall)boardGUI.get(row).get(col)).setWall();
 	}
 }

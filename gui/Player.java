@@ -46,8 +46,12 @@ public class Player extends JPanel {
 		
 		if(this.id == 1)
 			g.setColor(new Color(200,0,0,255));
-		else 
+		else if(this.id == 2)
 			g.setColor(new Color(0,200,0,255));
+		else if(this.id == 3)
+			g.setColor(new Color(200,200,0,255));
+		else if(this.id == 4)
+			g.setColor(new Color(140,140,200,255));
 		
 		g.fillOval((int)(QuaridorGui.WT * 2 * 0.3), (int)(QuaridorGui.WT * 2 * 0.3), (int)(QuaridorGui.WT * 4 * 0.7), (int)(QuaridorGui.WT * 4 * 0.7));
 	}

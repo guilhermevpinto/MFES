@@ -55,50 +55,62 @@ class Board
 		post conectivity = board;
 		
 		-- adds a new wall to the board, if possible
-		public addWall : nat1 * nat1 * seq of Player ==> ()
+		public addWall : nat1 * nat1 * seq of Player ==> [bool]
 		addWall(row, col, players) == 
 		(
+			dcl oneRow : nat1 := row + 1;
+			dcl twoRow : nat1 := row + 2;
+			dcl oneCol : nat1 := col + 1;
+			dcl twoCol : nat1 := col + 2;
 			if row mod 2 = 1
 			then 
 			(
-				if col < 18 and row < 16 and board(row)(col) = <NOWALL> and board(row+1)(col) = <NOWALL> and board(row+2)(col) = <NOWALL>
+				if col < 18 and row < 16 and board(row)(col) = <NOWALL> and board(oneRow)(col) = <NOWALL> and board(oneRow)(col) = <NOWALL>
 				then
 				(
 					board(row) := board(row) ++ {col |-> <WALL>};
-					board(row+1) := board(row+1) ++ {col |-> <WALL>};
-					board(row+2) := board(row+2) ++ {col |-> <WALL>};
+					board(oneRow) := board(oneRow) ++ {col |-> <WALL>};
+					board(twoRow) := board(twoRow) ++ {col |-> <WALL>};
 					
-					if exists1 p in seq players & resetConectivity() and not pathToDestination(p.getTargetRow(), p.getPosition().getX() , p.getPosition().getY())
+					if exists1 p in seq players & resetConectivity() and not pathToDestination(p, p.getPosition().getX() , p.getPosition().getY())
 					then
 					(
 						board(row) := board(row) ++ {col |-> <NOWALL>};
-						board(row+1) := board(row+1) ++ {col |-> <NOWALL>};
-						board(row+2) := board(row+2) ++ {col |-> <NOWALL>};
-					);
+						board(oneRow) := board(oneRow) ++ {col |-> <NOWALL>};
+						board(twoRow) := board(twoRow) ++ {col |-> <NOWALL>};
+						return false;
+					)
+					else return true;
 				)
+				else return false;
 			)
 			else
 			(
-				if col < 16 and row < 18 and board(row)(col) = <NOWALL> and board(row)(col+1) = <NOWALL> and board(row)(col+2) = <NOWALL>
+				if col < 16 and row < 18 and board(row)(col) = <NOWALL> and board(row)(oneCol) = <NOWALL> and board(row)(twoCol) = <NOWALL>
 				then
 				(
-					board(row) := board(row) ++ {col |-> <WALL>, col+1 |-> <WALL>, col+2 |-> <WALL>};
+					board(row) := board(row) ++ {col |-> <WALL>, oneCol |-> <WALL>, twoCol |-> <WALL>};
 					
-					if exists1 p in seq players & resetConectivity() and not pathToDestination(p.getTargetRow(), p.getPosition().getX() , p.getPosition().getY())
+					if exists1 p in seq players & resetConectivity() and not pathToDestination(p, p.getPosition().getX() , p.getPosition().getY())
 					then
 					(
-						board(row) := board(row) ++ {col |-> <NOWALL>, col+1 |-> <NOWALL>, col+2 |-> <NOWALL>};
-					);
+						board(row) := board(row) ++ {col |-> <NOWALL>, oneCol |-> <NOWALL>, twoCol |-> <NOWALL>};
+						return false;
+					)
+					else return true;
 				)
+				else return false;
 			)
 		)
 		pre row >= 1 and row <= 17 and col >= 1 and col <= 17;
 		
 		-- checks whether the player can get to the target row or not
-		private pathToDestination : nat1 * nat1 * nat1 ==> bool
-		pathToDestination(rowDest, row, col) ==
+		private pathToDestination : Player * nat1 * nat1 ==> bool
+		pathToDestination(p, row, col) ==
 		(
-			if row = rowDest
+			if p.getTargetRow() <> nil and p.getTargetRow() = row
+				then return true
+			else if p.getTargetCol() <> nil and p.getTargetCol() = col
 				then return true;
 				
 			if conectivity(row)(col) = <VISITED>
@@ -110,63 +122,63 @@ class Board
 			then
 			(
 				if col = 1
-					then return checkRight(rowDest, row, col + 1) or checkDown(rowDest, row + 1, col)
+					then return checkRight(p, row, col + 1) or checkDown(p, row + 1, col)
 				else if col = 17
-					then return checkLeft(rowDest, row, col - 1) or checkDown(rowDest, row + 1, col)
-				else return checkLeft(rowDest, row, col - 1) or checkRight(rowDest, row, col + 1) or checkDown(rowDest, row + 1, col)
+					then return checkLeft(p, row, col - 1) or checkDown(p, row + 1, col)
+				else return checkLeft(p, row, col - 1) or checkRight(p, row, col + 1) or checkDown(p, row + 1, col)
 			);
 			
 			if row = 17
 			then
 			(
 				if col = 1
-					then return checkRight(rowDest, row, col + 1) or checkUp(rowDest, row - 1, col)
+					then return checkRight(p, row, col + 1) or checkUp(p, row - 1, col)
 				else if col = 17
-					then return checkLeft(rowDest, row, col - 1) or checkUp(rowDest, row - 1, col)
-				else return checkLeft(rowDest, row, col - 1) or checkRight(rowDest, row, col + 1) or checkUp(rowDest, row - 1, col)
+					then return checkLeft(p, row, col - 1) or checkUp(p, row - 1, col)
+				else return checkLeft(p, row, col - 1) or checkRight(p, row, col + 1) or checkUp(p, row - 1, col)
 			);
 			
 			if col = 1
-			then return checkRight(rowDest, row, col + 1) or checkUp(rowDest, row - 1, col) or checkDown(rowDest, row + 1, col)
+			then return checkRight(p, row, col + 1) or checkUp(p, row - 1, col) or checkDown(p, row + 1, col)
 			else if col = 17
-			then return checkLeft(rowDest, row, col - 1) or checkUp(rowDest, row - 1, col) or checkDown(rowDest, row + 1, col)
-			else return checkLeft(rowDest, row, col - 1) or checkRight(rowDest, row, col + 1) or checkUp(rowDest, row - 1, col) or checkDown(rowDest, row + 1, col);
+			then return checkLeft(p, row, col - 1) or checkUp(p, row - 1, col) or checkDown(p, row + 1, col)
+			else return checkLeft(p, row, col - 1) or checkRight(p, row, col + 1) or checkUp(p, row - 1, col) or checkDown(p, row + 1, col);
 		)
-		pre (rowDest = 1 or rowDest = 17) and row mod 2 = 1 and col mod 2 = 1 and row >= 1 and col >= 1 and row <= 17 and col <= 17;
+		pre (p.getTargetRow() <> nil or p.getTargetCol() <> nil) and row mod 2 = 1 and col mod 2 = 1 and row >= 1 and col >= 1 and row <= 17 and col <= 17;
 		
 		-- checks path availability on the direction down
-		private checkDown : nat1 * nat1 * nat1 ==> bool
-		checkDown(rowDest, row, col) ==
+		private checkDown : Player * nat1 * nat1 ==> bool
+		checkDown(p, row, col) ==
 		(
 			if conectivity(row)(col) <> <WALL>
-				then return pathToDestination(rowDest, row + 1, col)
+				then return pathToDestination(p, row + 1, col)
 			else return false;
 		);
 		
 		-- checks path availability on the direction up
-		private checkUp : nat1 * nat1 * nat1 ==> bool
-		checkUp(rowDest, row, col) ==
+		private checkUp : Player * nat1 * nat1 ==> bool
+		checkUp(p, row, col) ==
 		(
 			if conectivity(row)(col) <> <WALL>
-				then return pathToDestination(rowDest, row - 1, col)
+				then return pathToDestination(p, row - 1, col)
 			else return false;
 		);
 		
 		-- checks path availability on the direction right
-		private checkRight : nat1 * nat1 * nat1 ==> bool
-		checkRight(rowDest, row, col) ==
+		private checkRight : Player * nat1 * nat1 ==> bool
+		checkRight(p, row, col) ==
 		(
 			if conectivity(row)(col) <> <WALL>
-				then return pathToDestination(rowDest, row, col + 1)
+				then return pathToDestination(p, row, col + 1)
 			else return false;
 		);
 		
 		-- checks path availability on the direction left
-		private checkLeft : nat1 * nat1 * nat1 ==> bool
-		checkLeft(rowDest, row, col) ==
+		private checkLeft : Player * nat1 * nat1 ==> bool
+		checkLeft(p, row, col) ==
 		(
 			if conectivity(row)(col) <> <WALL>
-				then return pathToDestination(rowDest, row, col - 1)
+				then return pathToDestination(p, row, col - 1)
 			else return false;
 		);
 		
@@ -184,6 +196,25 @@ class Board
 			board(p.getX()) := board(p.getX()) ++ {p.getY() |-> <FREE>}; 
 		);
 		
+		-- remove a wall
+		public dropableWall: nat1 * nat1 ==> [seq of nat1]
+		dropableWall(row, col) == 
+		(
+			if (col mod 2) = 0
+			then
+			(
+				if (board(row)(col) = <NOWALL> and board(row+1)(col) = <NOWALL> and board(row+2)(col) = <NOWALL>)
+				then return [row+2,col];
+			)
+			else if (row mod 2) = 0
+			then
+			(
+				if (board(row)(col) = <NOWALL> and board(row)(col+1) = <NOWALL> and board(row)(col+2) = <NOWALL>)
+				then return [row,col+2];
+			);
+			
+			return nil;
+		);
 functions
 			
 	

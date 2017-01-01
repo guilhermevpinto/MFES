@@ -9,6 +9,8 @@ instance variables
 			private walls : [nat] := 10;
 			-- row that the player aims to reach in order to complete the objective
 			private targetRow : [nat1];
+			-- column that the player aims to reach in order to complete the objective (for 4 players)
+			private targetCol : [nat1];
 			
 operations
 
@@ -20,18 +22,33 @@ operations
 				then (
 					position := new Point(1,9);
 					targetRow := 17;
+					targetCol := nil;
 					numberID := id;
 				)
 				else if id = 2
 				then (
 					position := new Point(17,9);
 					targetRow := 1;
+					targetCol := nil;
+					numberID := id;
+				)
+				else if id = 3
+				then (
+					position := new Point(9,1);
+					targetCol := 17;
+					targetRow := nil;
+					numberID := id;
+				)
+				else if id = 4
+				then (
+					position := new Point(9,17);
+					targetCol := 1;
+					targetRow := nil;
 					numberID := id;
 				);
 			)
-			pre id = 1 or id = 2
-			post position <> nil and targetRow <> nil and numberID <> nil and walls = 10 
-			and if self.numberID = 1 then targetRow = 17 else self.numberID = 2 and targetRow = 1;
+			pre id > 0 and id < 5
+			post position <> nil and (targetRow <> nil or targetCol <> nil) and numberID <> nil and walls = 10;
 			
 			-- getting the current position of the player
 			public pure getPosition : () ==> Point 
@@ -57,8 +74,20 @@ operations
 			)
 			post targetRow <> nil;
 			
+			-- set the player targetCol
+			public setTargetCol: nat1 ==> ()
+			setTargetCol(target) ==
+			(
+				targetCol := target;
+			)
+			post targetCol <> nil;
+			
 			-- retrieves the index of the row the player has to reach
-			public getTargetRow : () ==> nat1
+			public pure getTargetRow : () ==> [nat1]
 			getTargetRow() == return self.targetRow;
+			
+			-- retrieves the index of the column the player has to reach
+			public pure getTargetCol : () ==> [nat1]
+			getTargetCol() == return self.targetCol;
 
 end Player

@@ -5,6 +5,7 @@ operations
 	public test : () ==> ()
 	test() == 
 	(
+	
 		dcl p1 : Player := new Player(1);
 		dcl p2 : Player := new Player(2);
 		

@@ -11,6 +11,7 @@ operations
 	(
 		testConstructor();
 		testMove();
+		testFourPlayers();
 	);
 	
 	private testConstructor : () ==> ()
@@ -18,7 +19,7 @@ operations
 	(
 		
 		dcl
-		game: Game := new Game(),
+		game: Game := new Game(2),
 		p2: Player := new Player();
 		
 		game.switchPlayer();
@@ -40,32 +41,27 @@ operations
 	testMove() ==
 	(
 		dcl 
-		game: Game := new Game(),
-		b: [Board] := game.getBoard(),
+		game: Game := new Game(2),
 		p1: Player := game.getPlayer(1),
 		p2: Player := game.getPlayer(2),
 		moves: seq of Point;
 		
-		game.eraseOldPosition(new Point(17, 9));
-		assertTrue(b.board(17)(9) = <FREE>);
+		game.eraseOldPosition(new Point(1, 17));
+		assertTrue(game.getBoard().board(1)(17) = <FREE>);
 		
 		-- normal move case
 		game.move(1, 1, game.getPlayer(1));
-		assertTrue(b.board(1)(1) = <OCCUPIED> and p1.getPosition().getX() = 1 and p1.getPosition().getY() = 1);
+		assertTrue(game.getBoard().board(1)(1) = <OCCUPIED> and p1.getPosition().getX() = 1 and p1.getPosition().getY() = 1);
 		game.move(3, 3, game.getPlayer(2));
-		assertTrue(b.board(3)(3) = <OCCUPIED> and p2.getPosition().getX() = 3 and p2.getPosition().getY() = 3);
+		assertTrue(game.getBoard().board(3)(3) = <OCCUPIED> and p2.getPosition().getX() = 3 and p2.getPosition().getY() = 3);
 		
 		-- special move cases
 		
 		-- player up + wall up
-		game.move(5, 9, game.getPlayer(1));
-		game.move(3, 9, game.getPlayer(2));
+		game.move(5, 7, game.getPlayer(1));
+		game.move(3, 7, game.getPlayer(2));
 		moves := game.getPossibleMoves();
-		assertTrue(len moves = 5);
-		
-		game.addWall(2, 9);
-		moves := game.getPossibleMoves();
-		assertTrue(len moves = 5);
+		assertTrue(len moves = 4);
 		
 		-- player left + wall left
 		game.move(5, 9, game.getPlayer(1));
@@ -73,7 +69,7 @@ operations
 		moves := game.getPossibleMoves();
 		assertTrue(len moves = 4);
 		
-		game.addWall(5, 6);
+		assertTrue(game.addWall(5, 6));
 		moves := game.getPossibleMoves();
 		assertTrue(len moves = 5);
 		
@@ -83,7 +79,7 @@ operations
 		moves := game.getPossibleMoves();
 		assertTrue(len moves = 3);
 		
-		game.addWall(5, 10);
+		assertTrue(game.addWall(5, 10));
 		moves := game.getPossibleMoves();
 		assertTrue(len moves = 4);
 		
@@ -93,17 +89,13 @@ operations
 		moves := game.getPossibleMoves();
 		assertTrue(len moves = 3);
 		
-		game.addWall(6, 9);
-		moves := game.getPossibleMoves();
-		assertTrue(len moves = 3);
-		
 		-- test horizontal diagonal
 		game.move(5, 15, game.getPlayer(1));
 		game.move(7, 15, game.getPlayer(2));
 		moves := game.getPossibleMoves();
 		assertTrue(len moves = 4);
 		
-		game.addWall(8, 15);
+		assertTrue(game.addWall(8, 15));
 		moves := game.getPossibleMoves();
 		assertTrue(len moves = 5);
 		
@@ -113,6 +105,31 @@ operations
 		moves := game.getPossibleMoves();
 		assertTrue(len moves = 2);
 		
+	);
+	
+	private testFourPlayers : () ==> ()
+	testFourPlayers() ==
+	(
+	
+		dcl
+		game: Game := new Game(4);
+		
+		game.switchPlayer();
+		assertTrue(game.getCurrentPlayer() = 2);
+		game.switchPlayer();
+		assertTrue(game.getCurrentPlayer() = 3);
+		game.switchPlayer();
+		assertTrue(game.getCurrentPlayer() = 4);
+		game.switchPlayer();
+		assertTrue(game.getCurrentPlayer() = 1);
+		game.switchPlayer();
+		game.switchPlayer();
+		game.switchPlayer();
+		assertTrue(game.getCurrentPlayer() = 4);
+		
+		game.getPlayer(4).setTargetCol(1);
+		assertTrue(game.currentPlayerWin() = false);
+	
 	);
 	
 end TestGame
