@@ -12,7 +12,6 @@ operations
 		testConstructor();
 		testResetConectivity();
 		testAddWall();
-		--testMove();
 	);
 	
 	private testConstructor : () ==> ()
@@ -56,65 +55,6 @@ operations
 		assertTrue(board.board(16)(12) = <WALL> and board.board(16)(13) = <WALL> and board.board(16)(14) = <WALL>);
 		assertFalse(board.addWall(16,15,[new Player(1),new Player(2)]));
 		assertTrue(board.board(16)(15) = <NOWALL> and board.board(16)(16) = <NOWALL> and board.board(16)(17) = <NOWALL>);
-	);
-	
-	private testMove : () ==> ()
-	testMove() ==
-	(
-		dcl game: Game := new Game(2),
-		b: [Board] := game.getBoard(),
-		p1: Player := game.getPlayer(1),
-		p2: Player := game.getPlayer(2),
-		moves: seq of Point;
-		
-		-- normal move case
-		game.move(1, 1, game.getPlayer(1));
-		assertTrue(b.board(1)(1) = <OCCUPIED> and p1.getPosition().getX() = 1 and p1.getPosition().getY() = 1);
-		game.move(3, 3, game.getPlayer(2));
-		assertTrue(b.board(3)(3) = <OCCUPIED> and p2.getPosition().getX() = 3 and p2.getPosition().getY() = 3);
-		
-		-- special move cases
-		
-		-- player up + wall up
-		game.move(5, 9, game.getPlayer(1));
-		game.move(3, 9, game.getPlayer(2));
-		moves := game.getPossibleMoves();
-		assertTrue(len moves = 5);
-		
-		assertFalse(b.addWall(2, 9, game.getPlayers()));
-		moves := game.getPossibleMoves();
-		assertTrue(len moves = 5);
-		
-		-- player left + wall left
-		game.move(5, 9, game.getPlayer(1));
-		game.move(5, 7, game.getPlayer(2));
-		moves := game.getPossibleMoves();
-		assertTrue(len moves = 4);
-		
-		assertTrue(b.addWall(5, 6, game.getPlayers()));
-		moves := game.getPossibleMoves();
-		assertTrue(len moves = 5);
-		
-		-- player right + wall right
-		game.move(5, 7, game.getPlayer(1));
-		game.move(5, 9, game.getPlayer(2));
-		moves := game.getPossibleMoves();
-		assertTrue(len moves = 3);
-		
-		assertTrue(b.addWall(5, 10, game.getPlayers()));
-		moves := game.getPossibleMoves();
-		assertTrue(len moves = 4);
-		
-		-- player down + wall down
-		game.move(3, 9, game.getPlayer(1));
-		game.move(5, 9, game.getPlayer(2));
-		moves := game.getPossibleMoves();
-		assertTrue(len moves = 3);
-		
-		assertFalse(b.addWall(6, 9, game.getPlayers()));
-		moves := game.getPossibleMoves();
-		assertTrue(len moves = 3);
-		
 	);
 	
 end TestBoard

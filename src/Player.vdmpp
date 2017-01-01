@@ -9,6 +9,7 @@ instance variables
 			private walls : [nat] := 10;
 			-- row that the player aims to reach in order to complete the objective
 			private targetRow : [nat1];
+			-- column that the player aims to reach in order to complete the objective (for 4 players)
 			private targetCol : [nat1];
 			
 operations
@@ -65,10 +66,27 @@ operations
 				return numberID
 			pre numberID <> nil;
 			
+			-- set the player targetRow
+			public setTargetRow: nat1 ==> ()
+			setTargetRow(target) ==
+			(
+				targetRow := target;
+			)
+			post targetRow <> nil;
+			
+			-- set the player targetCol
+			public setTargetCol: nat1 ==> ()
+			setTargetCol(target) ==
+			(
+				targetCol := target;
+			)
+			post targetCol <> nil;
+			
 			-- retrieves the index of the row the player has to reach
 			public pure getTargetRow : () ==> [nat1]
 			getTargetRow() == return self.targetRow;
 			
+			-- retrieves the index of the column the player has to reach
 			public pure getTargetCol : () ==> [nat1]
 			getTargetCol() == return self.targetCol;
 

@@ -5,6 +5,7 @@ operations
 	public test : () ==> ()
 	test() == 
 	(
+	
 		dcl p1 : Player := new Player(1);
 		dcl p2 : Player := new Player(2);
 		
@@ -14,6 +15,9 @@ operations
 		assertTrue(p2.getPosition().getX() = point.getX() and p2.getPosition().getY() = point.getY());
 		p1.setPosition(5,7);
 		assertTrue(p1.getPosition().getX() = 5 and p1.getPosition().getY() = 7);
+		p1.setTargetRow(17);
+		assertTrue(p1.getTargetRow() = 17);
+		assertTrue(p1.getPlayerID() = 1);
 	);
 
 end TestPlayer

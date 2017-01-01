@@ -6,6 +6,7 @@ class Board
 
 	instance variables
 	
+		-- the game instance
 		private game : Game;
 	
 		-- the representation of the board
@@ -44,7 +45,7 @@ class Board
 		)
 		post conectivity = board;
 		
-		-- resets the auxiliar board with the current board status to future path processing, 
+		-- resets the auxiliar board with the current board status to future path processing
 		public resetConectivity : () ==> bool
 		resetConectivity() == 
 		(
@@ -111,6 +112,7 @@ class Board
 		)
 		pre row >= 1 and row <= 17 and col >= 1 and col <= 17;
 		
+		-- checks whether the player can get to the target row or not
 		private pathToDestination : Player * nat1 * nat1 ==> bool
 		pathToDestination(p, row, col) ==
 		(
@@ -152,6 +154,7 @@ class Board
 		)
 		pre (p.getTargetRow() <> nil or p.getTargetCol() <> nil) and row mod 2 = 1 and col mod 2 = 1 and row >= 1 and col >= 1 and row <= 17 and col <= 17;
 		
+		-- checks path availability on the direction down
 		private checkDown : Player * nat1 * nat1 ==> bool
 		checkDown(p, row, col) ==
 		(
@@ -160,6 +163,7 @@ class Board
 			else return false;
 		);
 		
+		-- checks path availability on the direction up
 		private checkUp : Player * nat1 * nat1 ==> bool
 		checkUp(p, row, col) ==
 		(
@@ -168,6 +172,7 @@ class Board
 			else return false;
 		);
 		
+		-- checks path availability on the direction right
 		private checkRight : Player * nat1 * nat1 ==> bool
 		checkRight(p, row, col) ==
 		(
@@ -176,6 +181,7 @@ class Board
 			else return false;
 		);
 		
+		-- checks path availability on the direction left
 		private checkLeft : Player * nat1 * nat1 ==> bool
 		checkLeft(p, row, col) ==
 		(
@@ -198,7 +204,7 @@ class Board
 			board(p.getX()) := board(p.getX()) ++ {p.getY() |-> <FREE>}; 
 		);
 		
-		
+		-- remove a wall
 		public dropableWall: nat1 * nat1 ==> [seq of nat1]
 		dropableWall(row, col) == 
 		(

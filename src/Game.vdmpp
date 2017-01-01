@@ -1,12 +1,16 @@
 class Game
 
 instance variables
+	-- the players on the game
 	private players : seq of Player := [];
+	-- the player that is currently making a move
 	private currentPlayerID : nat1 := 1;
+	-- the board of the game
 	private board : [Board];
 
 operations
 	
+		-- game constructor
 		public Game : nat1 ==> Game
 		Game(number) ==
 		(
@@ -27,10 +31,10 @@ operations
 			player.setPosition(new_x, new_y);
 			updateBoard();
 		)
-		pre player <> nil
+		pre player <> nil and new_x rem 2 <> 0 and new_y rem 2 <> 0
 		post player.getPosition().getX() = new_x and player.getPosition().getY() = new_y;
 
-		-- switches to another player
+		-- switches the current player to the next one
 		public switchPlayer : () ==> ()
 		switchPlayer() == 
 		if len players = 2
@@ -48,10 +52,12 @@ operations
 			else currentPlayerID := 1;
 		);
 		
+		-- returns the player with the specified id
 		public getPlayer :nat1 ==>Player 
 		getPlayer(id) ==
 		return [player | player in seq players  &  player.getPlayerID() = id](1);
 		
+		-- returns the current player's id
 		public getCurrentPlayer : () ==> nat1
 		getCurrentPlayer() ==
 		return currentPlayerID;
@@ -67,6 +73,7 @@ operations
 			else return false;		
 		);
 		
+		-- adds a player to the players list
 		public addPlayer: Player ==> ()
 			addPlayer(p) ==
 			(
@@ -78,13 +85,15 @@ operations
 		public getBoard : () ==> Board
 		getBoard() == return self.board;
 		
-		-- retrieve board from game instance
+		-- retrieve players from game instance
 		public getPlayers : () ==> seq of Player
 		getPlayers() == return self.players;
 		
+		-- adds a wall to the board on the specified coordinates
 		public addWall : nat1 * nat1 ==> bool
 		addWall(row, col) == board.addWall(row,col,players);
 		
+		-- returns the possible moves for the current player
 		public getPossibleMoves: () ==> seq of Point
 		getPossibleMoves() ==
 		(
@@ -438,7 +447,7 @@ operations
 			
 		);
 		
-		-- update board according to players positions
+		-- update board according to player's positions
 		public updateBoard : () ==> () 
 		updateBoard() ==
 		(
@@ -451,7 +460,7 @@ operations
 			board.setBoardPosition(p2_position);
 		);
 		
-		-- update board by erasing the old position
+		-- update board by erasing the old player's position
 		public eraseOldPosition(old_position: Point) ==
 		(
 			board.unsetBoardPosition(old_position);
