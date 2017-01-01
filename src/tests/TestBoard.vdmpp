@@ -12,7 +12,7 @@ operations
 		testConstructor();
 		testResetConectivity();
 		testAddWall();
-		testMove();
+		--testMove();
 	);
 	
 	private testConstructor : () ==> ()
@@ -67,6 +67,7 @@ operations
 		p2: Player := game.getPlayer(2),
 		moves: seq of Point;
 		
+		IO`println(b);		
 		-- normal move case
 		game.move(1, 1, game.getPlayer(1));
 		assertTrue(b.board(1)(1) = <OCCUPIED> and p1.getPosition().getX() = 1 and p1.getPosition().getY() = 1);

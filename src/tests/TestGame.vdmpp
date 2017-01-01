@@ -1,0 +1,118 @@
+class TestGame is subclass of MyTest
+
+instance variables
+
+	private game : Game;
+	
+operations
+
+	public test : () ==> ()
+	test() ==
+	(
+		testConstructor();
+		testMove();
+	);
+	
+	private testConstructor : () ==> ()
+	testConstructor() ==
+	(
+		
+		dcl
+		game: Game := new Game(),
+		p2: Player := new Player();
+		
+		game.switchPlayer();
+		assertTrue(game.getCurrentPlayer() = 2);
+		
+		game.move(1, 17, game.getPlayer(2));
+		assertTrue(game.currentPlayerWin());
+		
+		game.switchPlayer();
+		assertTrue(game.getCurrentPlayer() = 1);
+		assertTrue(game.currentPlayerWin() = false);
+		
+		game.addPlayer(p2);
+		assertTrue(len game.getPlayers() = 3);
+		
+	);
+	
+	private testMove : () ==> ()
+	testMove() ==
+	(
+		dcl 
+		game: Game := new Game(),
+		b: [Board] := game.getBoard(),
+		p1: Player := game.getPlayer(1),
+		p2: Player := game.getPlayer(2),
+		moves: seq of Point;
+		
+		game.eraseOldPosition(new Point(17, 9));
+		assertTrue(b.board(17)(9) = <FREE>);
+		
+		-- normal move case
+		game.move(1, 1, game.getPlayer(1));
+		assertTrue(b.board(1)(1) = <OCCUPIED> and p1.getPosition().getX() = 1 and p1.getPosition().getY() = 1);
+		game.move(3, 3, game.getPlayer(2));
+		assertTrue(b.board(3)(3) = <OCCUPIED> and p2.getPosition().getX() = 3 and p2.getPosition().getY() = 3);
+		
+		-- special move cases
+		
+		-- player up + wall up
+		game.move(5, 9, game.getPlayer(1));
+		game.move(3, 9, game.getPlayer(2));
+		moves := game.getPossibleMoves();
+		assertTrue(len moves = 5);
+		
+		game.addWall(2, 9);
+		moves := game.getPossibleMoves();
+		assertTrue(len moves = 5);
+		
+		-- player left + wall left
+		game.move(5, 9, game.getPlayer(1));
+		game.move(5, 7, game.getPlayer(2));
+		moves := game.getPossibleMoves();
+		assertTrue(len moves = 4);
+		
+		game.addWall(5, 6);
+		moves := game.getPossibleMoves();
+		assertTrue(len moves = 5);
+		
+		-- player right + wall right
+		game.move(5, 7, game.getPlayer(1));
+		game.move(5, 9, game.getPlayer(2));
+		moves := game.getPossibleMoves();
+		assertTrue(len moves = 3);
+		
+		game.addWall(5, 10);
+		moves := game.getPossibleMoves();
+		assertTrue(len moves = 4);
+		
+		-- player down + wall down
+		game.move(3, 9, game.getPlayer(1));
+		game.move(5, 9, game.getPlayer(2));
+		moves := game.getPossibleMoves();
+		assertTrue(len moves = 3);
+		
+		game.addWall(6, 9);
+		moves := game.getPossibleMoves();
+		assertTrue(len moves = 3);
+		
+		-- test horizontal diagonal
+		game.move(5, 15, game.getPlayer(1));
+		game.move(7, 15, game.getPlayer(2));
+		moves := game.getPossibleMoves();
+		assertTrue(len moves = 4);
+		
+		game.addWall(8, 15);
+		moves := game.getPossibleMoves();
+		assertTrue(len moves = 5);
+		
+		-- test checkUpMove
+		game.move(7, 17, game.getPlayer(1));
+		game.move(5, 17, game.getPlayer(2));
+		moves := game.getPossibleMoves();
+		assertTrue(len moves = 2);
+		
+	);
+	
+end TestGame
