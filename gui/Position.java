@@ -29,6 +29,7 @@ public class Position extends JPanel {
 				if(selected) {
 					QuaridorGui.movePlayer(row, col);
 				}
+				else QuaridorGui.refresh();
             }
 		});
 	}
