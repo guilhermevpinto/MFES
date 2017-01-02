@@ -262,35 +262,6 @@ class Board
 				then return pathToDestination(p, row, col - 1)
 			else return false;
 		);
-		
-		private targetReachable : seq of Player ==> bool
-		targetReachable(p) ==
-		(
-			if(resetConectivity() and pathToDestination(p(1), p(1).getPosition().getX() , p(1).getPosition().getY()))
-			then 
-			(
-				if(resetConectivity() and pathToDestination(p(2), p(2).getPosition().getX() , p(2).getPosition().getY()))
-				then 
-				(
-					if len p = 4
-					then 
-					(
-						if(resetConectivity() and pathToDestination(p(3), p(3).getPosition().getX() , p(3).getPosition().getY()))
-						then
-						(
-							if(resetConectivity() and pathToDestination(p(4), p(4).getPosition().getX() , p(4).getPosition().getY()))
-							then return true
-							else return false
-						)
-						else return false
-					)
-					else return true
-				)
-				else return false
-			)
-			else return false;
-		);
-		
 		-- Sets the board position as occupied
 		public setBoardPosition: Point ==> () 
 		setBoardPosition(p) ==

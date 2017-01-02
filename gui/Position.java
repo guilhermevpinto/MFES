@@ -26,7 +26,9 @@ public class Position extends JPanel {
 		
 		this.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
-                System.out.println("Row: " + row + " Col: " + col);
+				if(selected) {
+					QuaridorGui.movePlayer(row, col);
+				}
             }
 		});
 	}
@@ -47,6 +49,10 @@ public class Position extends JPanel {
 	
 	public void setSelected() {
 		this.selected = true;
+		draw();
+	}
+	public void unsetSelected() {
+		this.selected = false;
 		draw();
 	}
 }

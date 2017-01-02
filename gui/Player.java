@@ -67,4 +67,10 @@ public class Player extends JPanel {
 		
 		g.fillOval((int)(QuaridorGui.WT * 2 * 0.3), (int)(QuaridorGui.WT * 2 * 0.3), (int)(QuaridorGui.WT * 4 * 0.7), (int)(QuaridorGui.WT * 4 * 0.7));
 	}
+	
+	public void move(int x, int y) {
+		this.x = x;
+		this.y = y;
+		draw();
+	}
 }

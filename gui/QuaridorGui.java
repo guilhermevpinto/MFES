@@ -22,6 +22,7 @@ public class QuaridorGui {
 	
 	private static JFrame frame;
 	public static ArrayList<ArrayList<JPanel>> boardGUI = new ArrayList<ArrayList<JPanel>>();
+	public static ArrayList<JPanel> playersGUI = new ArrayList<JPanel>();
 	
 	public static boolean currentPlayerSelected = false;
 	
@@ -34,7 +35,6 @@ public class QuaridorGui {
 		game = new Game(2);
 		
 		startMenu();
-		
 	}
 	
 	/**
@@ -172,6 +172,7 @@ public class QuaridorGui {
 
 			gui.Player playerGUI = new gui.Player((int)p.getPlayerID().intValue(), col, row, QuaridorGui.WT*4*((col-1) / 2) + QuaridorGui.WT*((col-1) / 2), QuaridorGui.WT*4*((row-1) / 2) + QuaridorGui.WT*((row-1) / 2));
 			
+			playersGUI.add(playerGUI);
 			main.add(playerGUI);
 			playerGUI.draw();
 			
@@ -253,7 +254,64 @@ public class QuaridorGui {
 		
 	}
 	
+	public static void refresh() {		
+
+		//fetching the VDM Board structure
+		VDMMap board = Board.board;
+		
+		//creating the main JPanel where the graphics will be drawn
+		
+		//designing the board according to the VDM board structure
+		for(int row = 1; row < 18; row++) {		
+			
+			for(int col = 1; col < 18; col++) {
+				
+				if((row % 2) == 1) {
+
+					if (Utils.equals(Utils.get(board, SeqUtil.seq((long)row, (long)col)), Quaridor.quotes.FREEQuote.getInstance()) | Utils.equals(Utils.get(board, SeqUtil.seq((long)row,(long)col)), Quaridor.quotes.OCCUPIEDQuote.getInstance())) {
+						//((Position)boardGUI.get(row-1).get(col-1)).unsetSelected();
+					}
+					else if (Utils.equals(Utils.get(board, SeqUtil.seq((long)row,(long)col)), Quaridor.quotes.NOWALLQuote.getInstance())) {
+						((Wall)boardGUI.get(row-1).get(col-1)).unhoverWall();
+					}
+					else if (Utils.equals(Utils.get(board, SeqUtil.seq((long)row,(long)col)), Quaridor.quotes.WALLQuote.getInstance())) {
+						((Wall)boardGUI.get(row-1).get(col-1)).setWall();
+					}
+				}
+				else if((row % 2) == 0) {
+					
+					if (Utils.equals(Utils.get(board, SeqUtil.seq((long)row, (long)col)), Quaridor.quotes.NOWALLQuote.getInstance()) & (col % 2) == 1) {
+						((Wall)boardGUI.get(row-1).get(col-1)).unhoverWall();
+					}
+					else if (Utils.equals(Utils.get(board, SeqUtil.seq((long)row, (long)col)), Quaridor.quotes.WALLQuote.getInstance()) & (col % 2) == 1) {
+						((Wall)boardGUI.get(row-1).get(col-1)).setWall();
+					}
+				}
+			}
+		}
+		
+	}
+	
 	public static void setWall(int row, int col) {
 		((Wall)boardGUI.get(row-1).get(col-1)).setWall();
+	}
+	
+	public static void movePlayer(int row, int col) {
+		if(currentPlayerSelected) {
+			game.move(row, col, game.getPlayer(game.getCurrentPlayer()));
+			int playerindex = game.getCurrentPlayer().intValue() - 1;
+			gui.Player p = (Player) playersGUI.get(playerindex);
+			
+			p.move(QuaridorGui.WT*4*((col-1) / 2) + QuaridorGui.WT*((col-1) / 2), QuaridorGui.WT*4*((row-1) / 2) + QuaridorGui.WT*((row-1) / 2));
+			
+			next();
+
+		}
+	}
+	
+	public static void next() {
+		game.updateBoard();
+		game.switchPlayer();
+		refresh();
 	}
 }

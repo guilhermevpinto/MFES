@@ -11,7 +11,7 @@ operations
 	(
 		testConstructor();
 		testMove();
-		--testFourPlayers();
+		testFourPlayers();
 	);
 	
 	private testConstructor : () ==> ()

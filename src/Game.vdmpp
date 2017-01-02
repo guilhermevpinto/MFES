@@ -461,7 +461,8 @@ operations
 		);
 		
 		-- update board by erasing the old player's position
-		public eraseOldPosition(old_position: Point) ==
+		public eraseOldPosition : Point ==> ()
+		eraseOldPosition(old_position) ==
 		(
 			board.unsetBoardPosition(old_position);
 		);
