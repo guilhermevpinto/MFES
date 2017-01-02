@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import org.overture.codegen.runtime.VDMSeq;
@@ -41,6 +42,8 @@ public class Player extends JPanel {
 						((Position)QuaridorGui.boardGUI.get(p.getX().intValue()-1).get(p.getY().intValue()-1)).setSelected();
 					}
 				}
+				else
+					JOptionPane.showMessageDialog(null, "Leave the " + QuaridorGui.getPlayerColor(id) + " player alone!!! It is the " + QuaridorGui.getPlayerColor(QuaridorGui.game.getCurrentPlayer().intValue()) + " player's turn!");
             }
 		});
 	}
