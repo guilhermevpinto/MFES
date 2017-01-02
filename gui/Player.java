@@ -6,6 +6,10 @@ import java.awt.event.MouseAdapter;
 
 import javax.swing.JPanel;
 
+import org.overture.codegen.runtime.VDMSeq;
+
+import Quaridor.Point;
+
 @SuppressWarnings({"serial","unused"})
 public class Player extends JPanel {
 
@@ -16,6 +20,7 @@ public class Player extends JPanel {
 	private int height = QuaridorGui.WT * 4;
 	private int row;
 	private int col;
+	
 	
 	public Player(int id, int col, int row, int x, int y) {
 		this.id = id;
@@ -28,7 +33,14 @@ public class Player extends JPanel {
 		
 		this.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
-                System.out.println("Row: " + row + " Col: " + col);
+				if(id == QuaridorGui.game.getCurrentPlayer().intValue()) {
+					QuaridorGui.currentPlayerSelected = true;
+					VDMSeq moves = QuaridorGui.game.getPossibleMoves();
+					for(int i = 0; i < moves.size(); i++) {
+						Point p = (Point)moves.get(i);
+						((Position)QuaridorGui.boardGUI.get(p.getX().intValue()-1).get(p.getY().intValue()-1)).setSelected();
+					}
+				}
             }
 		});
 	}

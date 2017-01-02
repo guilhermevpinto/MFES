@@ -98,7 +98,7 @@ class Board
 					board := board ++ {[oneRow,col] |-> <WALL>};
 					board := board ++ {[twoRow,col] |-> <WALL>};
 					
-					if targetReachable(players)
+					if exists1 p in seq players & (resetConectivity() and not pathToDestination(p, p.getPosition().getX() , p.getPosition().getY()))
 					then
 					(
 						board := board ++ {[row,col] |-> <NOWALL>};
@@ -113,7 +113,7 @@ class Board
 			)
 			else
 			(
-				if targetReachable(players)
+				if col < 16 and row < 18 and board([row,col]) = <NOWALL> and board([row,oneCol]) = <NOWALL> and board([row,twoCol]) = <NOWALL>
 				then
 				(
 					board := board ++ {[row,col] |-> <WALL>, [row,oneCol] |-> <WALL>, [row,twoCol] |-> <WALL>};
@@ -210,7 +210,7 @@ class Board
 			else return false;
 		);
 		
-		public targetReachable : seq of Player ==> bool
+		private targetReachable : seq of Player ==> bool
 		targetReachable(p) ==
 		(
 			if(resetConectivity() and pathToDestination(p(1), p(1).getPosition().getX() , p(1).getPosition().getY()))

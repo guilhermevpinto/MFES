@@ -15,6 +15,7 @@ public class Position extends JPanel {
 	private int height = QuaridorGui.WT * 4;
 	private int row;
 	private int col;
+	private boolean selected;
 	
 	public Position(int col, int row, int x, int y) {
 		this.x = x;
@@ -37,7 +38,15 @@ public class Position extends JPanel {
 	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.setColor(new Color(204,255,255,255));
+		if(selected)
+			g.setColor(new Color(250,255,255,200));
+		else	
+			g.setColor(new Color(204,255,255,255));
 		g.fillRect(0, 0, width, height);
+	}
+	
+	public void setSelected() {
+		this.selected = true;
+		draw();
 	}
 }

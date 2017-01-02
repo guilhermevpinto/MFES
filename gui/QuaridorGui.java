@@ -23,6 +23,8 @@ public class QuaridorGui {
 	private static JFrame frame;
 	public static ArrayList<ArrayList<JPanel>> boardGUI = new ArrayList<ArrayList<JPanel>>();
 	
+	public static boolean currentPlayerSelected = false;
+	
 	/**
 	 * Launch the application.
 	 */
