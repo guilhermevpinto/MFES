@@ -31,8 +31,7 @@ public class QuaridorGui {
 	
 	public static void main(String[] args) {
 		
-		//game = new Game(2);
-		game = new Game(4);
+		game = new Game(2);
 		
 		startMenu();
 		

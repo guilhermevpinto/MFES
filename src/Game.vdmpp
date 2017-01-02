@@ -66,9 +66,9 @@ operations
 		public currentPlayerWin : () ==> bool
 		currentPlayerWin() ==
 		(
-			if (getPlayer(currentPlayerID).getTargetRow() <> nil and getPlayer(currentPlayerID).getPosition().getX() = getPlayer(currentPlayerID).getTargetRow()) 
+			if (getPlayer(currentPlayerID).getTargetRow() <> 0 and getPlayer(currentPlayerID).getPosition().getX() = getPlayer(currentPlayerID).getTargetRow()) 
 					or 
-				(getPlayer(currentPlayerID).getTargetCol() <> nil and getPlayer(currentPlayerID).getPosition().getY() = getPlayer(currentPlayerID).getTargetCol())
+				(getPlayer(currentPlayerID).getTargetCol() <> 0 and getPlayer(currentPlayerID).getPosition().getY() = getPlayer(currentPlayerID).getTargetCol())
 					then return true
 			else return false;		
 		);
@@ -91,7 +91,7 @@ operations
 		
 		-- adds a wall to the board on the specified coordinates
 		public addWall : nat1 * nat1 ==> bool
-		addWall(row, col) == board.addWall(row,col,players);
+		addWall(row, col) == board.addWall(row,col);
 		
 		-- returns the possible moves for the current player
 		public getPossibleMoves: () ==> seq of Point

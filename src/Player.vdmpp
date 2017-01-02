@@ -8,9 +8,9 @@ instance variables
 			-- remaining walls that the player can still placed in the map
 			private walls : [nat] := 10;
 			-- row that the player aims to reach in order to complete the objective
-			private targetRow : [nat1];
+			private targetRow : nat := 0;
 			-- column that the player aims to reach in order to complete the objective (for 4 players)
-			private targetCol : [nat1];
+			private targetCol : nat := 0;
 			
 operations
 
@@ -22,33 +22,29 @@ operations
 				then (
 					position := new Point(1,9);
 					targetRow := 17;
-					targetCol := nil;
 					numberID := id;
 				)
 				else if id = 2
 				then (
 					position := new Point(17,9);
 					targetRow := 1;
-					targetCol := nil;
 					numberID := id;
 				)
 				else if id = 3
 				then (
 					position := new Point(9,1);
 					targetCol := 17;
-					targetRow := nil;
 					numberID := id;
 				)
 				else if id = 4
 				then (
 					position := new Point(9,17);
 					targetCol := 1;
-					targetRow := nil;
 					numberID := id;
 				);
 			)
 			pre id > 0 and id < 5
-			post position <> nil and (targetRow <> nil or targetCol <> nil) and numberID <> nil and walls = 10;
+			post position <> nil and (targetRow <> 0 or targetCol <> 0) and numberID <> nil and walls = 10;
 			
 			-- getting the current position of the player
 			public pure getPosition : () ==> Point 
@@ -72,7 +68,7 @@ operations
 			(
 				targetRow := target;
 			)
-			post targetRow <> nil;
+			post targetRow <> 0;
 			
 			-- set the player targetCol
 			public setTargetCol: nat1 ==> ()
@@ -80,14 +76,14 @@ operations
 			(
 				targetCol := target;
 			)
-			post targetCol <> nil;
+			post targetCol <> 0;
 			
 			-- retrieves the index of the row the player has to reach
-			public pure getTargetRow : () ==> [nat1]
+			public pure getTargetRow : () ==> nat
 			getTargetRow() == return self.targetRow;
 			
 			-- retrieves the index of the column the player has to reach
-			public pure getTargetCol : () ==> [nat1]
+			public pure getTargetCol : () ==> nat
 			getTargetCol() == return self.targetCol;
 
 end Player
