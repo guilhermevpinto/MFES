@@ -98,7 +98,7 @@ class Board
 					board := board ++ {[oneRow,col] |-> <WALL>};
 					board := board ++ {[twoRow,col] |-> <WALL>};
 					
-					if exists1 p in seq players & resetConectivity() and not pathToDestination(p, p.getPosition().getX() , p.getPosition().getY())
+					if targetReachable(players)
 					then
 					(
 						board := board ++ {[row,col] |-> <NOWALL>};
@@ -113,12 +113,12 @@ class Board
 			)
 			else
 			(
-				if col < 16 and row < 18 and board([row,col]) = <NOWALL> and board([row,oneCol]) = <NOWALL> and board([row,twoCol]) = <NOWALL>
+				if targetReachable(players)
 				then
 				(
 					board := board ++ {[row,col] |-> <WALL>, [row,oneCol] |-> <WALL>, [row,twoCol] |-> <WALL>};
 					
-					if exists1 p in seq players & resetConectivity() and not pathToDestination(p, p.getPosition().getX() , p.getPosition().getY())
+					if exists1 p in seq players & (resetConectivity() and not pathToDestination(p, p.getPosition().getX() , p.getPosition().getY()))
 					then
 					(
 						board := board ++ {[row,col] |-> <NOWALL>, [row,oneCol] |-> <NOWALL>, [row,twoCol] |-> <NOWALL>};
@@ -130,7 +130,7 @@ class Board
 				else return false;
 			)
 		)
-		pre row >= 1 and row <= 17 and col >= 1 and col <= 17;
+		pre row > 0 and row < 18 and col > 0 and col < 18;
 		
 		-- checks whether the player can get to the target row or not
 		private pathToDestination : Player * nat1 * nat1 ==> bool
@@ -207,6 +207,34 @@ class Board
 		(
 			if conectivity([row,col]) <> <WALL>
 				then return pathToDestination(p, row, col - 1)
+			else return false;
+		);
+		
+		public targetReachable : seq of Player ==> bool
+		targetReachable(p) ==
+		(
+			if(resetConectivity() and pathToDestination(p(1), p(1).getPosition().getX() , p(1).getPosition().getY()))
+			then 
+			(
+				if(resetConectivity() and pathToDestination(p(2), p(2).getPosition().getX() , p(2).getPosition().getY()))
+				then 
+				(
+					if len p = 4
+					then 
+					(
+						if(resetConectivity() and pathToDestination(p(3), p(3).getPosition().getX() , p(3).getPosition().getY()))
+						then
+						(
+							if(resetConectivity() and pathToDestination(p(4), p(4).getPosition().getX() , p(4).getPosition().getY()))
+							then return true
+							else return false
+						)
+						else return false
+					)
+					else return true
+				)
+				else return false
+			)
 			else return false;
 		);
 		

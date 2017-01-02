@@ -36,24 +36,25 @@ operations
 	testAddWall() ==
 	(
 		board := new Board(new Game(2));
-		assertTrue(board.addWall(1,6,[new Player(1),new Player(2)]));
-		assertTrue(board.board([1,6]) = <WALL> and board.board([2,6]) = <WALL> and board.board([3,6]) = <WALL>);
-		assertFalse(board.addWall(3,6,[new Player(1),new Player(2)]));
-		assertTrue(board.board([3,6]) = <WALL> and board.board([4,6]) = <NOWALL> and board.board([5,6]) = <NOWALL>);
-		assertTrue(board.addWall(2,7,[new Player(1),new Player(2)]));
-		assertTrue(board.board([2,7]) = <WALL> and board.board([2,8]) = <WALL> and board.board([2,9]) = <WALL>);
-		assertFalse(board.addWall(1,10,[new Player(1),new Player(2)]));
-		assertTrue(board.board([1,10]) = <NOWALL> and board.board([2,10]) = <NOWALL> and board.board([3,10]) = <NOWALL>);
-		assertFalse(board.addWall(2,9,[new Player(1),new Player(2)]));
-		assertTrue(board.board([2,9]) = <WALL> and board.board([2,10]) = <NOWALL> and board.board([2,11]) = <NOWALL>);
-		assertTrue(board.addWall(15,8,[new Player(1),new Player(2)]));
-		assertTrue(board.board([15,8]) = <WALL> and board.board([16,8]) = <WALL> and board.board([17,8]) = <WALL>);
-		assertTrue(board.addWall(16,9,[new Player(1),new Player(2)]));
-		assertTrue(board.board([16,9]) = <WALL> and board.board([16,10]) = <WALL> and board.board([16,11]) = <WALL>);
-		assertTrue(board.addWall(16,12,[new Player(1),new Player(2)]));
-		assertTrue(board.board([16,12]) = <WALL> and board.board([16,13]) = <WALL> and board.board([16,14]) = <WALL>);
-		assertFalse(board.addWall(16,15,[new Player(1),new Player(2)]));
-		assertTrue(board.board([16,15]) = <NOWALL> and board.board([16,16]) = <NOWALL> and board.board([16,17]) = <NOWALL>);
+		assertTrue(board.targetReachable([new Player(1),new Player(2)]));
+		--assertTrue(board.addWall(1,6,[new Player(1),new Player(2)]));
+		--assertTrue(board.board([1,6]) = <WALL> and board.board([2,6]) = <WALL> and board.board([3,6]) = <WALL>);
+		--assertFalse(board.addWall(3,6,[new Player(1),new Player(2)]));
+		--assertTrue(board.board([3,6]) = <WALL> and board.board([4,6]) = <NOWALL> and board.board([5,6]) = <NOWALL>);
+		--assertTrue(board.addWall(2,7,[new Player(1),new Player(2)]));
+		--assertTrue(board.board([2,7]) = <WALL> and board.board([2,8]) = <WALL> and board.board([2,9]) = <WALL>);
+		--assertFalse(board.addWall(1,10,[new Player(1),new Player(2)]));
+		--assertTrue(board.board([1,10]) = <NOWALL> and board.board([2,10]) = <NOWALL> and board.board([3,10]) = <NOWALL>);
+		--assertFalse(board.addWall(2,9,[new Player(1),new Player(2)]));
+		--assertTrue(board.board([2,9]) = <WALL> and board.board([2,10]) = <NOWALL> and board.board([2,11]) = <NOWALL>);
+		--assertTrue(board.addWall(15,8,[new Player(1),new Player(2)]));
+		--assertTrue(board.board([15,8]) = <WALL> and board.board([16,8]) = <WALL> and board.board([17,8]) = <WALL>);
+		--assertTrue(board.addWall(16,9,[new Player(1),new Player(2)]));
+		--assertTrue(board.board([16,9]) = <WALL> and board.board([16,10]) = <WALL> and board.board([16,11]) = <WALL>);
+		--assertTrue(board.addWall(16,12,[new Player(1),new Player(2)]));
+	--	assertTrue(board.board([16,12]) = <WALL> and board.board([16,13]) = <WALL> and board.board([16,14]) = <WALL>);
+	--	assertFalse(board.addWall(16,15,[new Player(1),new Player(2)]));
+		--assertTrue(board.board([16,15]) = <NOWALL> and board.board([16,16]) = <NOWALL> and board.board([16,17]) = <NOWALL>);
 	);
 	
 end TestBoard
