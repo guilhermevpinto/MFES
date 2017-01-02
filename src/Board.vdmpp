@@ -48,7 +48,7 @@ class Board
 					[14,11] |-> <NOWALL>, [14,12] |-> <NOWALL>, [14,13] |-> <NOWALL>, [14,14] |-> <NOWALL>, [14,15] |-> <NOWALL>, [14,16] |-> <NOWALL>, [14,17] |-> <NOWALL>,
 		
 					[15,1] |-> <FREE>, [15,2] |-> <NOWALL>, [15,3] |-> <FREE>, [15,4] |-> <NOWALL>, [15,5] |-> <FREE>, [15,6] |-> <NOWALL>, [15,7] |-> <FREE>, [15,8] |-> <NOWALL>, [15,9] |-> <FREE>, [15,10] |-> <NOWALL>, 
-					[15,11] |-> <FREE>, [5,12] |-> <NOWALL>, [15,13] |-> <FREE>, [15,14] |-> <NOWALL>, [15,15] |-> <FREE>, [15,16] |-> <NOWALL>, [15,17] |-> <FREE>,
+					[15,11] |-> <FREE>, [15,12] |-> <NOWALL>, [15,13] |-> <FREE>, [15,14] |-> <NOWALL>, [15,15] |-> <FREE>, [15,16] |-> <NOWALL>, [15,17] |-> <FREE>,
 					[16,1] |-> <NOWALL>, [16,2] |-> <NOWALL>, [16,3] |-> <NOWALL>, [16,4] |-> <NOWALL>, [16,5] |-> <NOWALL>, [16,6] |-> <NOWALL>, [16,7] |-> <NOWALL>, [16,8] |-> <NOWALL>, [16,9] |-> <NOWALL>, [16,10] |-> <NOWALL>, 
 					[16,11] |-> <NOWALL>, [16,12] |-> <NOWALL>, [16,13] |-> <NOWALL>, [16,14] |-> <NOWALL>, [16,15] |-> <NOWALL>, [16,16] |-> <NOWALL>, [16,17] |-> <NOWALL>,
 					
@@ -172,7 +172,7 @@ class Board
 			then return checkLeft(p, row, col - 1) or checkUp(p, row - 1, col) or checkDown(p, row + 1, col)
 			else return checkLeft(p, row, col - 1) or checkRight(p, row, col + 1) or checkUp(p, row - 1, col) or checkDown(p, row + 1, col);
 		)
-		pre (p.getTargetRow() <> nil or p.getTargetCol() <> nil) and row mod 2 = 1 and col mod 2 = 1 and row >= 1 and col >= 1 and row <= 17 and col <= 17;
+		pre (p.getTargetRow() <> nil or p.getTargetCol() <> nil) and row mod 2 = 1 and col mod 2 = 1 and row >= 1 and col >= 1 and row < 18 and col < 18;
 		
 		-- checks path availability on the direction down
 		private checkDown : Player * nat1 * nat1 ==> bool
