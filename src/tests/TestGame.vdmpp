@@ -47,13 +47,13 @@ operations
 		moves: seq of Point;
 		
 		game.eraseOldPosition(new Point(1, 17));
-		assertTrue(game.getBoard().board(1)(17) = <FREE>);
+		assertTrue(game.getBoard().board([1,17]) = <FREE>);
 		
 		-- normal move case
 		game.move(1, 1, game.getPlayer(1));
-		assertTrue(game.getBoard().board(1)(1) = <OCCUPIED> and p1.getPosition().getX() = 1 and p1.getPosition().getY() = 1);
+		assertTrue(game.getBoard().board([1,1]) = <OCCUPIED> and p1.getPosition().getX() = 1 and p1.getPosition().getY() = 1);
 		game.move(3, 3, game.getPlayer(2));
-		assertTrue(game.getBoard().board(3)(3) = <OCCUPIED> and p2.getPosition().getX() = 3 and p2.getPosition().getY() = 3);
+		assertTrue(game.getBoard().board([3,3]) = <OCCUPIED> and p2.getPosition().getX() = 3 and p2.getPosition().getY() = 3);
 		
 		-- special move cases
 		
