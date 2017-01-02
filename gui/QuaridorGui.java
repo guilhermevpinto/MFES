@@ -33,7 +33,7 @@ public class QuaridorGui {
 	
 	public static void main(String[] args) {
 		
-		game = new Game(2);
+		game = new Game(4);
 		
 		startMenu();
 	}
@@ -90,6 +90,8 @@ public class QuaridorGui {
         	startGame();
         else if(panelRegras.getState())
         	displayRegras();
+        
+        frame.addKeyListener(new MyKeyListener(game));
 		
 	}
 	
@@ -324,7 +326,7 @@ public class QuaridorGui {
 		game.switchPlayer();
 	}
 	
-	private static String getPlayerColor(int id) {
+	public static String getPlayerColor(int id) {
 		switch (id) {
 		case 1 : 
 			return "RED";

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import org.overture.codegen.runtime.VDMSeq;
@@ -46,9 +47,9 @@ public class Wall extends JPanel {
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
 				if (hover) {
 					if(QuaridorGui.game.addWall((long)row, (long)col))
-					{
 						QuaridorGui.next();
-					}
+					else if (QuaridorGui.game.getPlayer(QuaridorGui.game.getCurrentPlayer()).getWalls().intValue() == 0)
+						JOptionPane.showMessageDialog(null, "You have 0 walls to be played");
 				}
 			}
 			public void mouseEntered(java.awt.event.MouseEvent evt) {
