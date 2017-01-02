@@ -33,7 +33,13 @@ public class QuaridorGui {
 	
 	public static void main(String[] args) {
 		
-		game = new Game(4);
+		if(args.length != 0) {
+			if(args[0].equals("2") | args[0].equals("4"))
+				game = new Game(Integer.getInteger(args[0]));
+			else 
+				game = new Game(2);
+		}
+		else game = new Game(2);
 		
 		startMenu();
 	}
