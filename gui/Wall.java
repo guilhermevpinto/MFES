@@ -3,14 +3,12 @@ package gui;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
-import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
 import org.overture.codegen.runtime.VDMSeq;
-import java.lang.*;
 
-@SuppressWarnings("serial")
+@SuppressWarnings({"serial", "unused"})
 public class Wall extends JPanel {
 	
 	public static enum Orientation {HOR, VER};
@@ -46,49 +44,31 @@ public class Wall extends JPanel {
 		
 		this.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
-				if(hover) {
-					Number rownum = row; 
-					Number colnum = col;
-					if(QuaridorGui.game.addWall(rownum, colnum))
-					{
-						QuaridorGui.setWall(row, col);
-						if(dependenthover != null) {
-							int first, second;
-							if((row%2) == 0) {
-								first = (Integer)dependenthover.get(0);
-								second = ((Long)dependenthover.get(1)).intValue();
-							}
-							else
-							{
-								first = ((Long)dependenthover.get(0)).intValue();
-								second = (Integer)dependenthover.get(1);
-							}
-							
-							QuaridorGui.setWall(first, second);
-							
-							hover = true;
-							draw();
-							
-						}
+				if(QuaridorGui.game.addWall((long)row, (long)col))
+				{
+					QuaridorGui.setWall(row, col);
+					if(dependenthover != null) {
+						int first, second;
+						first = ((Long)dependenthover.get(0)).intValue();
+						second = ((Long)dependenthover.get(1)).intValue();
+						QuaridorGui.setWall(first, second);
+						
+						hover = true;
+						draw();
+						
 					}
 				}
 			}
-			@SuppressWarnings("unchecked")
 			public void mouseEntered(java.awt.event.MouseEvent evt) {
 				if(row != 17 & col != 17){
-					dependenthover = QuaridorGui.game.getBoard().dropableWall(row, col);
+					dependenthover = QuaridorGui.game.getBoard().dropableWall((long)row, (long)col);
+					
 					if(dependenthover != null) {
-						int first, second;
-						if((row%2) == 0) {
-							first = (Integer)dependenthover.get(0);
-							second = ((Long)dependenthover.get(1)).intValue();
-						}
-						else
-						{
-							first = ((Long)dependenthover.get(0)).intValue();
-							second = (Integer)dependenthover.get(1);
-						}
 						
+						int first, second;
+						first = ((Long)dependenthover.get(0)).intValue();
+						second = ((Long)dependenthover.get(1)).intValue();
+							
 						((Wall)QuaridorGui.boardGUI.get(first-1).get(second-1)).hoverWall();
 						
 					
@@ -100,16 +80,10 @@ public class Wall extends JPanel {
             }
 			public void mouseExited(java.awt.event.MouseEvent evt) {
 				if(dependenthover != null){
+					
 					int first, second;
-					if((row%2) == 0) {
-						first = (Integer)dependenthover.get(0);
-						second = ((Long)dependenthover.get(1)).intValue();
-					}
-					else
-					{
-						first = ((Long)dependenthover.get(0)).intValue();
-						second = (Integer)dependenthover.get(1);
-					}
+					first = ((Long)dependenthover.get(0)).intValue();
+					second = ((Long)dependenthover.get(1)).intValue();
 						
 					((Wall)QuaridorGui.boardGUI.get(first-1).get(second-1)).unhoverWall();
 					dependenthover = null;

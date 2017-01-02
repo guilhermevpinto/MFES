@@ -11,6 +11,7 @@ import java.net.URISyntaxException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+@SuppressWarnings("serial")
 public class HoverPanel extends JPanel {
 	
 	private Image nohover;

@@ -8,11 +8,12 @@ import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
+import org.overture.codegen.runtime.SeqUtil;
+import org.overture.codegen.runtime.Utils;
+import org.overture.codegen.runtime.VDMMap;
+
 import Quaridor.Board;
 import Quaridor.Game;
-import Quaridor.quotes.FREEQuote;
-import Quaridor.quotes.NOWALLQuote;
-import Quaridor.quotes.OCCUPIEDQuote;
 
 public class QuaridorGui {
 	
@@ -173,7 +174,6 @@ public class QuaridorGui {
 			main.add(playerGUI);
 			playerGUI.draw();
 			
-			System.out.println("player");
 		}
 	}
 	
@@ -182,37 +182,36 @@ public class QuaridorGui {
 	 * Constructing the board positions
 	 * @param JFrame frame
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static void loadBoard(JPanel main) {		
 
 		//fetching the VDM Board structure
-		ArrayList<ArrayList> board = Board.board;
+		VDMMap board = Board.board;
 		
 		//creating the main JPanel where the graphics will be drawn
 		
 		//designing the board according to the VDM board structure
 		int rowPixel = 0; //y-axis pixels progression
-		for(int row = 0; row < 17; row++) {
+		for(int row = 1; row < 18; row++) {
 			
 			int colPixel = 0; //x-axis pixels progression
 			ArrayList<JPanel> rowGUI = new ArrayList<JPanel>();			
 			
-			for(int col = 0; col < 17; col++) {
+			for(int col = 1; col < 18; col++) {
 				
-				if((row % 2) == 0) {
+				if((row % 2) == 1) {
 
-					if(board.get(row).get(col) instanceof FREEQuote | board.get(row).get(col) instanceof OCCUPIEDQuote) {
+					if (Utils.equals(Utils.get(board, SeqUtil.seq((long)row, (long)col)), Quaridor.quotes.FREEQuote.getInstance()) | Utils.equals(Utils.get(board, SeqUtil.seq((long)row,(long)col)), Quaridor.quotes.OCCUPIEDQuote.getInstance())) {
 						
-						Position p = new Position(col + 1, row + 1, colPixel, rowPixel);
+						Position p = new Position(col, row, colPixel, rowPixel);
 						main.add(p);
 						rowGUI.add(p);
 						p.draw();
 						
 						colPixel += QuaridorGui.WT * 4;
 					}
-					else if(board.get(row).get(col) instanceof NOWALLQuote) {
+					else if (Utils.equals(Utils.get(board, SeqUtil.seq((long)row,(long)col)), Quaridor.quotes.NOWALLQuote.getInstance())) {
 						
-						Wall w = new Wall(col + 1, row + 1, colPixel, rowPixel, Wall.Orientation.VER);
+						Wall w = new Wall(col, row, colPixel, rowPixel, Wall.Orientation.VER);
 						main.add(w);
 						rowGUI.add(w);
 						w.draw();
@@ -220,11 +219,11 @@ public class QuaridorGui {
 						colPixel += QuaridorGui.WT;
 					}
 				}
-				else if((row % 2) == 1) {
+				else if((row % 2) == 0) {
 					
-					if(board.get(row).get(col) instanceof NOWALLQuote & (col % 2) == 0) {
+					if (Utils.equals(Utils.get(board, SeqUtil.seq((long)row, (long)col)), Quaridor.quotes.NOWALLQuote.getInstance()) & (col % 2) == 1) {
 
-						Wall w = new Wall(col + 1, row + 1, colPixel, rowPixel, Wall.Orientation.HOR);
+						Wall w = new Wall(col, row, colPixel, rowPixel, Wall.Orientation.HOR);
 						main.add(w);
 						rowGUI.add(w);
 						w.draw();
@@ -245,7 +244,7 @@ public class QuaridorGui {
 			
 			boardGUI.add(rowGUI);
 			
-			if((row % 2) == 0)
+			if((row % 2) == 1)
 				rowPixel += QuaridorGui.WT * 4;
 			else
 				rowPixel += QuaridorGui.WT;
@@ -254,6 +253,6 @@ public class QuaridorGui {
 	}
 	
 	public static void setWall(int row, int col) {
-		((Wall)boardGUI.get(row).get(col)).setWall();
+		((Wall)boardGUI.get(row-1).get(col-1)).setWall();
 	}
 }
