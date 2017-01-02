@@ -17,7 +17,22 @@ operations
 		assertTrue(p1.getPosition().getX() = 5 and p1.getPosition().getY() = 7);
 		p1.setTargetRow(17);
 		assertTrue(p1.getTargetRow() = 17);
-		assertTrue(p1.getPlayerID() = 1);
+		assertEqual(p1.getPlayerID(), 1);
+		
+		assertEqual(p1.getWalls(), 10);
+		assertTrue(p1.decWalls());
+		assertEqual(p1.getWalls(), 9);
+		assertTrue(p1.decWalls());
+		assertTrue(p1.decWalls());
+		assertTrue(p1.decWalls());
+		assertTrue(p1.decWalls());
+		assertTrue(p1.decWalls());
+		assertTrue(p1.decWalls());
+		assertTrue(p1.decWalls());
+		assertTrue(p1.decWalls());
+		assertTrue(p1.decWalls());
+		assertFalse(p1.decWalls());
+		
 	);
 
 end TestPlayer

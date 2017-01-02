@@ -13,6 +13,7 @@ operations
 		testResetConectivity();
 		testPathToDestination();
 		testAddWall();
+		testDropWall();
 	);
 	
 	private testConstructor : () ==> ()
@@ -36,12 +37,16 @@ operations
 	private testPathToDestination: () ==> ()
 	testPathToDestination() ==
 	(
+		dcl
+		p: Player := new Player(3, 10);
 		board := new Board(new Game(2));
 		board.board := board.board ++ {[2,1] |-> <WALL>, [2,3] |-> <WALL>, [2,5] |-> <WALL>, [2,7] |-> <WALL>, [2,9] |-> <WALL>, [2,11] |-> <WALL>, [2,13] |-> <WALL>, [2,15] |-> <WALL>, [3,16] |-> <WALL>, [5,16] |-> <WALL>, [6,17] |-> <NOWALL>};
 		assertTrue(board.resetConectivity());
-		assertTrue(board.pathToDestination(new Player(1,10), 1, 9));
+		p.setTargetCol(9);
+		assertTrue(board.pathToDestination(p, 17, 9));
 		assertTrue(board.resetConectivity());
-		assertTrue(board.pathToDestination(new Player(2,10), 17, 9));
+		p.setTargetRow(1);
+		assertTrue(board.pathToDestination(p, 1, 9));
 	);
 	
 	private testAddWall : () ==> ()
@@ -83,6 +88,30 @@ operations
 			board.board([5,16]) = <WALL> and board.board([6,15]) = <NOWALL> and board.board([6,17]) = <NOWALL>			
 		);
 		
+	);
+	
+	private testDropWall : () ==> ()
+	testDropWall() ==
+	(
+		-- verify whether the wall can be put on that position or not
+		dcl 
+		board : Board := new Board(new Game(2)),
+		position: seq of nat1 := board.dropableWall(3, 2),
+		position2: seq of nat1 := board.dropableWall(2, 3);
+		
+		assertEqual(hd position, 5);
+		assertEqual(hd tl position, 2);
+		
+		assertEqual(hd position2, 2);
+		assertEqual(hd tl position2, 5);
+		
+		assertTrue(board.addWall(3, 16));
+		
+		assertEqual(board.dropableWall(4, 15), nil);
+		
+		assertEqual(board.dropableWall(1, 7), nil);
+		assertEqual(board.dropableWall(2, 2), nil);
+				
 	);
 	
 end TestBoard

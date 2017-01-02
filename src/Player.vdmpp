@@ -90,9 +90,11 @@ operations
 			public pure getTargetCol : () ==> nat
 			getTargetCol() == return self.targetCol;
 
+			-- get the number of walls left for the player
 			public getWalls : () ==> nat
 			getWalls() == return self.walls;
 			
+			-- decrement the value of walls for the player
 			public decWalls : () ==> bool
 			decWalls() ==
 			(

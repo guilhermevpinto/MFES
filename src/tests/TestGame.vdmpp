@@ -63,6 +63,10 @@ operations
 		moves := game.getPossibleMoves();
 		assertTrue(len moves = 4);
 		
+		assertTrue(game.addWall(2, 7));
+		moves := game.getPossibleMoves();
+		assertTrue(len moves = 5);
+		
 		-- player left + wall left
 		game.move(5, 9, game.getPlayer(1));
 		game.move(5, 7, game.getPlayer(2));
@@ -70,6 +74,7 @@ operations
 		assertTrue(len moves = 4);
 		
 		assertTrue(game.addWall(5, 6));
+		assertFalse(game.addWall(5, 6));
 		moves := game.getPossibleMoves();
 		assertTrue(len moves = 5);
 		
@@ -87,7 +92,7 @@ operations
 		game.move(3, 9, game.getPlayer(1));
 		game.move(5, 9, game.getPlayer(2));
 		moves := game.getPossibleMoves();
-		assertTrue(len moves = 4);
+		assertTrue(len moves = 3);
 		
 		-- test horizontal diagonal
 		game.move(5, 15, game.getPlayer(1));
