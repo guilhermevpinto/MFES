@@ -15,7 +15,7 @@ public class Position extends JPanel {
 	private int height = QuaridorGui.WT * 4;
 	private int row;
 	private int col;
-	private boolean selected;
+	public boolean selected;
 	
 	public Position(int col, int row, int x, int y) {
 		this.x = x;

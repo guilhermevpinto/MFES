@@ -47,7 +47,7 @@ public class Wall extends JPanel {
 				if (hover) {
 					if(QuaridorGui.game.addWall((long)row, (long)col))
 					{
-						QuaridorGui.refresh();
+						QuaridorGui.next();
 					}
 				}
 			}

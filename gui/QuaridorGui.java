@@ -269,7 +269,8 @@ public class QuaridorGui {
 				if((row % 2) == 1) {
 
 					if (Utils.equals(Utils.get(board, SeqUtil.seq((long)row, (long)col)), Quaridor.quotes.FREEQuote.getInstance()) | Utils.equals(Utils.get(board, SeqUtil.seq((long)row,(long)col)), Quaridor.quotes.OCCUPIEDQuote.getInstance())) {
-						//((Position)boardGUI.get(row-1).get(col-1)).unsetSelected();
+						if(((Position)boardGUI.get(row-1).get(col-1)).selected)
+						((Position)boardGUI.get(row-1).get(col-1)).unsetSelected();
 					}
 					else if (Utils.equals(Utils.get(board, SeqUtil.seq((long)row,(long)col)), Quaridor.quotes.NOWALLQuote.getInstance())) {
 						((Wall)boardGUI.get(row-1).get(col-1)).unhoverWall();
@@ -298,7 +299,7 @@ public class QuaridorGui {
 	
 	public static void movePlayer(int row, int col) {
 		if(currentPlayerSelected) {
-			game.move(row, col, game.getPlayer(game.getCurrentPlayer()));
+			game.move((long)row, (long)col, game.getPlayer(game.getCurrentPlayer()));
 			int playerindex = game.getCurrentPlayer().intValue() - 1;
 			gui.Player p = (Player) playersGUI.get(playerindex);
 			
