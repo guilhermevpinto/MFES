@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import org.overture.codegen.runtime.SeqUtil;
@@ -312,7 +313,29 @@ public class QuaridorGui {
 	
 	public static void next() {
 		game.updateBoard();
-		game.switchPlayer();
+
 		refresh();
+		if(game.currentPlayerWin()) {
+			String msg = "Congratulations, the " + getPlayerColor(game.getCurrentPlayer().intValue()) + " player won!!!";
+			JOptionPane.showMessageDialog(null, msg);
+			frame.dispose();
+		}
+		
+		game.switchPlayer();
+	}
+	
+	private static String getPlayerColor(int id) {
+		switch (id) {
+		case 1 : 
+			return "RED";
+		case 2 : 
+			return "GREEN";
+		case 3 :
+			return "YELLOW";
+		case 4 :
+			return "PURPLE";
+		default : 
+			return "RED";
+		}
 	}
 }
