@@ -91,7 +91,13 @@ operations
 		
 		-- adds a wall to the board on the specified coordinates
 		public addWall : nat1 * nat1 ==> bool
-		addWall(row, col) == board.addWall(row,col);
+		addWall(row, col) == 
+		(
+			dcl player : Player := getPlayer(getCurrentPlayer());
+			if(player.getWalls() > 0 and board.addWall(row,col))
+				then return player.decWalls()
+				else return false;
+		);
 		
 		-- returns the possible moves for the current player
 		public getPossibleMoves: () ==> seq of Point

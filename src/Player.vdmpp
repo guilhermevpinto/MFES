@@ -90,4 +90,19 @@ operations
 			public pure getTargetCol : () ==> nat
 			getTargetCol() == return self.targetCol;
 
+			public getWalls : () ==> nat
+			getWalls() == return self.walls;
+			
+			public decWalls : () ==> bool
+			decWalls() ==
+			(
+				if(self.walls > 0)
+				then 
+				(
+					walls := self.walls - 1;
+					return true;
+				)
+				else return false;
+			);
+			
 end Player
