@@ -6,7 +6,7 @@ instance variables
 			-- coordinates of the player's current location
 			private position: [Point];
 			-- remaining walls that the player can still placed in the map
-			private walls : [nat] := 10;
+			private walls : [nat];
 			-- row that the player aims to reach in order to complete the objective
 			private targetRow : nat := 0;
 			-- column that the player aims to reach in order to complete the objective (for 4 players)
@@ -15,36 +15,40 @@ instance variables
 operations
 
 			-- constructor
-			public Player: nat ==> Player
-			Player(id) ==
+			public Player: nat * nat ==> Player
+			Player(id, numWalls) ==
 			(
 				if id = 1
 				then (
 					position := new Point(1,9);
 					targetRow := 17;
 					numberID := id;
+					walls := numWalls;
 				)
 				else if id = 2
 				then (
 					position := new Point(17,9);
 					targetRow := 1;
 					numberID := id;
+					walls := numWalls;
 				)
 				else if id = 3
 				then (
 					position := new Point(9,1);
 					targetCol := 17;
 					numberID := id;
+					walls := numWalls;
 				)
 				else if id = 4
 				then (
 					position := new Point(9,17);
 					targetCol := 1;
 					numberID := id;
+					walls := numWalls;
 				);
 			)
 			pre id > 0 and id < 5
-			post position <> nil and (targetRow <> 0 or targetCol <> 0) and numberID <> nil and walls = 10;
+			post position <> nil and (targetRow <> 0 or targetCol <> 0) and numberID <> nil and (walls = 10 or walls = 5);
 			
 			-- getting the current position of the player
 			public pure getPosition : () ==> Point 

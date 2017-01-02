@@ -15,9 +15,9 @@ operations
 		Game(number) ==
 		(
 			if number = 2
-			then players := [new Player(1), new Player(2)]
+			then players := [new Player(1,10), new Player(2,10)]
 			else if number = 4 
-			then players := [new Player(1), new Player(2), new Player(3), new Player(4)];
+			then players := [new Player(1,5), new Player(2,5), new Player(3,5), new Player(4,5)];
 			currentPlayerID := 1;
 			board := new Board(self);
 			updateBoard();
@@ -451,13 +451,32 @@ operations
 		public updateBoard : () ==> () 
 		updateBoard() ==
 		(
-			dcl player1: Player := getPlayer(1),
-			player2: Player := getPlayer(2),
-			p1_position: Point := player1.getPosition(),
-			p2_position: Point := player2.getPosition();
-			
-			board.setBoardPosition(p1_position);
-			board.setBoardPosition(p2_position);
+			if(len players = 2) 
+			then (
+				dcl player1: Player := getPlayer(1),
+				player2: Player := getPlayer(2),
+				p1_position: Point := player1.getPosition(),
+				p2_position: Point := player2.getPosition();
+				
+				board.setBoardPosition(p1_position);
+				board.setBoardPosition(p2_position);
+			)
+			else if(len players = 4)
+			then (
+				dcl player1: Player := getPlayer(1),
+				player2: Player := getPlayer(2),
+				player3: Player := getPlayer(3),
+				player4: Player := getPlayer(4),
+				p1_position: Point := player1.getPosition(),
+				p2_position: Point := player2.getPosition(),
+				p3_position: Point := player3.getPosition(),
+				p4_position: Point := player4.getPosition();
+				
+				board.setBoardPosition(p1_position);
+				board.setBoardPosition(p2_position);
+				board.setBoardPosition(p3_position);
+				board.setBoardPosition(p4_position);
+			);
 		);
 		
 		-- update board by erasing the old player's position
