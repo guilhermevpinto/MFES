@@ -29,9 +29,12 @@ public class HoverPanel extends JPanel {
 	private void readImages(String type) {
 		
 		try {
-			if(type.equals("jogar")){
-				nohover = ImageIO.read(new File(getClass().getResource("images/jogar.png").toURI()));
-				hover = ImageIO.read(new File(getClass().getResource("images/jogar_hover.png").toURI()));
+			if(type.equals("2jog")){
+				nohover = ImageIO.read(new File(getClass().getResource("images/2jogadores.png").toURI()));
+				hover = ImageIO.read(new File(getClass().getResource("images/2jogadores_hover.png").toURI()));
+			}else if(type.equals("4jog")){
+				nohover = ImageIO.read(new File(getClass().getResource("images/4jogadores.png").toURI()));
+				hover = ImageIO.read(new File(getClass().getResource("images/4jogadores_hover.png").toURI()));
 			}else if(type.equals("regras")){
 				nohover = ImageIO.read(new File(getClass().getResource("images/regras.png").toURI()));
 				hover = ImageIO.read(new File(getClass().getResource("images/regras_hover.png").toURI()));

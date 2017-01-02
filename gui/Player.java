@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 
 import org.overture.codegen.runtime.VDMSeq;
 
-import Quaridor.Point;
+import MFES.Point;
 
 @SuppressWarnings({"serial","unused"})
 public class Player extends JPanel {

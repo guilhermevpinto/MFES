@@ -5,7 +5,7 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JOptionPane;
 
-import Quaridor.Game;
+import MFES.Game;
 
 public class MyKeyListener implements KeyListener {
 
@@ -40,7 +40,7 @@ public class MyKeyListener implements KeyListener {
 		String first = "Current Player : " + QuaridorGui.getPlayerColor(game.getCurrentPlayer().intValue());
 		String second = "";
 		for(Object o : game.getPlayers()){
-			Quaridor.Player p = (Quaridor.Player)o;
+			MFES.Player p = (MFES.Player)o;
 			second += QuaridorGui.getPlayerColor(p.getPlayerID().intValue()) + ": " + p.getWalls() + " remaining walls\n";
 		}
 		return first + "\n\n" + "----------------------- \n\n" + second;

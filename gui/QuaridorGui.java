@@ -13,8 +13,8 @@ import org.overture.codegen.runtime.SeqUtil;
 import org.overture.codegen.runtime.Utils;
 import org.overture.codegen.runtime.VDMMap;
 
-import Quaridor.Board;
-import Quaridor.Game;
+import MFES.Board;
+import MFES.Game;
 
 public class QuaridorGui {
 	
@@ -51,7 +51,8 @@ public class QuaridorGui {
 		
 		JLayeredPane lpane = new JLayeredPane();
 	    JPanel panelQuaridor = new Background("quaridor");
-	    HoverPanel panelJogar = new HoverPanel("jogar");
+	    HoverPanel panel2Jogadores = new HoverPanel("2jog");
+	    HoverPanel panel4Jogadores = new HoverPanel("4jog");
 	    HoverPanel panelRegras = new HoverPanel("regras");
 		
 	    frame = new JFrame("Quaridor Menu");
@@ -65,15 +66,19 @@ public class QuaridorGui {
         panelQuaridor.setBounds(0, 0, 615, 365);
         panelQuaridor.setOpaque(true);
         
-        panelJogar.setBounds(210, 180, 180, 60);
-        panelJogar.setOpaque(false);
+        panel2Jogadores.setBounds(170, 168, 250, 35);
+        panel2Jogadores.setOpaque(false);
+        
+        panel4Jogadores.setBounds(170, 205, 250, 35);
+        panel4Jogadores.setOpaque(false);
         
         panelRegras.setBounds(252, 240, 100, 30);
         panelRegras.setOpaque(false);
         
         lpane.add(panelQuaridor, new Integer(0), 0);
-        lpane.add(panelJogar, new Integer(1), 0);
-        lpane.add(panelRegras, new Integer(2), 0);
+        lpane.add(panel2Jogadores, new Integer(1), 0);
+        lpane.add(panel4Jogadores, new Integer(2), 0);
+        lpane.add(panelRegras, new Integer(3), 0);
         
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -81,8 +86,10 @@ public class QuaridorGui {
         
         // AVISO código trolha
         while(true){
-        	if(panelJogar.getState()){
+        	if(panel2Jogadores.getState()){
             	break;
+        	}else if(panel4Jogadores.getState()){
+        		break;
         	}
             else if(panelRegras.getState()){
             	break;
@@ -92,8 +99,14 @@ public class QuaridorGui {
         
         frame.setVisible(false);
         
-        if(panelJogar.getState())
+        if(panel2Jogadores.getState()){
+        	game = new Game(2);
         	startGame();
+        }
+        else if(panel4Jogadores.getState()){
+        	game = new Game(4);
+        	startGame();
+        }
         else if(panelRegras.getState())
         	displayRegras();
         
@@ -172,9 +185,9 @@ public class QuaridorGui {
 	@SuppressWarnings("unchecked")
 	public static void loadPlayers(JPanel main) {
 		
-		ArrayList<Quaridor.Player> players = (ArrayList<Quaridor.Player>) game.getPlayers();
+		ArrayList<MFES.Player> players = (ArrayList<MFES.Player>) game.getPlayers();
 		
-		for(Quaridor.Player p : players) {
+		for(MFES.Player p : players) {
 
 			int col = p.getPosition().getY().intValue();
 			int row = (int)p.getPosition().getX().intValue();
@@ -211,7 +224,7 @@ public class QuaridorGui {
 				
 				if((row % 2) == 1) {
 
-					if (Utils.equals(Utils.get(board, SeqUtil.seq((long)row, (long)col)), Quaridor.quotes.FREEQuote.getInstance()) | Utils.equals(Utils.get(board, SeqUtil.seq((long)row,(long)col)), Quaridor.quotes.OCCUPIEDQuote.getInstance())) {
+					if (Utils.equals(Utils.get(board, SeqUtil.seq((long)row, (long)col)), MFES.quotes.FREEQuote.getInstance()) | Utils.equals(Utils.get(board, SeqUtil.seq((long)row,(long)col)), MFES.quotes.OCCUPIEDQuote.getInstance())) {
 						
 						Position p = new Position(col, row, colPixel, rowPixel);
 						main.add(p);
@@ -220,7 +233,7 @@ public class QuaridorGui {
 						
 						colPixel += QuaridorGui.WT * 4;
 					}
-					else if (Utils.equals(Utils.get(board, SeqUtil.seq((long)row,(long)col)), Quaridor.quotes.NOWALLQuote.getInstance())) {
+					else if (Utils.equals(Utils.get(board, SeqUtil.seq((long)row,(long)col)), MFES.quotes.NOWALLQuote.getInstance())) {
 						
 						Wall w = new Wall(col, row, colPixel, rowPixel, Wall.Orientation.VER);
 						main.add(w);
@@ -232,7 +245,7 @@ public class QuaridorGui {
 				}
 				else if((row % 2) == 0) {
 					
-					if (Utils.equals(Utils.get(board, SeqUtil.seq((long)row, (long)col)), Quaridor.quotes.NOWALLQuote.getInstance()) & (col % 2) == 1) {
+					if (Utils.equals(Utils.get(board, SeqUtil.seq((long)row, (long)col)), MFES.quotes.NOWALLQuote.getInstance()) & (col % 2) == 1) {
 
 						Wall w = new Wall(col, row, colPixel, rowPixel, Wall.Orientation.HOR);
 						main.add(w);
@@ -277,23 +290,23 @@ public class QuaridorGui {
 				
 				if((row % 2) == 1) {
 
-					if (Utils.equals(Utils.get(board, SeqUtil.seq((long)row, (long)col)), Quaridor.quotes.FREEQuote.getInstance()) | Utils.equals(Utils.get(board, SeqUtil.seq((long)row,(long)col)), Quaridor.quotes.OCCUPIEDQuote.getInstance())) {
+					if (Utils.equals(Utils.get(board, SeqUtil.seq((long)row, (long)col)), MFES.quotes.FREEQuote.getInstance()) | Utils.equals(Utils.get(board, SeqUtil.seq((long)row,(long)col)), MFES.quotes.OCCUPIEDQuote.getInstance())) {
 						if(((Position)boardGUI.get(row-1).get(col-1)).selected)
 						((Position)boardGUI.get(row-1).get(col-1)).unsetSelected();
 					}
-					else if (Utils.equals(Utils.get(board, SeqUtil.seq((long)row,(long)col)), Quaridor.quotes.NOWALLQuote.getInstance())) {
+					else if (Utils.equals(Utils.get(board, SeqUtil.seq((long)row,(long)col)), MFES.quotes.NOWALLQuote.getInstance())) {
 						((Wall)boardGUI.get(row-1).get(col-1)).unhoverWall();
 					}
-					else if (Utils.equals(Utils.get(board, SeqUtil.seq((long)row,(long)col)), Quaridor.quotes.WALLQuote.getInstance())) {
+					else if (Utils.equals(Utils.get(board, SeqUtil.seq((long)row,(long)col)), MFES.quotes.WALLQuote.getInstance())) {
 						((Wall)boardGUI.get(row-1).get(col-1)).setWall();
 					}
 				}
 				else if((row % 2) == 0) {
 					
-					if (Utils.equals(Utils.get(board, SeqUtil.seq((long)row, (long)col)), Quaridor.quotes.NOWALLQuote.getInstance()) & (col % 2) == 1) {
+					if (Utils.equals(Utils.get(board, SeqUtil.seq((long)row, (long)col)), MFES.quotes.NOWALLQuote.getInstance()) & (col % 2) == 1) {
 						((Wall)boardGUI.get(row-1).get(col-1)).unhoverWall();
 					}
-					else if (Utils.equals(Utils.get(board, SeqUtil.seq((long)row, (long)col)), Quaridor.quotes.WALLQuote.getInstance()) & (col % 2) == 1) {
+					else if (Utils.equals(Utils.get(board, SeqUtil.seq((long)row, (long)col)), MFES.quotes.WALLQuote.getInstance()) & (col % 2) == 1) {
 						((Wall)boardGUI.get(row-1).get(col-1)).setWall();
 					}
 				}
