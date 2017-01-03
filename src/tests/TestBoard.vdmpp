@@ -19,7 +19,7 @@ operations
 	private testConstructor : () ==> ()
 	testConstructor() ==
 	(
-		board := new Board(new Game());
+		board := new Board(new Game(2));
 		assertTrue(card(dom board.board) = 289);
 		assertEqual(board.board, board.conectivity);
 	);
@@ -27,7 +27,7 @@ operations
 	private testResetConectivity : () ==> ()
 	testResetConectivity() ==
 	(
-		board := new Board(new Game());
+		board := new Board(new Game(2));
 		board.conectivity := {|->};
 		assertNotEqual(board.board, board.conectivity);
 		assertTrue(board.resetConectivity());

@@ -7,6 +7,9 @@ instance variables
 	private currentPlayerID : nat1 := 1;
 	-- the board of the game
 	private board : [Board];
+	-- invariant for game class
+	-- the current player's id can never be higher than the number of players in game
+	inv (len players) >= currentPlayerID;
 
 operations
 	
@@ -21,6 +24,7 @@ operations
 			currentPlayerID := 1;
 			board := new Board(self);
 			updateBoard();
+			IO`println(card dom(board.board :> {<OCCUPIED>}));
 		);
 		
 		-- sets a new position in the board for a given player
@@ -31,7 +35,7 @@ operations
 			player.setPosition(new_x, new_y);
 			updateBoard();
 		)
-		pre player <> nil and new_x rem 2 <> 0 and new_y rem 2 <> 0
+		pre player <> nil and new_x rem 2 <> 0 and new_y rem 2 <> 0 
 		post player.getPosition().getX() = new_x and player.getPosition().getY() = new_y;
 
 		-- switches the current player to the next one

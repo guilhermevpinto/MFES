@@ -8,6 +8,9 @@ class Board
 	
 		-- the game instance
 		private game : Game;
+		-- invariant for the board class
+		-- the board must always have 289 positions and there must always be 0, 1, 2, 3 or 4 occupied places on the board
+		inv card(dom board) = 289 and (card dom(board :> {<OCCUPIED>}) >= 0) and (card dom(board :> {<OCCUPIED>}) <= 4);
 	
 		-- the representation of the board
 		public static board : map seq of int to Slot := 
