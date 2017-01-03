@@ -20,7 +20,7 @@ operations
 		
 		dcl
 		game: Game := new Game(2),
-		p2: Player := new Player();
+		p2: Player := new Player(3, 10);
 		
 		game.switchPlayer();
 		assertTrue(game.getCurrentPlayer() = 2);

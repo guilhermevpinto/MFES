@@ -9,11 +9,13 @@ class Board
 		-- the game instance
 		private game : Game;
 		-- invariant for the board class
-		-- the board must always have 289 positions and there must always be 0, 1, 2, 3 or 4 occupied places on the board 
-		-- all board places can only be free, occupied, visited, with a wall or without it
+		-- the board must always have 289 positions and there must always be 0, 1, 2, 3 or 4 occupied places on the board
+		-- odd rows and odd columns are for wall positioning whilst the others are for player positioning
 		inv card(dom board) = 289 and (card dom(board :> {<OCCUPIED>}) >= 0) and (card dom(board :> {<OCCUPIED>}) <= 4)
-			and forall elements in set dom board & (board(elements) = <FREE> or board(elements) = <OCCUPIED> 
-									or board(elements) = <VISITED> or board(elements) = <WALL> or board(elements) = <NOWALL>);
+				and forall [row, col] in set dom board & 
+						(if row rem 2 = 0 then board([row, col]) = <NOWALL> or board([row, col]) = <WALL>
+								else (if col rem 2 = 0 then board([row, col]) = <NOWALL> or board([row, col]) = <WALL>
+										else (board([row, col]) = <FREE> or board([row, col]) = <OCCUPIED>)));
 	
 		-- the representation of the board
 		public static board : map seq of int to Slot := 
@@ -64,7 +66,6 @@ class Board
 			
 		-- an auxiliary board to validate logical plays (droping walls)
 		public conectivity : map seq of nat1 to Slot;
-		
 	
 	operations
 	

@@ -24,7 +24,6 @@ operations
 			currentPlayerID := 1;
 			board := new Board(self);
 			updateBoard();
-			IO`println(card dom(board.board :> {<OCCUPIED>}));
 		);
 		
 		-- sets a new position in the board for a given player

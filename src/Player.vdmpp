@@ -11,6 +11,9 @@ instance variables
 			private targetRow : nat := 0;
 			-- column that the player aims to reach in order to complete the objective (for 4 players)
 			private targetCol : nat := 0;
+			-- invariant for the class
+			-- target rows and columns can never be bigger than the board and the player walls can never be negative
+			inv targetRow <= 17 and targetCol <= 17 and walls >= 0;
 			
 operations
 
