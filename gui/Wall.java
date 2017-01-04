@@ -9,6 +9,8 @@ import javax.swing.JPanel;
 
 import org.overture.codegen.runtime.VDMSeq;
 
+import MFES.Board;
+
 @SuppressWarnings({"serial", "unused"})
 public class Wall extends JPanel {
 	
@@ -54,7 +56,7 @@ public class Wall extends JPanel {
 			}
 			public void mouseEntered(java.awt.event.MouseEvent evt) {
 				if(row != 17 & col != 17){
-					dependenthover = QuaridorGui.game.getBoard().dropableWall((long)row, (long)col);
+					dependenthover = Board.dropableWall(Board.board, (long)row, (long)col);
 					
 					if(dependenthover != null) {
 						

@@ -96,8 +96,8 @@ operations
 		-- verify whether the wall can be put on that position or not
 		dcl 
 		board : Board := new Board(new Game(2)),
-		position: seq of nat1 := board.dropableWall(3, 2),
-		position2: seq of nat1 := board.dropableWall(2, 3);
+		position: [seq of nat1] := board.dropableWall(board.board, 3, 2),
+		position2: [seq of nat1] := board.dropableWall(board.board, 2, 3);
 		
 		assertEqual(hd position, 5);
 		assertEqual(hd tl position, 2);
@@ -107,10 +107,10 @@ operations
 		
 		assertTrue(board.addWall(3, 16));
 		
-		assertEqual(board.dropableWall(4, 15), nil);
+		assertEqual(board.dropableWall(board.board, 4, 15), nil);
 		
-		assertEqual(board.dropableWall(1, 7), nil);
-		assertEqual(board.dropableWall(2, 2), nil);
+		assertEqual(board.dropableWall(board.board, 1, 7), nil);
+		assertEqual(board.dropableWall(board.board, 2, 2), nil);
 				
 	);
 	

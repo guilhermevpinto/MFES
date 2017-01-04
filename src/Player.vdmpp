@@ -12,8 +12,10 @@ instance variables
 			-- column that the player aims to reach in order to complete the objective (for 4 players)
 			private targetCol : nat := 0;
 			-- invariant for the class
-			-- target rows and columns can never be bigger than the board and the player walls can never be negative
-			inv targetRow <= 17 and targetCol <= 17 and walls >= 0;
+			-- target rows and columns can never be bigger than the board
+			inv targetRow <= 17 and targetCol <= 17;
+			-- the player position coordinates must always be odd in row and col
+			inv (position.getX() mod 2 = 1) and (position.getY() mod 2 = 1);
 			
 operations
 

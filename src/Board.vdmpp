@@ -283,27 +283,27 @@ class Board
 			board := board ++ {[p.getX(),p.getY()]  |-> <FREE>}; 
 		);
 		
-		-- remove a wall
-		public dropableWall: nat1 * nat1 ==> [seq of nat1]
-		dropableWall(row, col) == 
-		(
-			if (col mod 2) = 0
-			then
-			(
-				if (board([row,col]) = <NOWALL> and board([row+1,col]) = <NOWALL> and board([row+2,col]) = <NOWALL> and (board([row+1,col-1]) = <NOWALL> or board([row+1,col+1]) = <NOWALL>)) 
-				then return [row+2,col];
-			)
-			else if (row mod 2) = 0
-			then
-			(
-				if (board([row,col]) = <NOWALL> and board([row,col+1]) = <NOWALL> and board([row,col+2]) = <NOWALL> and (board([row-1,col+1]) = <NOWALL> or board([row+1,col+1]) = <NOWALL>))
-				then return [row,col+2];
-			);
-			
-			return nil;
-		);
+		
 functions
-			
+		-- remove a wall
+		public dropableWall: map seq of nat1 to Slot * nat1 * nat1 +> [seq of nat1]
+		dropableWall(board, row, col) == 
+		(
+			if (col mod 2) = 0 and (row mod 2 = 1)
+			then (
+				if (board([row,col]) = <NOWALL> and board([row+1,col]) = <NOWALL> and board([row+2,col]) = <NOWALL> and (board([row+1,col-1]) = <NOWALL> or board([row+1,col+1]) = <NOWALL>)) 
+				then [row+2,col]
+				else nil
+			)
+			else 
+			if (row mod 2) = 0 and (col mod 2) = 1
+			then (
+				if (board([row,col]) = <NOWALL> and board([row,col+1]) = <NOWALL> and board([row,col+2]) = <NOWALL> and (board([row-1,col+1]) = <NOWALL> or board([row+1,col+1]) = <NOWALL>))
+				then [row,col+2]
+				else nil
+			)
+			else nil
+		);
 	
 traces
 -- TODO Define Combinatorial Test Traces here		

@@ -10,7 +10,8 @@ instance variables
 	-- invariant for game class
 	-- the current player's id can never be higher than the number of players in game
 	inv (len players) >= currentPlayerID;
-	inv forall m, n in seq players  &  m.getPlayerID() <> n.getPlayerID();
+	-- it is not possible for two different Players to have the same ID
+	inv not exists m, n in seq players & m.getPlayerID() = n.getPlayerID() and m <> n;
 
 operations
 	
