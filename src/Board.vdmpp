@@ -188,7 +188,8 @@ class Board
 				else return false;
 			)
 		)
-		pre row > 0 and row < 18 and col > 0 and col < 18;
+		pre row > 0 and row < 18 and col > 0 and col < 18
+		post numberOfPlacedWalls(board~) = numberOfPlacedWalls(board) or numberOfPlacedWalls(board~) + 1 = numberOfPlacedWalls(board);
 		
 		
 		
@@ -304,6 +305,11 @@ functions
 			)
 			else nil
 		);
+		
+		-- counts the number of walls in the board
+		public numberOfPlacedWalls: map seq of nat1 to Slot +> nat
+		numberOfPlacedWalls(board) ==
+		card(dom(board :> {<WALL>})) / 3
 	
 traces
 -- TODO Define Combinatorial Test Traces here		

@@ -75,10 +75,13 @@ operations
 		-- second attempt
 		board := new Board(new Game(2));
 		assertTrue(board.addWall(2,1));
+		assertEqual(board.numberOfPlacedWalls(board.board),1);
 		assertTrue(board.board([2,1]) = <WALL> and board.board([2,3]) = <WALL> and board.board([2,5]) = <NOWALL> and board.board([2,6]) = <NOWALL> and board.board([2,7]) = <NOWALL>);
 		assertTrue(board.addWall(2,5));
+		assertEqual(board.numberOfPlacedWalls(board.board),2);
 		assertTrue(board.addWall(2,9));
 		assertTrue(board.addWall(2,13));
+		assertEqual(board.numberOfPlacedWalls(board.board),4);
 		assertTrue(board.addWall(3,16));
 		assertFalse(board.addWall(6,15));
 		assertTrue(
