@@ -11,7 +11,7 @@ class Board
 		-- invariant for the board class
 		-- the board must always have 289 positions and there must always be 0, 1, 2, 3 or 4 occupied places on the board
 		-- odd rows and odd columns are for wall positioning whilst the others are for player positioning
-		inv card(dom board) = 289 and (card dom(board :> {<OCCUPIED>}) >= 0) and (card dom(board :> {<OCCUPIED>}) <= 4)
+		inv card(dom board) = 289 and (card dom(board :> {<OCCUPIED>}) <= 4)
 				and forall [row, col] in set dom board & 
 						(if row rem 2 = 0 then board([row, col]) = <NOWALL> or board([row, col]) = <WALL>
 								else (if col rem 2 = 0 then board([row, col]) = <NOWALL> or board([row, col]) = <WALL>
@@ -192,7 +192,6 @@ class Board
 		post numberOfPlacedWalls(board~) = numberOfPlacedWalls(board) or numberOfPlacedWalls(board~) + 1 = numberOfPlacedWalls(board);
 		
 		
-		
 		-- checks whether the player can get to the target row or not
 		public pathToDestination : Player * nat1 * nat1 ==> bool
 		pathToDestination(p, row, col) ==
@@ -304,7 +303,8 @@ functions
 				else nil
 			)
 			else nil
-		);
+		)
+		pre row > 0 and row < 18 and col > 0 and col < 18;
 		
 		-- counts the number of walls in the board
 		public numberOfPlacedWalls: map seq of nat1 to Slot +> nat

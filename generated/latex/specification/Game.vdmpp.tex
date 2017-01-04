@@ -1,0 +1,614 @@
+\begin{vdmpp}[breaklines=true]
+class Game
+
+instance variables
+ -- the players on the game
+ private players : seq of Player := [];
+ -- the player that is currently making a move
+ private currentPlayerID : nat1 := 1;
+ -- the board of the game
+ private board : [Board];
+ -- invariant for game class
+ -- the current player's id can never be higher than the number of players in game
+ inv (len players) >= currentPlayerID;
+ -- it is not possible for two different Players to have the same ID
+ inv not exists m, n in seq players & m.getPlayerID() = n.getPlayerID() and m <> n;
+
+operations
+(*@
+\label{Game:17}
+@*)
+ 
+  -- game constructor
+  public Game : nat1 ==> Game
+  Game(number) ==
+  (
+   if number = 2
+   then players := [new Player(1,10), new Player(2,10)]
+   else if number = 4 
+   then players := [new Player(1,5), new Player(2,5), new Player(3,5), new Player(4,5)];
+   currentPlayerID := 1;
+   board := new Board(self);
+   updateBoard();
+  );
+(*@
+\label{move:30}
+@*)
+  
+  -- sets a new position in the board for a given player
+  public move: nat1 * nat1 * [Player] ==> ()
+  move(new_x, new_y, player) ==
+  (
+   eraseOldPosition(player.getPosition());
+   player.setPosition(new_x, new_y);
+   updateBoard();
+  )
+  pre player <> nil and new_x rem 2 <> 0 and new_y rem 2 <> 0 
+  post player.getPosition().getX() = new_x and player.getPosition().getY() = new_y;
+(*@
+\label{switchPlayer:41}
+@*)
+
+  -- switches the current player to the next one
+  public switchPlayer : () ==> ()
+  switchPlayer() == 
+  if len players = 2
+  then
+  (
+   if currentPlayerID = 1 then currentPlayerID := 2 
+   else currentPlayerID := 1;
+  )
+  else if len players = 4
+  then
+  (
+   if currentPlayerID = 1 then currentPlayerID := 2 
+   else if currentPlayerID = 2 then currentPlayerID := 3
+   else if currentPlayerID = 3 then currentPlayerID := 4 
+   else currentPlayerID := 1;
+  );
+(*@
+\label{getPlayer:59}
+@*)
+  
+  -- returns the player with the specified id
+  public getPlayer :nat1 ==>Player 
+  getPlayer(id) ==
+  return [player | player in seq players  &  player.getPlayerID() = id](1);
+(*@
+\label{getCurrentPlayer:64}
+@*)
+  
+  -- returns the current player's id
+  public getCurrentPlayer : () ==> nat1
+  getCurrentPlayer() ==
+  return currentPlayerID;
+(*@
+\label{currentPlayerWin:69}
+@*)
+  
+  -- verify wether the player won
+  public currentPlayerWin : () ==> bool
+  currentPlayerWin() ==
+  (
+   if (getPlayer(currentPlayerID).getTargetRow() <> 0 and getPlayer(currentPlayerID).getPosition().getX() = getPlayer(currentPlayerID).getTargetRow()) 
+     or 
+    (getPlayer(currentPlayerID).getTargetCol() <> 0 and getPlayer(currentPlayerID).getPosition().getY() = getPlayer(currentPlayerID).getTargetCol())
+     then return true
+   else return false;  
+  );
+(*@
+\label{addPlayer:80}
+@*)
+  
+  -- adds a player to the players list
+  public addPlayer: Player ==> ()
+   addPlayer(p) ==
+   (
+    players := players^[p];
+   )
+   post len players <> 0;
+(*@
+\label{getBoard:88}
+@*)
+
+  -- retrieve board from game instance
+  public getBoard : () ==> Board
+  getBoard() == return self.board;
+(*@
+\label{getPlayers:92}
+@*)
+  
+  -- retrieve players from game instance
+  public getPlayers : () ==> seq of Player
+  getPlayers() == return self.players;
+(*@
+\label{addWall:96}
+@*)
+  
+  -- adds a wall to the board on the specified coordinates
+  public addWall : nat1 * nat1 ==> bool
+  addWall(row, col) == 
+  (
+   dcl player : Player := getPlayer(getCurrentPlayer());
+   if(player.getWalls() > 0 and board.addWall(row,col))
+    then return player.decWalls()
+    else return false;
+  )
+(*@
+\label{getPossibleMoves:106}
+@*)
+  pre ((row mod 2 = 1) and (col mod 2 = 0)) or ((row mod 2 = 0) and (col mod 2 = 1));
+  
+  -- returns the possible moves for the current player
+  public getPossibleMoves: () ==> seq of Point
+  getPossibleMoves() ==
+  (
+   dcl moves: seq of Point := [],
+   special_moves: seq of Point := [],
+   p: Player := getPlayer(currentPlayerID),
+   p_x: nat1 := p.getPosition().getX(),
+   p_y: nat1 := p.getPosition().getY(),
+   x: nat1, y: nat1;
+   
+   -- upper position exists 
+   if(p_x <> 1)
+   then
+   (
+    if board.board([p_x-1,p_y]) = <NOWALL>
+    then
+    (
+     if board.board([p_x-2,p_y]) = <FREE>
+     then
+     (
+      x := (p_x-2);
+      y := p_y;
+      moves := moves^[new Point(x, y)];
+     )
+     else
+     (
+      -- jump over another player
+      special_moves := special_moves^verifyPlayerJump(p_x-2, p_y, "up");
+      moves := moves^special_moves;
+     );
+    );
+   );
+   -- left position exists
+   if(p_y <> 1)
+   then
+   (
+    if board.board([p_x,p_y-1]) = <NOWALL>
+    then
+    (
+     if board.board([p_x,p_y-2]) = <FREE>
+     then
+     (
+      x := p_x;
+      y := (p_y-2);
+      moves := moves^[new Point(x, y)];
+     )
+     else
+     (
+      -- jump over another player
+      special_moves := special_moves^verifyPlayerJump(p_x, p_y-2, "left");
+      moves := moves^special_moves;
+     );
+    );
+   );
+   -- right position exists
+   if(p_y <> 17)
+   then
+   (
+    if board.board([p_x,p_y+1]) = <NOWALL>
+    then
+    (
+     if board.board([p_x,p_y+2]) = <FREE>
+     then
+     (
+      x := p_x;
+      y := (p_y+2);
+      moves := moves^[new Point(x, y)];
+     )
+     else
+     (
+      -- jump over another player
+      special_moves := special_moves^verifyPlayerJump(p_x, p_y+2, "right");
+      moves := moves^special_moves;
+     );
+    );
+   );
+   -- bottom position exists
+   if(p_x <> 17)
+   then
+   (
+    if board.board([p_x+1,p_y]) = <NOWALL>
+    then
+    (
+     if board.board([p_x+2,p_y]) = <FREE>
+     then
+     (
+      x := (p_x+2);
+      y := p_y;
+      moves := moves^[new Point(x, y)];
+     )
+     else
+     (
+      -- jump over another player
+      special_moves := special_moves^verifyPlayerJump(p_x+2, p_y, "down");
+      moves := moves^special_moves;
+     );
+    );
+   );
+   
+   return moves;
+(*@
+\label{verifyPlayerJump:209}
+@*)
+  );
+  
+  -- verifies whether the player can jump over another player
+  public verifyPlayerJump: nat1 * nat1 * seq of char ==> seq of Point
+  verifyPlayerJump(x, y, direction) ==
+  (
+   if board.board([x,y]) = <OCCUPIED>
+   then
+   (
+    if direction = "up"
+    then
+    (
+     return checkUpMove(x, y);
+    )
+    else
+    (
+     if direction = "left"
+     then
+     (
+      return checkLeftMove(x, y);
+     )
+     else
+     (
+      if direction = "right"
+      then
+      (
+       return checkRightMove(x, y);
+      )
+      else
+      (
+       if direction = "down"
+       then
+       (
+        return checkDownMove(x, y);
+       )
+       else
+       (*@\vdmnotcovered{(}@*)
+        (*@\vdmnotcovered{return}@*) (*@\vdmnotcovered{[}@*)];
+       );
+      );
+     );
+    );
+   )
+   else
+   (*@\vdmnotcovered{(}@*)
+    (*@\vdmnotcovered{return}@*) (*@\vdmnotcovered{[}@*)];
+   );
+(*@
+\label{checkUpMove:256}
+@*)
+  );
+  
+  -- check possible up movement
+  private checkUpMove : nat1 * nat1 ==> seq of Point
+  checkUpMove(x, y) ==
+  (
+  
+   dcl special: seq of Point := [];
+   
+   if(x <> 1)
+   then
+   (
+    if board.board([x-1,y]) = <NOWALL>
+    then
+    (
+     if board.board([x-2,y]) = <FREE>
+     then
+     (
+      special := special^[new Point(x-2, y)];
+     )
+    )
+    -- check special case with oponent + wall followed by each other
+    else
+    (
+     special := special^checkDiagonalHorizontal(x, y);
+    );
+   );
+   
+   return special;
+    
+(*@
+\label{checkLeftMove:286}
+@*)
+  );
+  
+  -- check possible left movement
+  private checkLeftMove : nat1 * nat1 ==> seq of Point
+  checkLeftMove(x, y) ==
+  (
+   
+   dcl special: seq of Point := [];
+   
+   if(y <> 1)
+   then
+   (
+    if board.board([x,y-1]) = <NOWALL>
+    then
+    (
+     if board.board([x,y-2]) = <FREE>
+     then
+     (
+      special := special^[new Point(x, y-2)];
+     )
+    )
+    -- check special case with oponent + wall followed by each other
+    else
+    (
+     special := special^checkDiagonalVertical(x, y);
+    );
+   );
+   
+   return special;
+   
+(*@
+\label{checkRightMove:316}
+@*)
+  );
+  
+  -- check possible right movement
+  private checkRightMove : nat1 * nat1 ==> seq of Point
+  checkRightMove(x, y) ==
+  ( 
+  
+   dcl special: seq of Point := [];
+   
+   if(y <> 17)
+   then
+   (
+    if board.board([x,y+1]) = <NOWALL>
+    then
+    (
+     if board.board([x,y+2]) = <FREE>
+     then
+     (
+      special := special^[new Point(x, y+2)];
+     )
+    )
+    -- check special case with oponent + wall followed by each other
+    else
+    (
+     special := special^checkDiagonalVertical(x, y);
+    );
+   );
+   
+   return special;
+   
+(*@
+\label{checkDownMove:346}
+@*)
+  );
+  
+  -- check possible down movement
+  private checkDownMove : nat1 * nat1 ==> seq of Point
+  checkDownMove(x, y) ==
+  (
+  
+   dcl special: seq of Point := [];
+  
+   if(x <> 17)
+   then
+   (
+    if board.board([x+1,y]) = <NOWALL>
+    then
+    (
+     if board.board([x+2,y]) = <FREE>
+     then
+     (
+      special := special^[new Point(x+2, y)];
+     )
+    )
+    -- check special case with oponent + wall followed by each other
+    else
+    (
+     special := special^checkDiagonalHorizontal(x, y);
+    );
+   );
+   
+   return special;
+   
+(*@
+\label{checkDiagonalHorizontal:376}
+@*)
+  );
+  
+  -- check diagonal movement direction horizontal in special cases
+  private checkDiagonalHorizontal : nat1 * nat1 ==> seq of Point
+  checkDiagonalHorizontal(x, y) ==
+  (
+  
+   dcl special: seq of Point := [];
+   
+   -- check if the movement to the left is possible
+   if y <> 1
+   then
+   (
+    -- check for walls on the left
+    if board.board([x,y-1]) = <NOWALL>
+    then
+    (
+     if board.board([x,y-2]) = <FREE>
+     then
+     (
+      special := special^[new Point(x, y-2)];
+     )
+    );
+   );
+   -- check if the movement to the right is possible
+   if y <> 17
+   then
+   (
+    -- check for walls on the right
+    if board.board([x,y+1]) = <NOWALL>
+    then
+    (
+     if board.board([x,y+2]) = <FREE>
+     then
+     (
+      special := special^[new Point(x, y+2)];
+     )
+    );
+   );
+   
+   return special;
+   
+(*@
+\label{checkDiagonalVertical:418}
+@*)
+  );
+  
+  -- check diagonal movement direction vertical in special cases
+  private checkDiagonalVertical : nat1 * nat1 ==> seq of Point
+  checkDiagonalVertical(x, y) ==
+  (
+  
+   dcl special: seq of Point := [];
+   
+   -- check if the movement up is possible
+   if x <> 1
+   then
+   (
+    -- check for walls up
+    if board.board([x-1,y]) = <NOWALL>
+    then
+    (
+     if board.board([x-2,y]) = <FREE>
+     then
+     (
+      special := special^[new Point(x-2, y)];
+     )
+    );
+   );
+   -- check if the movement down is possible
+   if x <> 17
+   then
+   (
+    -- check for walls down
+    if board.board([x+1,y]) = <NOWALL>
+    then
+    (
+     if board.board([x+2,y]) = <FREE>
+     then
+     (
+      special := special^[new Point(x+2, y)];
+     )
+    );
+   );
+  
+   return special;
+   
+(*@
+\label{updateBoard:460}
+@*)
+  );
+  
+  -- update board according to player's positions
+  public updateBoard : () ==> () 
+  updateBoard() ==
+  (
+   if(len players = 2) 
+   then (
+    dcl player1: Player := getPlayer(1),
+    player2: Player := getPlayer(2),
+    p1_position: Point := player1.getPosition(),
+    p2_position: Point := player2.getPosition();
+    
+    board.setBoardPosition(p1_position);
+    board.setBoardPosition(p2_position);
+   )
+   else if(len players = 4)
+   then (
+    dcl player1: Player := getPlayer(1),
+    player2: Player := getPlayer(2),
+    player3: Player := getPlayer(3),
+    player4: Player := getPlayer(4),
+    p1_position: Point := player1.getPosition(),
+    p2_position: Point := player2.getPosition(),
+    p3_position: Point := player3.getPosition(),
+    p4_position: Point := player4.getPosition();
+    
+    board.setBoardPosition(p1_position);
+    board.setBoardPosition(p2_position);
+    board.setBoardPosition(p3_position);
+    board.setBoardPosition(p4_position);
+   );
+(*@
+\label{eraseOldPosition:492}
+@*)
+  );
+  
+  -- update board by erasing the old player's position
+  public eraseOldPosition : Point ==> ()
+  eraseOldPosition(old_position) ==
+  (
+   board.unsetBoardPosition(old_position);
+  );
+
+end Game
+\end{vdmpp}
+\bigskip
+\begin{longtable}{|l|r|r|r|}
+\hline
+Function or operation & Line & Coverage & Calls \\
+\hline
+\hline
+\hyperref[Game:17]{Game} & 17&100.0\% & 68 \\
+\hline
+\hyperref[addPlayer:80]{addPlayer} & 80&100.0\% & 5 \\
+\hline
+\hyperref[addWall:96]{addWall} & 96&100.0\% & 25 \\
+\hline
+\hyperref[checkDiagonalHorizontal:376]{checkDiagonalHorizontal} & 376&100.0\% & 2 \\
+\hline
+\hyperref[checkDiagonalVertical:418]{checkDiagonalVertical} & 418&100.0\% & 2 \\
+\hline
+\hyperref[checkDownMove:346]{checkDownMove} & 346&100.0\% & 3 \\
+\hline
+\hyperref[checkLeftMove:286]{checkLeftMove} & 286&100.0\% & 2 \\
+\hline
+\hyperref[checkRightMove:316]{checkRightMove} & 316&100.0\% & 2 \\
+\hline
+\hyperref[checkUpMove:256]{checkUpMove} & 256&100.0\% & 3 \\
+\hline
+\hyperref[currentPlayerWin:69]{currentPlayerWin} & 69&100.0\% & 15 \\
+\hline
+\hyperref[eraseOldPosition:492]{eraseOldPosition} & 492&100.0\% & 16 \\
+\hline
+\hyperref[getBoard:88]{getBoard} & 88&100.0\% & 15 \\
+\hline
+\hyperref[getCurrentPlayer:64]{getCurrentPlayer} & 64&100.0\% & 60 \\
+\hline
+\hyperref[getPlayer:59]{getPlayer} & 59&100.0\% & 516 \\
+\hline
+\hyperref[getPlayers:92]{getPlayers} & 92&100.0\% & 156 \\
+\hline
+\hyperref[getPossibleMoves:106]{getPossibleMoves} & 106&100.0\% & 10 \\
+\hline
+\hyperref[move:30]{move} & 30&100.0\% & 75 \\
+\hline
+\hyperref[switchPlayer:41]{switchPlayer} & 41&100.0\% & 45 \\
+\hline
+\hyperref[updateBoard:460]{updateBoard} & 460&100.0\% & 24 \\
+\hline
+\hyperref[verifyPlayerJump:209]{verifyPlayerJump} & 209&89.0\% & 10 \\
+\hline
+\hline
+Game.vdmpp & & 99.3\% & 1054 \\
+\hline
+\end{longtable}
+
