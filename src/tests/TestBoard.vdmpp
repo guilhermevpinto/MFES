@@ -117,6 +117,7 @@ operations
 		assertTrue(board.addWall(4, 3));
 		assertEqual(board.dropableWall(board.board, 3, 2), [5,2]);
 		assertEqual(board.dropableWall(board.board, 3, 6), [5,6]);
+		assertEqual(board.dropableWall(board.board, 3, 4), nil);
 		
 		assertEqual(board.dropableWall(board.board, 1, 7), nil);
 		assertEqual(board.dropableWall(board.board, 2, 2), nil);

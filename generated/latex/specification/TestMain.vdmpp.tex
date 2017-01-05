@@ -1,0 +1,32 @@
+\begin{vdmpp}[breaklines=true]
+class TestMain
+
+operations
+ 
+(*@
+\label{main:5}
+@*)
+ public static main: () ==> ()
+ main() ==
+ (
+  new TestPoint().test();
+  new TestPlayer().test();
+  new TestBoard().test();
+  new TestGame().test();
+ );
+
+end TestMain
+\end{vdmpp}
+\bigskip
+\begin{longtable}{|l|r|r|r|}
+\hline
+Function or operation & Line & Coverage & Calls \\
+\hline
+\hline
+\hyperref[main:5]{main} & 5&100.0\% & 18 \\
+\hline
+\hline
+TestMain.vdmpp & & 100.0\% & 18 \\
+\hline
+\end{longtable}
+

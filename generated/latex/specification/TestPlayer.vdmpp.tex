@@ -1,0 +1,56 @@
+\begin{vdmpp}[breaklines=true]
+class TestPlayer is subclass of MyTest
+
+operations
+
+(*@
+\label{test:5}
+@*)
+ public test : () ==> ()
+ test() == 
+ (
+ 
+  dcl p1 : Player := new Player(1,10);
+  dcl p2 : Player := new Player(2,10);
+  
+  dcl point : Point := new Point(1,9);
+  assertTrue(p1.getPosition().getX() = point.getX() and p1.getPosition().getY() = point.getY());
+  point := new Point(17,9);
+  assertTrue(p2.getPosition().getX() = point.getX() and p2.getPosition().getY() = point.getY());
+  p1.setPosition(5,7);
+  assertTrue(p1.getPosition().getX() = 5 and p1.getPosition().getY() = 7);
+  p1.setTargetRow(17);
+  assertTrue(p1.getTargetRow() = 17);
+  assertEqual(p1.getPlayerID(), 1);
+  
+  assertEqual(p1.getWalls(), 10);
+  assertTrue(p1.decWalls());
+  assertEqual(p1.getWalls(), 9);
+  assertTrue(p1.decWalls());
+  assertTrue(p1.decWalls());
+  assertTrue(p1.decWalls());
+  assertTrue(p1.decWalls());
+  assertTrue(p1.decWalls());
+  assertTrue(p1.decWalls());
+  assertTrue(p1.decWalls());
+  assertTrue(p1.decWalls());
+  assertTrue(p1.decWalls());
+  assertFalse(p1.decWalls());
+  
+ );
+
+end TestPlayer
+\end{vdmpp}
+\bigskip
+\begin{longtable}{|l|r|r|r|}
+\hline
+Function or operation & Line & Coverage & Calls \\
+\hline
+\hline
+\hyperref[test:5]{test} & 5&100.0\% & 18 \\
+\hline
+\hline
+TestPlayer.vdmpp & & 100.0\% & 18 \\
+\hline
+\end{longtable}
+

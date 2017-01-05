@@ -1,0 +1,171 @@
+\begin{vdmpp}[breaklines=true]
+class TestBoard is subclass of MyTest
+
+instance variables
+
+ private board : [Board] := nil;
+ 
+operations
+
+(*@
+\label{test:9}
+@*)
+ public test : () ==> ()
+ test() ==
+ (
+  testConstructor();
+  testResetConectivity();
+  testPathToDestination();
+  testAddWall();
+  testDropWall();
+ );
+ 
+(*@
+\label{testConstructor:19}
+@*)
+ private testConstructor : () ==> ()
+ testConstructor() ==
+ (
+  board := new Board(new Game(2));
+  assertTrue(card(dom board.board) = 289);
+  assertEqual(board.board, board.conectivity);
+ );
+
+(*@
+\label{testResetConectivity:27}
+@*)
+ private testResetConectivity : () ==> ()
+ testResetConectivity() ==
+ (
+  board := new Board(new Game(2));
+  board.conectivity := {|->};
+  assertNotEqual(board.board, board.conectivity);
+  assertTrue(board.resetConectivity());
+  assertEqual(board.board, board.conectivity);
+ );
+ 
+(*@
+\label{testPathToDestination:37}
+@*)
+ private testPathToDestination: () ==> ()
+ testPathToDestination() ==
+ (
+  dcl
+  p: Player := new Player(3, 10);
+  board := new Board(new Game(2));
+  board.board := board.board ++ {[2,1] |-> <WALL>, [2,3] |-> <WALL>, [2,5] |-> <WALL>, [2,7] |-> <WALL>, [2,9] |-> <WALL>, [2,11] |-> <WALL>, [2,13] |-> <WALL>, [2,15] |-> <WALL>, [3,16] |-> <WALL>, [5,16] |-> <WALL>, [6,17] |-> <NOWALL>};
+  assertTrue(board.resetConectivity());
+  p.setTargetCol(9);
+  assertTrue(board.pathToDestination(p, 17, 9));
+  assertTrue(board.resetConectivity());
+  p.setTargetRow(1);
+  assertTrue(board.pathToDestination(p, 1, 9));
+ );
+ 
+(*@
+\label{testAddWall:52}
+@*)
+ private testAddWall : () ==> ()
+ testAddWall() ==
+ (
+  board := new Board(new Game(2));
+  assertTrue(board.addWall(1,6));
+  assertTrue(board.board([1,6]) = <WALL> and board.board([2,6]) = <WALL> and board.board([3,6]) = <WALL>);
+  assertFalse(board.addWall(3,6));
+  assertTrue(board.board([3,6]) = <WALL> and board.board([4,6]) = <NOWALL> and board.board([5,6]) = <NOWALL>);
+  assertTrue(board.addWall(2,7));
+  assertTrue(board.board([2,7]) = <WALL> and board.board([2,8]) = <WALL> and board.board([2,9]) = <WALL>);
+  assertFalse(board.addWall(1,10));
+  assertTrue(board.board([1,10]) = <NOWALL> and board.board([2,10]) = <NOWALL> and board.board([3,10]) = <NOWALL>);
+  assertFalse(board.addWall(2,9));
+  assertTrue(board.board([2,9]) = <WALL> and board.board([2,10]) = <NOWALL> and board.board([2,11]) = <NOWALL>);
+  assertTrue(board.addWall(15,8));
+  assertTrue(board.board([15,8]) = <WALL> and board.board([16,8]) = <WALL> and board.board([17,8]) = <WALL>);
+  assertTrue(board.addWall(16,9));
+  assertTrue(board.board([16,9]) = <WALL> and board.board([16,10]) = <WALL> and board.board([16,11]) = <WALL>);
+  assertTrue(board.addWall(16,12));
+  assertTrue(board.board([16,12]) = <WALL> and board.board([16,13]) = <WALL> and board.board([16,14]) = <WALL>);
+  assertFalse(board.addWall(16,15));
+  assertTrue(board.board([16,15]) = <NOWALL> and board.board([16,16]) = <NOWALL> and board.board([16,17]) = <NOWALL>);
+  
+  -- second attempt
+  board := new Board(new Game(2));
+  assertTrue(board.addWall(2,1));
+  assertEqual(board.numberOfPlacedWalls(board.board),1);
+  assertTrue(board.board([2,1]) = <WALL> and board.board([2,3]) = <WALL> and board.board([2,5]) = <NOWALL> and board.board([2,6]) = <NOWALL> and board.board([2,7]) = <NOWALL>);
+  assertTrue(board.addWall(2,5));
+  assertEqual(board.numberOfPlacedWalls(board.board),2);
+  assertTrue(board.addWall(2,9));
+  assertTrue(board.addWall(2,13));
+  assertEqual(board.numberOfPlacedWalls(board.board),4);
+  assertTrue(board.addWall(3,16));
+  assertFalse(board.addWall(6,15));
+  assertTrue(
+   board.board([2,1]) = <WALL> and board.board([2,3]) = <WALL> and board.board([2,5]) = <WALL> and
+   board.board([2,7]) = <WALL> and board.board([2,9]) = <WALL> and board.board([2,11]) = <WALL> and
+   board.board([2,13]) = <WALL> and board.board([2,15]) = <WALL> and board.board([3,16]) = <WALL> and   
+   board.board([5,16]) = <WALL> and board.board([6,15]) = <NOWALL> and board.board([6,17]) = <NOWALL>   
+  );
+  
+ );
+ 
+(*@
+\label{testDropWall:96}
+@*)
+ private testDropWall : () ==> ()
+ testDropWall() ==
+ (
+  -- verify whether the wall can be put on that position or not
+  dcl 
+  board : Board := new Board(new Game(2)),
+  position: [seq of nat1] := board.dropableWall(board.board, 3, 2),
+  position2: [seq of nat1] := board.dropableWall(board.board, 2, 3);
+  
+  assertEqual(hd position, 5);
+  assertEqual(hd tl position, 2);
+  
+  assertEqual(hd position2, 2);
+  assertEqual(hd tl position2, 5);
+  
+  assertTrue(board.addWall(3, 16));
+  
+  assertEqual(board.dropableWall(board.board, 2, 15), [2,17]);
+  assertEqual(board.dropableWall(board.board, 6, 15), [6,17]);
+  assertEqual(board.dropableWall(board.board, 4, 15), nil);
+  
+  assertTrue(board.addWall(4, 3));
+  assertEqual(board.dropableWall(board.board, 3, 2), [5,2]);
+  assertEqual(board.dropableWall(board.board, 3, 6), [5,6]);
+  assertEqual(board.dropableWall(board.board, 3, 4), nil);
+  
+  assertEqual(board.dropableWall(board.board, 1, 7), nil);
+  assertEqual(board.dropableWall(board.board, 2, 2), nil);
+   
+  assertEqual(board.dropableWall(board.board, 1, 1), nil);
+ );
+ 
+end TestBoard
+\end{vdmpp}
+\bigskip
+\begin{longtable}{|l|r|r|r|}
+\hline
+Function or operation & Line & Coverage & Calls \\
+\hline
+\hline
+\hyperref[test:9]{test} & 9&100.0\% & 18 \\
+\hline
+\hyperref[testAddWall:52]{testAddWall} & 52&100.0\% & 17 \\
+\hline
+\hyperref[testConstructor:19]{testConstructor} & 19&100.0\% & 18 \\
+\hline
+\hyperref[testDropWall:96]{testDropWall} & 96&100.0\% & 10 \\
+\hline
+\hyperref[testPathToDestination:37]{testPathToDestination} & 37&100.0\% & 17 \\
+\hline
+\hyperref[testResetConectivity:27]{testResetConectivity} & 27&100.0\% & 17 \\
+\hline
+\hline
+TestBoard.vdmpp & & 100.0\% & 97 \\
+\hline
+\end{longtable}
+
