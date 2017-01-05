@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9.6100 64-bit) (preloaded format=pdflatex 2017.1.3)  4 JAN 2017 18:08
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9.6100 64-bit) (preloaded format=pdflatex 2017.1.3)  5 JAN 2017 18:28
 entering extended mode
 **./Quaridor.tex
 (Quaridor.tex
@@ -317,22 +317,18 @@ Underfull \vbox (badness 10000) detected at line 53
  []
 
 ) (specification/TestBoard.vdmpp.tex [21] [22]
-Underfull \vbox (badness 10000) detected at line 162
+Underfull \vbox (badness 10000) detected at line 168
  []
-
-
-Overfull \vbox (6.74556pt too high) has occurred while \output is active []
-
 
 [23]) (specification/TestGame.vdmpp.tex [24] [25]
 Underfull \vbox (badness 10000) detected at line 172
  []
 
-) (specification/TestMain.vdmpp.tex
+) (specification/TestMain.vdmpp.tex [26]
 Underfull \vbox (badness 10000) detected at line 31
  []
 
-) (specification/TestPlayer.vdmpp.tex [26]
+) (specification/TestPlayer.vdmpp.tex
 Underfull \vbox (badness 10000) detected at line 55
  []
 
@@ -356,22 +352,22 @@ LaTeX Warning: There were multiply-defined labels.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 33.
  ) 
 Here is how much of TeX's memory you used:
- 8088 strings out of 493333
- 119559 string characters out of 3139183
- 730435 words of memory out of 3000000
+ 8094 strings out of 493333
+ 119655 string characters out of 3139183
+ 730437 words of memory out of 3000000
  10108 multiletter control sequences out of 15000+200000
  17044 words of font info for 41 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 33i,6n,48p,470b,1930s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 33i,6n,48p,316b,1930s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/base/8r.enc}<C:/Program Files/Mi
 KTeX 2.9/fonts/type1/public/amsfonts/latxfont/lcircle1.pfb><C:/Program Files/Mi
 KTeX 2.9/fonts/type1/urw/courier/ucrb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/
 type1/urw/courier/ucrr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/couri
 er/ucrro8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmb8a.pfb><C
 :/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmr8a.pfb>
-Output written on Quaridor.pdf (28 pages, 344915 bytes).
+Output written on Quaridor.pdf (28 pages, 346072 bytes).
 PDF statistics:
- 1950 PDF objects out of 2073 (max. 8388607)
- 1436 named destinations out of 1440 (max. 500000)
+ 1958 PDF objects out of 2073 (max. 8388607)
+ 1442 named destinations out of 1728 (max. 500000)
  81 words of extra memory for PDF output out of 10000 (max. 10000000)
 

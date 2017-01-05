@@ -106,12 +106,12 @@ operations
    board.board([2,13]) = <WALL> and board.board([2,15]) = <WALL> and board.board([3,16]) = <WALL> and   
    board.board([5,16]) = <WALL> and board.board([6,15]) = <NOWALL> and board.board([6,17]) = <NOWALL>   
   );
-(*@
-\label{testDropWall:93}
-@*)
   
  );
  
+(*@
+\label{testDropWall:96}
+@*)
  private testDropWall : () ==> ()
  testDropWall() ==
  (
@@ -129,7 +129,13 @@ operations
   
   assertTrue(board.addWall(3, 16));
   
+  assertEqual(board.dropableWall(board.board, 2, 15), [2,17]);
+  assertEqual(board.dropableWall(board.board, 6, 15), [6,17]);
   assertEqual(board.dropableWall(board.board, 4, 15), nil);
+  
+  assertTrue(board.addWall(4, 3));
+  assertEqual(board.dropableWall(board.board, 3, 2), [5,2]);
+  assertEqual(board.dropableWall(board.board, 3, 6), [5,6]);
   
   assertEqual(board.dropableWall(board.board, 1, 7), nil);
   assertEqual(board.dropableWall(board.board, 2, 2), nil);
@@ -144,20 +150,20 @@ end TestBoard
 Function or operation & Line & Coverage & Calls \\
 \hline
 \hline
-\hyperref[test:9]{test} & 9&100.0\% & 11 \\
+\hyperref[test:9]{test} & 9&100.0\% & 16 \\
 \hline
-\hyperref[testAddWall:52]{testAddWall} & 52&100.0\% & 10 \\
+\hyperref[testAddWall:52]{testAddWall} & 52&100.0\% & 15 \\
 \hline
-\hyperref[testConstructor:19]{testConstructor} & 19&100.0\% & 11 \\
+\hyperref[testConstructor:19]{testConstructor} & 19&100.0\% & 16 \\
 \hline
-\hyperref[testDropWall:93]{testDropWall} & 93&100.0\% & 3 \\
+\hyperref[testDropWall:96]{testDropWall} & 96&100.0\% & 8 \\
 \hline
-\hyperref[testPathToDestination:37]{testPathToDestination} & 37&100.0\% & 10 \\
+\hyperref[testPathToDestination:37]{testPathToDestination} & 37&100.0\% & 15 \\
 \hline
-\hyperref[testResetConectivity:27]{testResetConectivity} & 27&100.0\% & 10 \\
+\hyperref[testResetConectivity:27]{testResetConectivity} & 27&100.0\% & 15 \\
 \hline
 \hline
-TestBoard.vdmpp & & 100.0\% & 55 \\
+TestBoard.vdmpp & & 100.0\% & 85 \\
 \hline
 \end{longtable}
 

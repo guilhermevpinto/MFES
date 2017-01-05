@@ -285,7 +285,7 @@ class Board
 		
 		
 functions
-		-- remove a wall
+		-- determines if a wall can be placed in a certain position
 		public dropableWall: map seq of nat1 to Slot * nat1 * nat1 +> [seq of nat1]
 		dropableWall(board, row, col) == 
 		(

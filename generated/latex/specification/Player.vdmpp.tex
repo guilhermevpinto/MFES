@@ -19,11 +19,11 @@ instance variables
    inv (position.getX() mod 2 = 1) and (position.getY() mod 2 = 1);
    
 operations
-(*@
-\label{Player:21}
-@*)
 
    -- constructor
+(*@
+\label{Player:23}
+@*)
    public Player: nat * nat ==> Player
    Player(id, numWalls) ==
    (
@@ -58,79 +58,79 @@ operations
    )
    pre id > 0 and id < 5
    post position <> nil and (targetRow <> 0 or targetCol <> 0) and numberID <> nil and (walls = 10 or walls = 5);
-(*@
-\label{getPosition:57}
-@*)
    
    -- getting the current position of the player
+(*@
+\label{getPosition:59}
+@*)
    public pure getPosition : () ==> Point 
    getPosition() == return position;
-(*@
-\label{setPosition:61}
-@*)
    
    -- editing the position of the player
+(*@
+\label{setPosition:63}
+@*)
    public setPosition: nat1 * nat1 ==> ()
    setPosition(new_x, new_y) ==
     position := new Point(new_x, new_y)
    post position <> nil;
-(*@
-\label{getPlayerID:67}
-@*)
 
    -- get the player id
+(*@
+\label{getPlayerID:69}
+@*)
    public pure getPlayerID : () ==> nat1
    getPlayerID() ==
     return numberID
    pre numberID <> nil;
-(*@
-\label{setTargetRow:73}
-@*)
    
    -- set the player targetRow
+(*@
+\label{setTargetRow:75}
+@*)
    public setTargetRow: nat1 ==> ()
    setTargetRow(target) ==
    (
     targetRow := target;
    )
    post targetRow <> 0;
-(*@
-\label{setTargetCol:81}
-@*)
    
    -- set the player targetCol
+(*@
+\label{setTargetCol:83}
+@*)
    public setTargetCol: nat1 ==> ()
    setTargetCol(target) ==
    (
     targetCol := target;
    )
    post targetCol <> 0;
-(*@
-\label{getTargetRow:89}
-@*)
    
    -- retrieves the index of the row the player has to reach
+(*@
+\label{getTargetRow:91}
+@*)
    public pure getTargetRow : () ==> nat
    getTargetRow() == return self.targetRow;
-(*@
-\label{getTargetCol:93}
-@*)
    
    -- retrieves the index of the column the player has to reach
+(*@
+\label{getTargetCol:95}
+@*)
    public pure getTargetCol : () ==> nat
    getTargetCol() == return self.targetCol;
-(*@
-\label{getWalls:97}
-@*)
 
    -- get the number of walls left for the player
+(*@
+\label{getWalls:99}
+@*)
    public getWalls : () ==> nat
    getWalls() == return self.walls;
-(*@
-\label{decWalls:101}
-@*)
    
    -- decrement the value of walls for the player
+(*@
+\label{decWalls:103}
+@*)
    public decWalls : () ==> bool
    decWalls() ==
    (
@@ -151,28 +151,28 @@ end Player
 Function or operation & Line & Coverage & Calls \\
 \hline
 \hline
-\hyperref[Player:21]{Player} & 21&100.0\% & 180 \\
+\hyperref[Player:23]{Player} & 23&100.0\% & 300 \\
 \hline
-\hyperref[decWalls:101]{decWalls} & 101&100.0\% & 130 \\
+\hyperref[decWalls:103]{decWalls} & 103&100.0\% & 205 \\
 \hline
-\hyperref[getPlayerID:67]{getPlayerID} & 67&100.0\% & 3640 \\
+\hyperref[getPlayerID:69]{getPlayerID} & 69&100.0\% & 7005 \\
 \hline
-\hyperref[getPosition:57]{getPosition} & 57&100.0\% & 1204 \\
+\hyperref[getPosition:59]{getPosition} & 59&100.0\% & 2200 \\
 \hline
-\hyperref[getTargetCol:93]{getTargetCol} & 93&100.0\% & 23031 \\
+\hyperref[getTargetCol:95]{getTargetCol} & 95&100.0\% & 39655 \\
 \hline
-\hyperref[getTargetRow:89]{getTargetRow} & 89&100.0\% & 69707 \\
+\hyperref[getTargetRow:91]{getTargetRow} & 91&100.0\% & 120033 \\
 \hline
-\hyperref[getWalls:97]{getWalls} & 97&100.0\% & 45 \\
+\hyperref[getWalls:99]{getWalls} & 99&100.0\% & 80 \\
 \hline
-\hyperref[setPosition:61]{setPosition} & 61&100.0\% & 85 \\
+\hyperref[setPosition:63]{setPosition} & 63&100.0\% & 165 \\
 \hline
-\hyperref[setTargetCol:81]{setTargetCol} & 81&100.0\% & 14 \\
+\hyperref[setTargetCol:83]{setTargetCol} & 83&100.0\% & 24 \\
 \hline
-\hyperref[setTargetRow:73]{setTargetRow} & 73&100.0\% & 19 \\
+\hyperref[setTargetRow:75]{setTargetRow} & 75&100.0\% & 29 \\
 \hline
 \hline
-Player.vdmpp & & 100.0\% & 98055 \\
+Player.vdmpp & & 100.0\% & 169696 \\
 \hline
 \end{longtable}
 

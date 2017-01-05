@@ -318,35 +318,35 @@ class Board
   );
   
   
-(*@
-\label{dropableWall:287}
-@*)
 functions
-  -- remove a wall
+  -- determines if a wall can be placed in a certain position
+(*@
+\label{dropableWall:289}
+@*)
   public dropableWall: map seq of nat1 to Slot * nat1 * nat1 +> [seq of nat1]
   dropableWall(board, row, col) == 
   (
    if (col mod 2) = 0 and (row mod 2 = 1)
    then (
-    if (board([row,col]) = <NOWALL> and board([row+1,col]) = <NOWALL> and board([row+2,col]) = <NOWALL> and (board([row+1,col-1]) = <NOWALL> or (*@\vdmnotcovered{board}@*)((*@\vdmnotcovered{[}@*)(*@\vdmnotcovered{row}@*)(*@\vdmnotcovered{+}@*)(*@\vdmnotcovered{1}@*),(*@\vdmnotcovered{col}@*)(*@\vdmnotcovered{+}@*)(*@\vdmnotcovered{1}@*)]) (*@\vdmnotcovered{=}@*) (*@\vdmnotcovered{<NOWALL>}@*))) 
+    if (board([row,col]) = <NOWALL> and board([row+1,col]) = <NOWALL> and board([row+2,col]) = <NOWALL> and (board([row+1,col-1]) = <NOWALL> or board([row+1,col+1]) = <NOWALL>)) 
     then [row+2,col]
     else (*@\vdmnotcovered{nil}@*)
    )
    else 
    if (row mod 2) = 0 and (col mod 2) = 1
    then (
-    if (board([row,col]) = <NOWALL> and board([row,col+1]) = <NOWALL> and board([row,col+2]) = <NOWALL> and (board([row-1,col+1]) = <NOWALL> or (*@\vdmnotcovered{board}@*)((*@\vdmnotcovered{[}@*)(*@\vdmnotcovered{row}@*)(*@\vdmnotcovered{+}@*)(*@\vdmnotcovered{1}@*),(*@\vdmnotcovered{col}@*)(*@\vdmnotcovered{+}@*)(*@\vdmnotcovered{1}@*)]) (*@\vdmnotcovered{=}@*) (*@\vdmnotcovered{<NOWALL>}@*)))
+    if (board([row,col]) = <NOWALL> and board([row,col+1]) = <NOWALL> and board([row,col+2]) = <NOWALL> and (board([row-1,col+1]) = <NOWALL> or board([row+1,col+1]) = <NOWALL>))
     then [row,col+2]
     else nil
    )
    else nil
   )
-  pre (*@\vdmnotcovered{row}@*) (*@\vdmnotcovered{>}@*) (*@\vdmnotcovered{0}@*) (*@\vdmnotcovered{and}@*) (*@\vdmnotcovered{row}@*) (*@\vdmnotcovered{<}@*) (*@\vdmnotcovered{18}@*) (*@\vdmnotcovered{and}@*) (*@\vdmnotcovered{col}@*) (*@\vdmnotcovered{>}@*) (*@\vdmnotcovered{0}@*) (*@\vdmnotcovered{and}@*) (*@\vdmnotcovered{col}@*) (*@\vdmnotcovered{<}@*) (*@\vdmnotcovered{18}@*);
+  pre row > 0 and row < 18 and col > 0 and col < 18;
   
-(*@
-\label{numberOfPlacedWalls:309}
-@*)
   -- counts the number of walls in the board
+(*@
+\label{numberOfPlacedWalls:310}
+@*)
   public numberOfPlacedWalls: map seq of nat1 to Slot +> nat
   numberOfPlacedWalls(board) ==
   card(dom(board :> {<WALL>})) / 3
@@ -361,34 +361,34 @@ end Board
 Function or operation & Line & Coverage & Calls \\
 \hline
 \hline
-\hyperref[Board:73]{Board} & 73&100.0\% & 135 \\
+\hyperref[Board:73]{Board} & 73&100.0\% & 210 \\
 \hline
-\hyperref[addWall:141]{addWall} & 141&100.0\% & 172 \\
+\hyperref[addWall:141]{addWall} & 141&100.0\% & 281 \\
 \hline
-\hyperref[checkDown:238]{checkDown} & 238&100.0\% & 2195 \\
+\hyperref[checkDown:238]{checkDown} & 238&100.0\% & 3821 \\
 \hline
-\hyperref[checkLeft:265]{checkLeft} & 265&100.0\% & 11897 \\
+\hyperref[checkLeft:265]{checkLeft} & 265&100.0\% & 20517 \\
 \hline
-\hyperref[checkRight:256]{checkRight} & 256&100.0\% & 7297 \\
+\hyperref[checkRight:256]{checkRight} & 256&100.0\% & 12581 \\
 \hline
-\hyperref[checkUp:247]{checkUp} & 247&100.0\% & 2347 \\
+\hyperref[checkUp:247]{checkUp} & 247&100.0\% & 4103 \\
 \hline
-\hyperref[dropableWall:287]{dropableWall} & 287&75.3\% & 21 \\
+\hyperref[dropableWall:289]{dropableWall} & 289&99.3\% & 53 \\
 \hline
-\hyperref[numberOfPlacedWalls:309]{numberOfPlacedWalls} & 309&100.0\% & 79 \\
+\hyperref[numberOfPlacedWalls:310]{numberOfPlacedWalls} & 310&100.0\% & 470 \\
 \hline
-\hyperref[pathToDestination:196]{pathToDestination} & 196&100.0\% & 23001 \\
+\hyperref[pathToDestination:196]{pathToDestination} & 196&100.0\% & 39768 \\
 \hline
-\hyperref[resetBoard:82]{resetBoard} & 82&100.0\% & 135 \\
+\hyperref[resetBoard:82]{resetBoard} & 82&100.0\% & 210 \\
 \hline
-\hyperref[resetConectivity:132]{resetConectivity} & 132&100.0\% & 308 \\
+\hyperref[resetConectivity:132]{resetConectivity} & 132&100.0\% & 501 \\
 \hline
-\hyperref[setBoardPosition:273]{setBoardPosition} & 273&100.0\% & 288 \\
+\hyperref[setBoardPosition:273]{setBoardPosition} & 273&100.0\% & 538 \\
 \hline
-\hyperref[unsetBoardPosition:280]{unsetBoardPosition} & 280&100.0\% & 80 \\
+\hyperref[unsetBoardPosition:280]{unsetBoardPosition} & 280&100.0\% & 160 \\
 \hline
 \hline
-Board.vdmpp & & 99.0\% & 47955 \\
+Board.vdmpp & & 99.9\% & 83213 \\
 \hline
 \end{longtable}
 
