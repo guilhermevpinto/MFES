@@ -15,11 +15,11 @@ instance variables
  inv not exists m, n in seq players & m.getPlayerID() = n.getPlayerID() and m <> n;
 
 operations
-(*@
-\label{Game:17}
-@*)
  
   -- game constructor
+(*@
+\label{Game:19}
+@*)
   public Game : nat1 ==> Game
   Game(number) ==
   (
@@ -31,11 +31,11 @@ operations
    board := new Board(self);
    updateBoard();
   );
-(*@
-\label{move:30}
-@*)
   
   -- sets a new position in the board for a given player
+(*@
+\label{move:32}
+@*)
   public move: nat1 * nat1 * [Player] ==> ()
   move(new_x, new_y, player) ==
   (
@@ -45,11 +45,11 @@ operations
   )
   pre player <> nil and new_x rem 2 <> 0 and new_y rem 2 <> 0 
   post player.getPosition().getX() = new_x and player.getPosition().getY() = new_y;
-(*@
-\label{switchPlayer:41}
-@*)
 
   -- switches the current player to the next one
+(*@
+\label{switchPlayer:43}
+@*)
   public switchPlayer : () ==> ()
   switchPlayer() == 
   if len players = 2
@@ -66,27 +66,27 @@ operations
    else if currentPlayerID = 3 then currentPlayerID := 4 
    else currentPlayerID := 1;
   );
-(*@
-\label{getPlayer:59}
-@*)
   
   -- returns the player with the specified id
+(*@
+\label{getPlayer:61}
+@*)
   public getPlayer :nat1 ==>Player 
   getPlayer(id) ==
   return [player | player in seq players  &  player.getPlayerID() = id](1);
-(*@
-\label{getCurrentPlayer:64}
-@*)
   
   -- returns the current player's id
+(*@
+\label{getCurrentPlayer:66}
+@*)
   public getCurrentPlayer : () ==> nat1
   getCurrentPlayer() ==
   return currentPlayerID;
-(*@
-\label{currentPlayerWin:69}
-@*)
   
   -- verify wether the player won
+(*@
+\label{currentPlayerWin:71}
+@*)
   public currentPlayerWin : () ==> bool
   currentPlayerWin() ==
   (
@@ -96,36 +96,36 @@ operations
      then return true
    else return false;  
   );
-(*@
-\label{addPlayer:80}
-@*)
   
   -- adds a player to the players list
+(*@
+\label{addPlayer:82}
+@*)
   public addPlayer: Player ==> ()
    addPlayer(p) ==
    (
     players := players^[p];
    )
    post len players <> 0;
-(*@
-\label{getBoard:88}
-@*)
 
   -- retrieve board from game instance
+(*@
+\label{getBoard:90}
+@*)
   public getBoard : () ==> Board
   getBoard() == return self.board;
-(*@
-\label{getPlayers:92}
-@*)
   
   -- retrieve players from game instance
+(*@
+\label{getPlayers:94}
+@*)
   public getPlayers : () ==> seq of Player
   getPlayers() == return self.players;
-(*@
-\label{addWall:96}
-@*)
   
   -- adds a wall to the board on the specified coordinates
+(*@
+\label{addWall:98}
+@*)
   public addWall : nat1 * nat1 ==> bool
   addWall(row, col) == 
   (
@@ -134,12 +134,12 @@ operations
     then return player.decWalls()
     else return false;
   )
-(*@
-\label{getPossibleMoves:106}
-@*)
   pre ((row mod 2 = 1) and (col mod 2 = 0)) or ((row mod 2 = 0) and (col mod 2 = 1));
   
   -- returns the possible moves for the current player
+(*@
+\label{getPossibleMoves:109}
+@*)
   public getPossibleMoves: () ==> seq of Point
   getPossibleMoves() ==
   (
@@ -240,12 +240,12 @@ operations
    );
    
    return moves;
-(*@
-\label{verifyPlayerJump:209}
-@*)
   );
   
   -- verifies whether the player can jump over another player
+(*@
+\label{verifyPlayerJump:212}
+@*)
   public verifyPlayerJump: nat1 * nat1 * seq of char ==> seq of Point
   verifyPlayerJump(x, y, direction) ==
   (
@@ -279,23 +279,23 @@ operations
         return checkDownMove(x, y);
        )
        else
-       (*@\vdmnotcovered{(}@*)
-        (*@\vdmnotcovered{return}@*) (*@\vdmnotcovered{[}@*)];
+       (
+        return [];
        );
       );
      );
     );
    )
    else
-   (*@\vdmnotcovered{(}@*)
-    (*@\vdmnotcovered{return}@*) (*@\vdmnotcovered{[}@*)];
+   (
+    return [];
    );
-(*@
-\label{checkUpMove:256}
-@*)
   );
   
   -- check possible up movement
+(*@
+\label{checkUpMove:259}
+@*)
   private checkUpMove : nat1 * nat1 ==> seq of Point
   checkUpMove(x, y) ==
   (
@@ -323,12 +323,12 @@ operations
    
    return special;
     
-(*@
-\label{checkLeftMove:286}
-@*)
   );
   
   -- check possible left movement
+(*@
+\label{checkLeftMove:289}
+@*)
   private checkLeftMove : nat1 * nat1 ==> seq of Point
   checkLeftMove(x, y) ==
   (
@@ -356,12 +356,12 @@ operations
    
    return special;
    
-(*@
-\label{checkRightMove:316}
-@*)
   );
   
   -- check possible right movement
+(*@
+\label{checkRightMove:319}
+@*)
   private checkRightMove : nat1 * nat1 ==> seq of Point
   checkRightMove(x, y) ==
   ( 
@@ -389,12 +389,12 @@ operations
    
    return special;
    
-(*@
-\label{checkDownMove:346}
-@*)
   );
   
   -- check possible down movement
+(*@
+\label{checkDownMove:349}
+@*)
   private checkDownMove : nat1 * nat1 ==> seq of Point
   checkDownMove(x, y) ==
   (
@@ -422,12 +422,12 @@ operations
    
    return special;
    
-(*@
-\label{checkDiagonalHorizontal:376}
-@*)
   );
   
   -- check diagonal movement direction horizontal in special cases
+(*@
+\label{checkDiagonalHorizontal:379}
+@*)
   private checkDiagonalHorizontal : nat1 * nat1 ==> seq of Point
   checkDiagonalHorizontal(x, y) ==
   (
@@ -467,12 +467,12 @@ operations
    
    return special;
    
-(*@
-\label{checkDiagonalVertical:418}
-@*)
   );
   
   -- check diagonal movement direction vertical in special cases
+(*@
+\label{checkDiagonalVertical:421}
+@*)
   private checkDiagonalVertical : nat1 * nat1 ==> seq of Point
   checkDiagonalVertical(x, y) ==
   (
@@ -512,12 +512,12 @@ operations
   
    return special;
    
-(*@
-\label{updateBoard:460}
-@*)
   );
   
   -- update board according to player's positions
+(*@
+\label{updateBoard:463}
+@*)
   public updateBoard : () ==> () 
   updateBoard() ==
   (
@@ -547,12 +547,12 @@ operations
     board.setBoardPosition(p3_position);
     board.setBoardPosition(p4_position);
    );
-(*@
-\label{eraseOldPosition:492}
-@*)
   );
   
   -- update board by erasing the old player's position
+(*@
+\label{eraseOldPosition:495}
+@*)
   public eraseOldPosition : Point ==> ()
   eraseOldPosition(old_position) ==
   (
@@ -567,48 +567,48 @@ end Game
 Function or operation & Line & Coverage & Calls \\
 \hline
 \hline
-\hyperref[Game:17]{Game} & 17&100.0\% & 68 \\
+\hyperref[Game:19]{Game} & 19&100.0\% & 36 \\
 \hline
-\hyperref[addPlayer:80]{addPlayer} & 80&100.0\% & 5 \\
+\hyperref[addPlayer:82]{addPlayer} & 82&100.0\% & 4 \\
 \hline
-\hyperref[addWall:96]{addWall} & 96&100.0\% & 25 \\
+\hyperref[addWall:98]{addWall} & 98&100.0\% & 20 \\
 \hline
-\hyperref[checkDiagonalHorizontal:376]{checkDiagonalHorizontal} & 376&100.0\% & 2 \\
+\hyperref[checkDiagonalHorizontal:379]{checkDiagonalHorizontal} & 379&100.0\% & 8 \\
 \hline
-\hyperref[checkDiagonalVertical:418]{checkDiagonalVertical} & 418&100.0\% & 2 \\
+\hyperref[checkDiagonalVertical:421]{checkDiagonalVertical} & 421&100.0\% & 8 \\
 \hline
-\hyperref[checkDownMove:346]{checkDownMove} & 346&100.0\% & 3 \\
+\hyperref[checkDownMove:349]{checkDownMove} & 349&100.0\% & 12 \\
 \hline
-\hyperref[checkLeftMove:286]{checkLeftMove} & 286&100.0\% & 2 \\
+\hyperref[checkLeftMove:289]{checkLeftMove} & 289&100.0\% & 8 \\
 \hline
-\hyperref[checkRightMove:316]{checkRightMove} & 316&100.0\% & 2 \\
+\hyperref[checkRightMove:319]{checkRightMove} & 319&100.0\% & 8 \\
 \hline
-\hyperref[checkUpMove:256]{checkUpMove} & 256&100.0\% & 3 \\
+\hyperref[checkUpMove:259]{checkUpMove} & 259&100.0\% & 13 \\
 \hline
-\hyperref[currentPlayerWin:69]{currentPlayerWin} & 69&100.0\% & 15 \\
+\hyperref[currentPlayerWin:71]{currentPlayerWin} & 71&100.0\% & 12 \\
 \hline
-\hyperref[eraseOldPosition:492]{eraseOldPosition} & 492&100.0\% & 16 \\
+\hyperref[eraseOldPosition:495]{eraseOldPosition} & 495&100.0\% & 72 \\
 \hline
-\hyperref[getBoard:88]{getBoard} & 88&100.0\% & 15 \\
+\hyperref[getBoard:90]{getBoard} & 90&100.0\% & 12 \\
 \hline
-\hyperref[getCurrentPlayer:64]{getCurrentPlayer} & 64&100.0\% & 60 \\
+\hyperref[getCurrentPlayer:66]{getCurrentPlayer} & 66&100.0\% & 48 \\
 \hline
-\hyperref[getPlayer:59]{getPlayer} & 59&100.0\% & 516 \\
+\hyperref[getPlayer:61]{getPlayer} & 61&100.0\% & 416 \\
 \hline
-\hyperref[getPlayers:92]{getPlayers} & 92&100.0\% & 156 \\
+\hyperref[getPlayers:94]{getPlayers} & 94&100.0\% & 88 \\
 \hline
-\hyperref[getPossibleMoves:106]{getPossibleMoves} & 106&100.0\% & 10 \\
+\hyperref[getPossibleMoves:109]{getPossibleMoves} & 109&100.0\% & 40 \\
 \hline
-\hyperref[move:30]{move} & 30&100.0\% & 75 \\
+\hyperref[move:32]{move} & 32&100.0\% & 68 \\
 \hline
-\hyperref[switchPlayer:41]{switchPlayer} & 41&100.0\% & 45 \\
+\hyperref[switchPlayer:43]{switchPlayer} & 43&100.0\% & 36 \\
 \hline
-\hyperref[updateBoard:460]{updateBoard} & 460&100.0\% & 24 \\
+\hyperref[updateBoard:463]{updateBoard} & 463&100.0\% & 104 \\
 \hline
-\hyperref[verifyPlayerJump:209]{verifyPlayerJump} & 209&89.0\% & 10 \\
+\hyperref[verifyPlayerJump:212]{verifyPlayerJump} & 212&100.0\% & 46 \\
 \hline
 \hline
-Game.vdmpp & & 99.3\% & 1054 \\
+Game.vdmpp & & 100.0\% & 1059 \\
 \hline
 \end{longtable}
 

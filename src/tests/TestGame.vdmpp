@@ -134,6 +134,12 @@ operations
 		
 		game.getPlayer(4).setTargetCol(1);
 		assertTrue(game.currentPlayerWin() = false);
+		
+		game.move(7, 3, game.getPlayer(1));
+		game.move(11, 3, game.getPlayer(3));
+		assertEqual(game.verifyPlayerJump(9, 3, "up"), []);
+		game.move(9, 3, game.getPlayer(2));
+		assertEqual(game.verifyPlayerJump(9, 3, "teste"), []);
 	
 	);
 	
