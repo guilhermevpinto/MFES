@@ -1,9 +1,5 @@
 class TestGame is subclass of MyTest
 
-instance variables
-
-	private game : Game;
-	
 operations
 
 	public test : () ==> ()
@@ -44,7 +40,7 @@ operations
 		game: Game := new Game(2),
 		p1: Player := game.getPlayer(1),
 		p2: Player := game.getPlayer(2),
-		moves: seq of Point;
+		moves: set of Point;
 		
 		game.eraseOldPosition(new Point(1, 17));
 		assertTrue(game.getBoard().board([1,17]) = <FREE>);
@@ -61,54 +57,54 @@ operations
 		game.move(5, 7, game.getPlayer(1));
 		game.move(3, 7, game.getPlayer(2));
 		moves := game.getPossibleMoves();
-		assertTrue(len moves = 4);
+		assertTrue(card moves = 4);
 		
 		assertTrue(game.addWall(2, 7));
 		moves := game.getPossibleMoves();
-		assertTrue(len moves = 5);
+		assertTrue(card moves = 5);
 		
 		-- player left + wall left
 		game.move(5, 9, game.getPlayer(1));
 		game.move(5, 7, game.getPlayer(2));
 		moves := game.getPossibleMoves();
-		assertTrue(len moves = 4);
+		assertTrue(card moves = 4);
 		
 		assertTrue(game.addWall(5, 6));
 		assertFalse(game.addWall(5, 6));
 		moves := game.getPossibleMoves();
-		assertTrue(len moves = 5);
+		assertTrue(card moves = 5);
 		
 		-- player right + wall right
 		game.move(5, 7, game.getPlayer(1));
 		game.move(5, 9, game.getPlayer(2));
 		moves := game.getPossibleMoves();
-		assertTrue(len moves = 3);
+		assertTrue(card moves = 3);
 		
 		assertTrue(game.addWall(5, 10));
 		moves := game.getPossibleMoves();
-		assertTrue(len moves = 4);
+		assertTrue(card moves = 4);
 		
 		-- player down + wall down
 		game.move(3, 9, game.getPlayer(1));
 		game.move(5, 9, game.getPlayer(2));
 		moves := game.getPossibleMoves();
-		assertTrue(len moves = 3);
+		assertTrue(card moves = 3);
 		
 		-- test horizontal diagonal
 		game.move(5, 15, game.getPlayer(1));
 		game.move(7, 15, game.getPlayer(2));
 		moves := game.getPossibleMoves();
-		assertTrue(len moves = 4);
+		assertTrue(card moves = 4);
 		
 		assertTrue(game.addWall(8, 15));
 		moves := game.getPossibleMoves();
-		assertTrue(len moves = 5);
+		assertTrue(card moves = 5);
 		
 		-- test checkUpMove
 		game.move(7, 17, game.getPlayer(1));
 		game.move(5, 17, game.getPlayer(2));
 		moves := game.getPossibleMoves();
-		assertTrue(len moves = 2);
+		assertTrue(card moves = 2);
 		
 	);
 	
@@ -137,9 +133,9 @@ operations
 		
 		game.move(7, 3, game.getPlayer(1));
 		game.move(11, 3, game.getPlayer(3));
-		assertEqual(game.verifyPlayerJump(9, 3, "up"), []);
+		assertEqual(game.verifyPlayerJump(9, 3, "up"), {});
 		game.move(9, 3, game.getPlayer(2));
-		assertEqual(game.verifyPlayerJump(9, 3, "teste"), []);
+		assertEqual(game.verifyPlayerJump(9, 3, "teste"), {});
 	
 	);
 	
