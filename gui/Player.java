@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import org.overture.codegen.runtime.VDMSeq;
+import org.overture.codegen.runtime.VDMSet;
 
 import MFES.Point;
 
@@ -36,9 +37,9 @@ public class Player extends JPanel {
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
 				if(id == QuaridorGui.game.getCurrentPlayer().intValue()) {
 					QuaridorGui.currentPlayerSelected = true;
-					VDMSeq moves = QuaridorGui.game.getPossibleMoves();
-					for(int i = 0; i < moves.size(); i++) {
-						Point p = (Point)moves.get(i);
+					VDMSet moves = QuaridorGui.game.getPossibleMoves();
+					for(Object o : moves) {
+						Point p = (Point)o;
 						((Position)QuaridorGui.boardGUI.get(p.getX().intValue()-1).get(p.getY().intValue()-1)).setSelected();
 					}
 				}

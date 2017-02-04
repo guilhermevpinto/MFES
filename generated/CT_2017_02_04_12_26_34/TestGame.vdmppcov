@@ -145,6 +145,6 @@ operations
 	
 traces
 	PlayerMovementTracing:
-		(let x in set game.getPossibleMoves() in game.move(x.getX(), x.getY(), game.getPlayer(game.getCurrentPlayer()))){5};
+		(let x in set game.getPossibleMoves() in game.move(x.getX(), x.getY(), game.getPlayer(game.getCurrentPlayer()))){10};
 	
 end TestGame

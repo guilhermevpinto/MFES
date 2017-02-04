@@ -127,8 +127,8 @@ operations
 	
 traces
 	AddWallTracing:
-		board.resetBoard();
-		(let x, y in set {1,17} in board.addWall(x,y)){5};
-	
+				board.resetBoard();
+				(let x, y in set {1,17} in board.addWall(x,y)){5};
+
 
 end TestBoard

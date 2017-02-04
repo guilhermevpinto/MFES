@@ -2,7 +2,7 @@ class TestBoard is subclass of MyTest
 
 instance variables
 
-	private board : [Board] := new Board(new Game(2));
+	private board : [Board] := nil;
 	
 operations
 
@@ -127,8 +127,8 @@ operations
 	
 traces
 	AddWallTracing:
-		board.resetBoard();
-		(let x, y in set {1,17} in board.addWall(x,y)){5};
-	
+				board.resetBoard();
+				(let x, y in set {1,17} in board.addWall(x,y)){3};
+
 
 end TestBoard

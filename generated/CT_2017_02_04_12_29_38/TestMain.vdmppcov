@@ -1,0 +1,14 @@
+class TestMain
+
+operations
+	
+	public static main: () ==> ()
+	main() ==
+	(
+		new TestPoint().test();
+		new TestPlayer().test();
+		new TestBoard().test();
+		new TestGame().test();
+	);
+
+end TestMain

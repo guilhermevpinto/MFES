@@ -65,8 +65,7 @@ public class Wall extends JPanel {
 						second = ((Long)dependenthover.get(1)).intValue();
 							
 						((Wall)QuaridorGui.boardGUI.get(first-1).get(second-1)).hoverWall();
-						
-					
+
 						hover = true;
 						draw();
 						

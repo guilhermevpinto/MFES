@@ -1,0 +1,316 @@
+class Board
+	types
+	
+		-- type representing each area segment of the board
+		public Slot = <FREE> | <OCCUPIED> | <VISITED> | <WALL> | <NOWALL>;
+
+	instance variables
+	
+		-- the game instance
+		private game : Game;
+		-- invariant for the board class
+		-- the board must always have 289 positions and there must always be 0, 1, 2, 3 or 4 occupied places on the board
+		-- odd rows and odd columns are for wall positioning whilst the others are for player positioning
+		inv card(dom board) = 289 and (card dom(board :> {<OCCUPIED>}) <= 4)
+				and forall [row, col] in set dom board & 
+						(if row rem 2 = 0 then board([row, col]) = <NOWALL> or board([row, col]) = <WALL>
+								else (if col rem 2 = 0 then board([row, col]) = <NOWALL> or board([row, col]) = <WALL>
+										else (board([row, col]) = <FREE> or board([row, col]) = <OCCUPIED>)));
+	
+		-- the representation of the board
+		public static board : map seq of int to Slot := 
+				{ 
+					[1,1] |-> <FREE>, [1,2] |-> <NOWALL>, [1,3] |-> <FREE>, [1,4] |-> <NOWALL>, [1,5] |-> <FREE>, [1,6] |-> <NOWALL>, [1,7] |-> <FREE>, [1,8] |-> <NOWALL>, [1,9] |-> <FREE>, [1,10] |-> <NOWALL>, 
+					[1,11] |-> <FREE>, [1,12] |-> <NOWALL>, [1,13] |-> <FREE>, [1,14] |-> <NOWALL>, [1,15] |-> <FREE>, [1,16] |-> <NOWALL>, [1,17] |-> <FREE>,
+					[2,1] |-> <NOWALL>, [2,2] |-> <NOWALL>, [2,3] |-> <NOWALL>, [2,4] |-> <NOWALL>, [2,5] |-> <NOWALL>, [2,6] |-> <NOWALL>, [2,7] |-> <NOWALL>, [2,8] |-> <NOWALL>, [2,9] |-> <NOWALL>, [2,10] |-> <NOWALL>, 
+					[2,11] |-> <NOWALL>, [2,12] |-> <NOWALL>, [2,13] |-> <NOWALL>, [2,14] |-> <NOWALL>, [2,15] |-> <NOWALL>, [2,16] |-> <NOWALL>, [2,17] |-> <NOWALL>,
+					
+					[3,1] |-> <FREE>, [3,2] |-> <NOWALL>, [3,3] |-> <FREE>, [3,4] |-> <NOWALL>, [3,5] |-> <FREE>, [3,6] |-> <NOWALL>, [3,7] |-> <FREE>, [3,8] |-> <NOWALL>, [3,9] |-> <FREE>, [3,10] |-> <NOWALL>, 
+					[3,11] |-> <FREE>, [3,12] |-> <NOWALL>, [3,13] |-> <FREE>, [3,14] |-> <NOWALL>, [3,15] |-> <FREE>, [3,16] |-> <NOWALL>, [3,17] |-> <FREE>,
+					[4,1] |-> <NOWALL>, [4,2] |-> <NOWALL>, [4,3] |-> <NOWALL>, [4,4] |-> <NOWALL>, [4,5] |-> <NOWALL>, [4,6] |-> <NOWALL>, [4,7] |-> <NOWALL>, [4,8] |-> <NOWALL>, [4,9] |-> <NOWALL>, [4,10] |-> <NOWALL>, 
+					[4,11] |-> <NOWALL>, [4,12] |-> <NOWALL>, [4,13] |-> <NOWALL>, [4,14] |-> <NOWALL>, [4,15] |-> <NOWALL>, [4,16] |-> <NOWALL>, [4,17] |-> <NOWALL>,
+		
+					[5,1] |-> <FREE>, [5,2] |-> <NOWALL>, [5,3] |-> <FREE>, [5,4] |-> <NOWALL>, [5,5] |-> <FREE>, [5,6] |-> <NOWALL>, [5,7] |-> <FREE>, [5,8] |-> <NOWALL>, [5,9] |-> <FREE>, [5,10] |-> <NOWALL>, 
+					[5,11] |-> <FREE>, [5,12] |-> <NOWALL>, [5,13] |-> <FREE>, [5,14] |-> <NOWALL>, [5,15] |-> <FREE>, [5,16] |-> <NOWALL>, [5,17] |-> <FREE>,
+					[6,1] |-> <NOWALL>, [6,2] |-> <NOWALL>, [6,3] |-> <NOWALL>, [6,4] |-> <NOWALL>, [6,5] |-> <NOWALL>, [6,6] |-> <NOWALL>, [6,7] |-> <NOWALL>, [6,8] |-> <NOWALL>, [6,9] |-> <NOWALL>, [6,10] |-> <NOWALL>, 
+					[6,11] |-> <NOWALL>, [6,12] |-> <NOWALL>, [6,13] |-> <NOWALL>, [6,14] |-> <NOWALL>, [6,15] |-> <NOWALL>, [6,16] |-> <NOWALL>, [6,17] |-> <NOWALL>,
+					
+					[7,1] |-> <FREE>, [7,2] |-> <NOWALL>, [7,3] |-> <FREE>, [7,4] |-> <NOWALL>, [7,5] |-> <FREE>, [7,6] |-> <NOWALL>, [7,7] |-> <FREE>, [7,8] |-> <NOWALL>, [7,9] |-> <FREE>, [7,10] |-> <NOWALL>, 
+					[7,11] |-> <FREE>, [7,12] |-> <NOWALL>, [7,13] |-> <FREE>, [7,14] |-> <NOWALL>, [7,15] |-> <FREE>, [7,16] |-> <NOWALL>, [7,17] |-> <FREE>,
+					[8,1] |-> <NOWALL>, [8,2] |-> <NOWALL>, [8,3] |-> <NOWALL>, [8,4] |-> <NOWALL>, [8,5] |-> <NOWALL>, [8,6] |-> <NOWALL>, [8,7] |-> <NOWALL>, [8,8] |-> <NOWALL>, [8,9] |-> <NOWALL>, [8,10] |-> <NOWALL>, 
+					[8,11] |-> <NOWALL>, [8,12] |-> <NOWALL>, [8,13] |-> <NOWALL>, [8,14] |-> <NOWALL>, [8,15] |-> <NOWALL>, [8,16] |-> <NOWALL>, [8,17] |-> <NOWALL>,
+					
+					[9,1] |-> <FREE>, [9,2] |-> <NOWALL>, [9,3] |-> <FREE>, [9,4] |-> <NOWALL>, [9,5] |-> <FREE>, [9,6] |-> <NOWALL>, [9,7] |-> <FREE>, [9,8] |-> <NOWALL>, [9,9] |-> <FREE>, [9,10] |-> <NOWALL>, 
+					[9,11] |-> <FREE>, [9,12] |-> <NOWALL>, [9,13] |-> <FREE>, [9,14] |-> <NOWALL>, [9,15] |-> <FREE>, [9,16] |-> <NOWALL>, [9,17] |-> <FREE>,
+					[10,1] |-> <NOWALL>, [10,2] |-> <NOWALL>, [10,3] |-> <NOWALL>, [10,4] |-> <NOWALL>, [10,5] |-> <NOWALL>, [10,6] |-> <NOWALL>, [10,7] |-> <NOWALL>, [10,8] |-> <NOWALL>, [10,9] |-> <NOWALL>, [10,10] |-> <NOWALL>, 
+					[10,11] |-> <NOWALL>, [10,12] |-> <NOWALL>, [10,13] |-> <NOWALL>, [10,14] |-> <NOWALL>, [10,15] |-> <NOWALL>, [10,16] |-> <NOWALL>, [10,17] |-> <NOWALL>,
+					
+					[11,1] |-> <FREE>, [11,2] |-> <NOWALL>, [11,3] |-> <FREE>, [11,4] |-> <NOWALL>, [11,5] |-> <FREE>, [11,6] |-> <NOWALL>, [11,7] |-> <FREE>, [11,8] |-> <NOWALL>, [11,9] |-> <FREE>, [11,10] |-> <NOWALL>, 
+					[11,11] |-> <FREE>, [11,12] |-> <NOWALL>, [11,13] |-> <FREE>, [11,14] |-> <NOWALL>, [11,15] |-> <FREE>, [11,16] |-> <NOWALL>, [11,17] |-> <FREE>,
+					[12,1] |-> <NOWALL>, [12,2] |-> <NOWALL>, [12,3] |-> <NOWALL>, [12,4] |-> <NOWALL>, [12,5] |-> <NOWALL>, [12,6] |-> <NOWALL>, [12,7] |-> <NOWALL>, [12,8] |-> <NOWALL>, [12,9] |-> <NOWALL>, [12,10] |-> <NOWALL>, 
+					[12,11] |-> <NOWALL>, [12,12] |-> <NOWALL>, [12,13] |-> <NOWALL>, [12,14] |-> <NOWALL>, [12,15] |-> <NOWALL>, [12,16] |-> <NOWALL>, [12,17] |-> <NOWALL>,
+			
+					[13,1] |-> <FREE>, [13,2] |-> <NOWALL>, [13,3] |-> <FREE>, [13,4] |-> <NOWALL>, [13,5] |-> <FREE>, [13,6] |-> <NOWALL>, [13,7] |-> <FREE>, [13,8] |-> <NOWALL>, [13,9] |-> <FREE>, [13,10] |-> <NOWALL>, 
+					[13,11] |-> <FREE>, [13,12] |-> <NOWALL>, [13,13] |-> <FREE>, [13,14] |-> <NOWALL>, [13,15] |-> <FREE>, [13,16] |-> <NOWALL>, [13,17] |-> <FREE>,
+					[14,1] |-> <NOWALL>, [14,2] |-> <NOWALL>, [14,3] |-> <NOWALL>, [14,4] |-> <NOWALL>, [14,5] |-> <NOWALL>, [14,6] |-> <NOWALL>, [14,7] |-> <NOWALL>, [14,8] |-> <NOWALL>, [14,9] |-> <NOWALL>, [14,10] |-> <NOWALL>, 
+					[14,11] |-> <NOWALL>, [14,12] |-> <NOWALL>, [14,13] |-> <NOWALL>, [14,14] |-> <NOWALL>, [14,15] |-> <NOWALL>, [14,16] |-> <NOWALL>, [14,17] |-> <NOWALL>,
+		
+					[15,1] |-> <FREE>, [15,2] |-> <NOWALL>, [15,3] |-> <FREE>, [15,4] |-> <NOWALL>, [15,5] |-> <FREE>, [15,6] |-> <NOWALL>, [15,7] |-> <FREE>, [15,8] |-> <NOWALL>, [15,9] |-> <FREE>, [15,10] |-> <NOWALL>, 
+					[15,11] |-> <FREE>, [15,12] |-> <NOWALL>, [15,13] |-> <FREE>, [15,14] |-> <NOWALL>, [15,15] |-> <FREE>, [15,16] |-> <NOWALL>, [15,17] |-> <FREE>,
+					[16,1] |-> <NOWALL>, [16,2] |-> <NOWALL>, [16,3] |-> <NOWALL>, [16,4] |-> <NOWALL>, [16,5] |-> <NOWALL>, [16,6] |-> <NOWALL>, [16,7] |-> <NOWALL>, [16,8] |-> <NOWALL>, [16,9] |-> <NOWALL>, [16,10] |-> <NOWALL>, 
+					[16,11] |-> <NOWALL>, [16,12] |-> <NOWALL>, [16,13] |-> <NOWALL>, [16,14] |-> <NOWALL>, [16,15] |-> <NOWALL>, [16,16] |-> <NOWALL>, [16,17] |-> <NOWALL>,
+					
+					[17,1] |-> <FREE>, [17,2] |-> <NOWALL>, [17,3] |-> <FREE>, [17,4] |-> <NOWALL>, [17,5] |-> <FREE>, [17,6] |-> <NOWALL>, [17,7] |-> <FREE>, [17,8] |-> <NOWALL>, [17,9] |-> <FREE>, [17,10] |-> <NOWALL>, 
+					[17,11] |-> <FREE>, [17,12] |-> <NOWALL>, [17,13] |-> <FREE>, [17,14] |-> <NOWALL>, [17,15] |-> <FREE>, [17,16] |-> <NOWALL>, [17,17] |-> <FREE>
+			};
+			
+		-- an auxiliary board to validate logical plays (droping walls)
+		public conectivity : map seq of nat1 to Slot;
+	
+	operations
+	
+		-- constructor
+		public Board : Game ==> Board
+		Board(gameObj) == 
+		(
+			resetBoard();
+			conectivity := board;
+			game := gameObj;
+		)
+		post conectivity = board;
+		
+		public resetBoard : () ==> ()
+		resetBoard() ==
+		(
+		 board := { 
+					[1,1] |-> <FREE>, [1,2] |-> <NOWALL>, [1,3] |-> <FREE>, [1,4] |-> <NOWALL>, [1,5] |-> <FREE>, [1,6] |-> <NOWALL>, [1,7] |-> <FREE>, [1,8] |-> <NOWALL>, [1,9] |-> <FREE>, [1,10] |-> <NOWALL>, 
+					[1,11] |-> <FREE>, [1,12] |-> <NOWALL>, [1,13] |-> <FREE>, [1,14] |-> <NOWALL>, [1,15] |-> <FREE>, [1,16] |-> <NOWALL>, [1,17] |-> <FREE>,
+					[2,1] |-> <NOWALL>, [2,2] |-> <NOWALL>, [2,3] |-> <NOWALL>, [2,4] |-> <NOWALL>, [2,5] |-> <NOWALL>, [2,6] |-> <NOWALL>, [2,7] |-> <NOWALL>, [2,8] |-> <NOWALL>, [2,9] |-> <NOWALL>, [2,10] |-> <NOWALL>, 
+					[2,11] |-> <NOWALL>, [2,12] |-> <NOWALL>, [2,13] |-> <NOWALL>, [2,14] |-> <NOWALL>, [2,15] |-> <NOWALL>, [2,16] |-> <NOWALL>, [2,17] |-> <NOWALL>,
+					
+					[3,1] |-> <FREE>, [3,2] |-> <NOWALL>, [3,3] |-> <FREE>, [3,4] |-> <NOWALL>, [3,5] |-> <FREE>, [3,6] |-> <NOWALL>, [3,7] |-> <FREE>, [3,8] |-> <NOWALL>, [3,9] |-> <FREE>, [3,10] |-> <NOWALL>, 
+					[3,11] |-> <FREE>, [3,12] |-> <NOWALL>, [3,13] |-> <FREE>, [3,14] |-> <NOWALL>, [3,15] |-> <FREE>, [3,16] |-> <NOWALL>, [3,17] |-> <FREE>,
+					[4,1] |-> <NOWALL>, [4,2] |-> <NOWALL>, [4,3] |-> <NOWALL>, [4,4] |-> <NOWALL>, [4,5] |-> <NOWALL>, [4,6] |-> <NOWALL>, [4,7] |-> <NOWALL>, [4,8] |-> <NOWALL>, [4,9] |-> <NOWALL>, [4,10] |-> <NOWALL>, 
+					[4,11] |-> <NOWALL>, [4,12] |-> <NOWALL>, [4,13] |-> <NOWALL>, [4,14] |-> <NOWALL>, [4,15] |-> <NOWALL>, [4,16] |-> <NOWALL>, [4,17] |-> <NOWALL>,
+		
+					[5,1] |-> <FREE>, [5,2] |-> <NOWALL>, [5,3] |-> <FREE>, [5,4] |-> <NOWALL>, [5,5] |-> <FREE>, [5,6] |-> <NOWALL>, [5,7] |-> <FREE>, [5,8] |-> <NOWALL>, [5,9] |-> <FREE>, [5,10] |-> <NOWALL>, 
+					[5,11] |-> <FREE>, [5,12] |-> <NOWALL>, [5,13] |-> <FREE>, [5,14] |-> <NOWALL>, [5,15] |-> <FREE>, [5,16] |-> <NOWALL>, [5,17] |-> <FREE>,
+					[6,1] |-> <NOWALL>, [6,2] |-> <NOWALL>, [6,3] |-> <NOWALL>, [6,4] |-> <NOWALL>, [6,5] |-> <NOWALL>, [6,6] |-> <NOWALL>, [6,7] |-> <NOWALL>, [6,8] |-> <NOWALL>, [6,9] |-> <NOWALL>, [6,10] |-> <NOWALL>, 
+					[6,11] |-> <NOWALL>, [6,12] |-> <NOWALL>, [6,13] |-> <NOWALL>, [6,14] |-> <NOWALL>, [6,15] |-> <NOWALL>, [6,16] |-> <NOWALL>, [6,17] |-> <NOWALL>,
+					
+					[7,1] |-> <FREE>, [7,2] |-> <NOWALL>, [7,3] |-> <FREE>, [7,4] |-> <NOWALL>, [7,5] |-> <FREE>, [7,6] |-> <NOWALL>, [7,7] |-> <FREE>, [7,8] |-> <NOWALL>, [7,9] |-> <FREE>, [7,10] |-> <NOWALL>, 
+					[7,11] |-> <FREE>, [7,12] |-> <NOWALL>, [7,13] |-> <FREE>, [7,14] |-> <NOWALL>, [7,15] |-> <FREE>, [7,16] |-> <NOWALL>, [7,17] |-> <FREE>,
+					[8,1] |-> <NOWALL>, [8,2] |-> <NOWALL>, [8,3] |-> <NOWALL>, [8,4] |-> <NOWALL>, [8,5] |-> <NOWALL>, [8,6] |-> <NOWALL>, [8,7] |-> <NOWALL>, [8,8] |-> <NOWALL>, [8,9] |-> <NOWALL>, [8,10] |-> <NOWALL>, 
+					[8,11] |-> <NOWALL>, [8,12] |-> <NOWALL>, [8,13] |-> <NOWALL>, [8,14] |-> <NOWALL>, [8,15] |-> <NOWALL>, [8,16] |-> <NOWALL>, [8,17] |-> <NOWALL>,
+					
+					[9,1] |-> <FREE>, [9,2] |-> <NOWALL>, [9,3] |-> <FREE>, [9,4] |-> <NOWALL>, [9,5] |-> <FREE>, [9,6] |-> <NOWALL>, [9,7] |-> <FREE>, [9,8] |-> <NOWALL>, [9,9] |-> <FREE>, [9,10] |-> <NOWALL>, 
+					[9,11] |-> <FREE>, [9,12] |-> <NOWALL>, [9,13] |-> <FREE>, [9,14] |-> <NOWALL>, [9,15] |-> <FREE>, [9,16] |-> <NOWALL>, [9,17] |-> <FREE>,
+					[10,1] |-> <NOWALL>, [10,2] |-> <NOWALL>, [10,3] |-> <NOWALL>, [10,4] |-> <NOWALL>, [10,5] |-> <NOWALL>, [10,6] |-> <NOWALL>, [10,7] |-> <NOWALL>, [10,8] |-> <NOWALL>, [10,9] |-> <NOWALL>, [10,10] |-> <NOWALL>, 
+					[10,11] |-> <NOWALL>, [10,12] |-> <NOWALL>, [10,13] |-> <NOWALL>, [10,14] |-> <NOWALL>, [10,15] |-> <NOWALL>, [10,16] |-> <NOWALL>, [10,17] |-> <NOWALL>,
+					
+					[11,1] |-> <FREE>, [11,2] |-> <NOWALL>, [11,3] |-> <FREE>, [11,4] |-> <NOWALL>, [11,5] |-> <FREE>, [11,6] |-> <NOWALL>, [11,7] |-> <FREE>, [11,8] |-> <NOWALL>, [11,9] |-> <FREE>, [11,10] |-> <NOWALL>, 
+					[11,11] |-> <FREE>, [11,12] |-> <NOWALL>, [11,13] |-> <FREE>, [11,14] |-> <NOWALL>, [11,15] |-> <FREE>, [11,16] |-> <NOWALL>, [11,17] |-> <FREE>,
+					[12,1] |-> <NOWALL>, [12,2] |-> <NOWALL>, [12,3] |-> <NOWALL>, [12,4] |-> <NOWALL>, [12,5] |-> <NOWALL>, [12,6] |-> <NOWALL>, [12,7] |-> <NOWALL>, [12,8] |-> <NOWALL>, [12,9] |-> <NOWALL>, [12,10] |-> <NOWALL>, 
+					[12,11] |-> <NOWALL>, [12,12] |-> <NOWALL>, [12,13] |-> <NOWALL>, [12,14] |-> <NOWALL>, [12,15] |-> <NOWALL>, [12,16] |-> <NOWALL>, [12,17] |-> <NOWALL>,
+			
+					[13,1] |-> <FREE>, [13,2] |-> <NOWALL>, [13,3] |-> <FREE>, [13,4] |-> <NOWALL>, [13,5] |-> <FREE>, [13,6] |-> <NOWALL>, [13,7] |-> <FREE>, [13,8] |-> <NOWALL>, [13,9] |-> <FREE>, [13,10] |-> <NOWALL>, 
+					[13,11] |-> <FREE>, [13,12] |-> <NOWALL>, [13,13] |-> <FREE>, [13,14] |-> <NOWALL>, [13,15] |-> <FREE>, [13,16] |-> <NOWALL>, [13,17] |-> <FREE>,
+					[14,1] |-> <NOWALL>, [14,2] |-> <NOWALL>, [14,3] |-> <NOWALL>, [14,4] |-> <NOWALL>, [14,5] |-> <NOWALL>, [14,6] |-> <NOWALL>, [14,7] |-> <NOWALL>, [14,8] |-> <NOWALL>, [14,9] |-> <NOWALL>, [14,10] |-> <NOWALL>, 
+					[14,11] |-> <NOWALL>, [14,12] |-> <NOWALL>, [14,13] |-> <NOWALL>, [14,14] |-> <NOWALL>, [14,15] |-> <NOWALL>, [14,16] |-> <NOWALL>, [14,17] |-> <NOWALL>,
+		
+					[15,1] |-> <FREE>, [15,2] |-> <NOWALL>, [15,3] |-> <FREE>, [15,4] |-> <NOWALL>, [15,5] |-> <FREE>, [15,6] |-> <NOWALL>, [15,7] |-> <FREE>, [15,8] |-> <NOWALL>, [15,9] |-> <FREE>, [15,10] |-> <NOWALL>, 
+					[15,11] |-> <FREE>, [15,12] |-> <NOWALL>, [15,13] |-> <FREE>, [15,14] |-> <NOWALL>, [15,15] |-> <FREE>, [15,16] |-> <NOWALL>, [15,17] |-> <FREE>,
+					[16,1] |-> <NOWALL>, [16,2] |-> <NOWALL>, [16,3] |-> <NOWALL>, [16,4] |-> <NOWALL>, [16,5] |-> <NOWALL>, [16,6] |-> <NOWALL>, [16,7] |-> <NOWALL>, [16,8] |-> <NOWALL>, [16,9] |-> <NOWALL>, [16,10] |-> <NOWALL>, 
+					[16,11] |-> <NOWALL>, [16,12] |-> <NOWALL>, [16,13] |-> <NOWALL>, [16,14] |-> <NOWALL>, [16,15] |-> <NOWALL>, [16,16] |-> <NOWALL>, [16,17] |-> <NOWALL>,
+					
+					[17,1] |-> <FREE>, [17,2] |-> <NOWALL>, [17,3] |-> <FREE>, [17,4] |-> <NOWALL>, [17,5] |-> <FREE>, [17,6] |-> <NOWALL>, [17,7] |-> <FREE>, [17,8] |-> <NOWALL>, [17,9] |-> <FREE>, [17,10] |-> <NOWALL>, 
+					[17,11] |-> <FREE>, [17,12] |-> <NOWALL>, [17,13] |-> <FREE>, [17,14] |-> <NOWALL>, [17,15] |-> <FREE>, [17,16] |-> <NOWALL>, [17,17] |-> <FREE>
+			};
+		);
+		
+		-- resets the auxiliar board with the current board status to future path processing
+		public resetConectivity : () ==> bool
+		resetConectivity() == 
+		(
+			conectivity := board;
+			return true;
+		)
+		post conectivity = board;
+		
+		-- adds a new wall to the board, if possible
+		public addWall : nat1 * nat1 ==> [bool]
+		addWall(row, col) == 
+		(
+			dcl oneRow : int := row + 1;
+			dcl twoRow : int := row + 2;
+			dcl oneCol : int := col + 1;
+			dcl twoCol : int := col + 2;
+			dcl players : seq of Player := game.getPlayers();
+			if row mod 2 = 1
+			then 
+			(
+				if col < 18 and row < 16 and board([row,col]) = <NOWALL> and board([oneRow,col]) = <NOWALL> and board([twoRow,col]) = <NOWALL>
+				then
+				(
+					board := board ++ {[row,col] |-> <WALL>};
+					board := board ++ {[oneRow,col] |-> <WALL>};
+					board := board ++ {[twoRow,col] |-> <WALL>};
+					
+					if exists p in seq players & (resetConectivity() and not pathToDestination(p, p.getPosition().getX() , p.getPosition().getY()))
+					then
+					(
+						board := board ++ {[row,col] |-> <NOWALL>};
+						board := board ++ {[oneRow,col] |-> <NOWALL>};
+						board := board ++ {[twoRow,col] |-> <NOWALL>};
+						
+						return false;
+					)
+					else return true;
+				)
+				else return false;
+			)
+			else
+			(
+				if col < 16 and row < 18 and board([row,col]) = <NOWALL> and board([row,oneCol]) = <NOWALL> and board([row,twoCol]) = <NOWALL>
+				then
+				(
+					board := board ++ {[row,col] |-> <WALL>, [row,oneCol] |-> <WALL>, [row,twoCol] |-> <WALL>};
+					
+					if exists p in seq players & (resetConectivity() and not pathToDestination(p, p.getPosition().getX() , p.getPosition().getY()))
+					then
+					(
+						board := board ++ {[row,col] |-> <NOWALL>, [row,oneCol] |-> <NOWALL>, [row,twoCol] |-> <NOWALL>};
+					
+						return false;
+					)
+					else return true;
+				)
+				else return false;
+			)
+		)
+		pre row > 0 and row < 18 and col > 0 and col < 18
+		post numberOfPlacedWalls(board~) = numberOfPlacedWalls(board) or numberOfPlacedWalls(board~) + 1 = numberOfPlacedWalls(board);
+		
+		
+		-- checks whether the player can get to the target row or not
+		public pathToDestination : Player * nat1 * nat1 ==> bool
+		pathToDestination(p, row, col) ==
+		(
+			if p.getTargetRow() <> 0 and p.getTargetRow() = row
+				then return true
+			else if p.getTargetCol() <> 0 and p.getTargetCol() = col
+				then return true;
+				
+			if conectivity([row,col]) = <VISITED>
+				then return false;
+			
+			conectivity := conectivity ++ {[row,col] |-> <VISITED>};
+		
+			if row = 1
+			then
+			(
+				if col = 1
+					then return checkRight(p, row, col + 1) or checkDown(p, row + 1, col)
+				else if col = 17
+					then return checkLeft(p, row, col - 1) or checkDown(p, row + 1, col)
+				else return checkLeft(p, row, col - 1) or checkRight(p, row, col + 1) or checkDown(p, row + 1, col)
+			);
+			
+			if row = 17
+			then
+			(
+				if col = 1
+					then return checkRight(p, row, col + 1) or checkUp(p, row - 1, col)
+				else if col = 17
+					then return checkLeft(p, row, col - 1) or checkUp(p, row - 1, col)
+				else return checkLeft(p, row, col - 1) or checkRight(p, row, col + 1) or checkUp(p, row - 1, col)
+			);
+			
+			if col = 1
+			then return checkRight(p, row, col + 1) or checkUp(p, row - 1, col) or checkDown(p, row + 1, col)
+			else if col = 17
+			then return checkLeft(p, row, col - 1) or checkUp(p, row - 1, col) or checkDown(p, row + 1, col)
+			else return checkLeft(p, row, col - 1) or checkRight(p, row, col + 1) or checkUp(p, row - 1, col) or checkDown(p, row + 1, col);
+		)
+		pre (p.getTargetRow() <> 0 or p.getTargetCol() <> 0) and row mod 2 = 1 and col mod 2 = 1 and row >= 1 and col >= 1 and row < 18 and col < 18;
+		
+		-- checks path availability on the direction down
+		private checkDown : Player * nat1 * nat1 ==> bool
+		checkDown(p, row, col) ==
+		(
+			if conectivity([row,col]) <> <WALL>
+				then return pathToDestination(p, row + 1, col)
+			else return false;
+		);
+		
+		-- checks path availability on the direction up
+		private checkUp : Player * nat1 * nat1 ==> bool
+		checkUp(p, row, col) ==
+		(
+			if conectivity([row,col]) <> <WALL>
+				then return pathToDestination(p, row - 1, col)
+			else return false;
+		);
+		
+		-- checks path availability on the direction right
+		private checkRight : Player * nat1 * nat1 ==> bool
+		checkRight(p, row, col) ==
+		(
+			if conectivity([row,col]) <> <WALL>
+				then return pathToDestination(p, row, col + 1)
+			else return false;
+		);
+		
+		-- checks path availability on the direction left
+		private checkLeft : Player * nat1 * nat1 ==> bool
+		checkLeft(p, row, col) ==
+		(
+			if conectivity([row,col]) <> <WALL>
+				then return pathToDestination(p, row, col - 1)
+			else return false;
+		);
+		-- Sets the board position as occupied
+		public setBoardPosition: Point ==> () 
+		setBoardPosition(p) ==
+		(
+			board := board ++ {[p.getX(),p.getY()] |-> <OCCUPIED>};
+		);
+		
+		-- Sets the occupied board cell back to free
+		public unsetBoardPosition: Point ==> ()
+		unsetBoardPosition(p) ==
+		(
+			board := board ++ {[p.getX(),p.getY()]  |-> <FREE>}; 
+		);
+		
+		
+functions
+		-- determines if a wall can be placed in a certain position
+		public dropableWall: map seq of nat1 to Slot * nat1 * nat1 +> [seq of nat1]
+		dropableWall(board, row, col) == 
+		(
+			if (col mod 2) = 0 and (row mod 2 = 1)
+			then (
+				if (board([row,col]) = <NOWALL> and board([row+1,col]) = <NOWALL> and board([row+2,col]) = <NOWALL> and (board([row+1,col-1]) = <NOWALL> or board([row+1,col+1]) = <NOWALL>)) 
+				then [row+2,col]
+				else nil
+			)
+			else 
+			if (row mod 2) = 0 and (col mod 2) = 1
+			then (
+				if (board([row,col]) = <NOWALL> and board([row,col+1]) = <NOWALL> and board([row,col+2]) = <NOWALL> and (board([row-1,col+1]) = <NOWALL> or board([row+1,col+1]) = <NOWALL>))
+				then [row,col+2]
+				else nil
+			)
+			else nil
+		)
+		pre row > 0 and row < 18 and col > 0 and col < 18;
+		
+		-- counts the number of walls in the board
+		public numberOfPlacedWalls: map seq of nat1 to Slot +> nat
+		numberOfPlacedWalls(board) ==
+		card(dom(board :> {<WALL>})) / 3
+	
+traces
+-- TODO Define Combinatorial Test Traces here		
+end Board

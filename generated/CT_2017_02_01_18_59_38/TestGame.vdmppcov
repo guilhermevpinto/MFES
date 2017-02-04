@@ -1,9 +1,5 @@
 class TestGame is subclass of MyTest
 
-instance variables
-
-	private game : Game := new Game(2);
-
 operations
 
 	public test : () ==> ()
@@ -142,9 +138,5 @@ operations
 		assertEqual(game.verifyPlayerJump(9, 3, "teste"), {});
 	
 	);
-	
-traces
-	PlayerMovementTracing:
-		(let x in set game.getPossibleMoves() in game.move(x.getX(), x.getY(), game.getPlayer(game.getCurrentPlayer()))){5};
 	
 end TestGame

@@ -4,7 +4,8 @@ operations
 
 	public test : () ==> ()
 	test() == 
-	(	
+	(
+	
 		dcl p1 : Player := new Player(1,10);
 		dcl p2 : Player := new Player(2,10);
 		
@@ -33,6 +34,5 @@ operations
 		assertFalse(p1.decWalls());
 		
 	);
-
 
 end TestPlayer

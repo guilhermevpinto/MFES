@@ -2,7 +2,7 @@ class TestBoard is subclass of MyTest
 
 instance variables
 
-	private board : [Board] := new Board(new Game(2));
+	private board : [Board] := nil;
 	
 operations
 
@@ -101,34 +101,34 @@ operations
 		board : Board := new Board(new Game(2)),
 		position: [seq of nat1] := board.dropableWall(board.board, 3, 2),
 		position2: [seq of nat1] := board.dropableWall(board.board, 2, 3);
-
+		
 		assertEqual(hd position, 5);
 		assertEqual(hd tl position, 2);
-
+		
 		assertEqual(hd position2, 2);
 		assertEqual(hd tl position2, 5);
-
+		
 		assertTrue(board.addWall(3, 16));
-
+		
 		assertEqual(board.dropableWall(board.board, 2, 15), [2,17]);
 		assertEqual(board.dropableWall(board.board, 6, 15), [6,17]);
 		assertEqual(board.dropableWall(board.board, 4, 15), nil);
-
+		
 		assertTrue(board.addWall(4, 3));
 		assertEqual(board.dropableWall(board.board, 3, 2), [5,2]);
 		assertEqual(board.dropableWall(board.board, 3, 6), [5,6]);
 		assertEqual(board.dropableWall(board.board, 3, 4), nil);
-
+		
 		assertEqual(board.dropableWall(board.board, 1, 7), nil);
 		assertEqual(board.dropableWall(board.board, 2, 2), nil);
-
+			
 		assertEqual(board.dropableWall(board.board, 1, 1), nil);
 	);
 	
 traces
 	AddWallTracing:
-		board.resetBoard();
-		(let x, y in set {1,17} in board.addWall(x,y)){5};
+				board.resetBoard();
+				(let x, y in set {1,17} in board.addWall(x,y)){10};
 	
-
+	
 end TestBoard
