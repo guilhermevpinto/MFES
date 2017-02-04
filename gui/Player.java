@@ -36,12 +36,7 @@ public class Player extends JPanel {
 		this.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
 				if(id == QuaridorGui.game.getCurrentPlayer().intValue()) {
-					QuaridorGui.currentPlayerSelected = true;
-					VDMSet moves = QuaridorGui.game.getPossibleMoves();
-					for(Object o : moves) {
-						Point p = (Point)o;
-						((Position)QuaridorGui.boardGUI.get(p.getX().intValue()-1).get(p.getY().intValue()-1)).setSelected();
-					}
+					JOptionPane.showMessageDialog(null, "Yes! It is your turn, indeed...");
 				}
 				else
 					JOptionPane.showMessageDialog(null, "Leave the " + QuaridorGui.getPlayerColor(id) + " player alone!!! It is the " + QuaridorGui.getPlayerColor(QuaridorGui.game.getCurrentPlayer().intValue()) + " player's turn!");

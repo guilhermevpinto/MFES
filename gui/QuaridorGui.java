@@ -12,9 +12,11 @@ import javax.swing.JPanel;
 import org.overture.codegen.runtime.SeqUtil;
 import org.overture.codegen.runtime.Utils;
 import org.overture.codegen.runtime.VDMMap;
+import org.overture.codegen.runtime.VDMSet;
 
 import MFES.Board;
 import MFES.Game;
+import MFES.Point;
 
 public class QuaridorGui {
 	
@@ -24,8 +26,6 @@ public class QuaridorGui {
 	private static JFrame frame;
 	public static ArrayList<ArrayList<JPanel>> boardGUI = new ArrayList<ArrayList<JPanel>>();
 	public static ArrayList<JPanel> playersGUI = new ArrayList<JPanel>();
-	
-	public static boolean currentPlayerSelected = false;
 	
 	/**
 	 * Launch the application.
@@ -274,6 +274,14 @@ public class QuaridorGui {
 				rowPixel += QuaridorGui.WT;
 		}
 		
+
+		
+		VDMSet moves = QuaridorGui.game.getPossibleMoves();
+		for(Object o : moves) {
+			Point p = (Point)o;
+			((Position)QuaridorGui.boardGUI.get(p.getX().intValue()-1).get(p.getY().intValue()-1)).setSelected();
+		}
+		
 	}
 	
 	public static void refresh() {		
@@ -320,16 +328,13 @@ public class QuaridorGui {
 	}
 	
 	public static void movePlayer(int row, int col) {
-		if(currentPlayerSelected) {
-			game.move((long)row, (long)col, game.getPlayer(game.getCurrentPlayer()));
-			int playerindex = game.getCurrentPlayer().intValue() - 1;
-			gui.Player p = (Player) playersGUI.get(playerindex);
-			
-			p.move(QuaridorGui.WT*4*((col-1) / 2) + QuaridorGui.WT*((col-1) / 2), QuaridorGui.WT*4*((row-1) / 2) + QuaridorGui.WT*((row-1) / 2));
-			
-			next();
-
-		}
+		game.move((long)row, (long)col, game.getPlayer(game.getCurrentPlayer()));
+		int playerindex = game.getCurrentPlayer().intValue() - 1;
+		gui.Player p = (Player) playersGUI.get(playerindex);
+		
+		p.move(QuaridorGui.WT*4*((col-1) / 2) + QuaridorGui.WT*((col-1) / 2), QuaridorGui.WT*4*((row-1) / 2) + QuaridorGui.WT*((row-1) / 2));
+		
+		next();
 	}
 	
 	public static void next() {
@@ -343,6 +348,12 @@ public class QuaridorGui {
 		}
 		
 		game.switchPlayer();
+		
+		VDMSet moves = QuaridorGui.game.getPossibleMoves();
+		for(Object o : moves) {
+			Point p = (Point)o;
+			((Position)QuaridorGui.boardGUI.get(p.getX().intValue()-1).get(p.getY().intValue()-1)).setSelected();
+		}
 	}
 	
 	public static String getPlayerColor(int id) {

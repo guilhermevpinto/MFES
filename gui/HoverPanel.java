@@ -30,19 +30,19 @@ public class HoverPanel extends JPanel {
 		
 		try {
 			if(type.equals("2jog")){
-				nohover = ImageIO.read(new File(getClass().getResource("images/2jogadores.png").toURI()));
-				hover = ImageIO.read(new File(getClass().getResource("images/2jogadores_hover.png").toURI()));
+				nohover = ImageIO.read(HoverPanel.class.getResourceAsStream("images/2jogadores.png"));
+				hover = ImageIO.read(HoverPanel.class.getResourceAsStream("images/2jogadores_hover.png"));
 			}else if(type.equals("4jog")){
-				nohover = ImageIO.read(new File(getClass().getResource("images/4jogadores.png").toURI()));
-				hover = ImageIO.read(new File(getClass().getResource("images/4jogadores_hover.png").toURI()));
+				nohover = ImageIO.read(HoverPanel.class.getResourceAsStream("images/4jogadores.png"));
+				hover = ImageIO.read(HoverPanel.class.getResourceAsStream("images/4jogadores_hover.png"));
 			}else if(type.equals("regras")){
-				nohover = ImageIO.read(new File(getClass().getResource("images/regras.png").toURI()));
-				hover = ImageIO.read(new File(getClass().getResource("images/regras_hover.png").toURI()));
+				nohover = ImageIO.read(HoverPanel.class.getResourceAsStream("images/regras.png"));
+				hover = ImageIO.read(HoverPanel.class.getResourceAsStream("images/regras_hover.png"));
 			}else if(type.equals("back")){
-				nohover = ImageIO.read(new File(getClass().getResource("images/back.png").toURI()));
-				hover = ImageIO.read(new File(getClass().getResource("images/back_hover.png").toURI()));
+				nohover = ImageIO.read(HoverPanel.class.getResourceAsStream("images/back.png"));
+				hover = ImageIO.read(HoverPanel.class.getResourceAsStream("images/back_hover.png"));
 			}
-		} catch (IOException | URISyntaxException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		

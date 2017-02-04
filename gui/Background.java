@@ -9,7 +9,7 @@ import java.net.URISyntaxException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-@SuppressWarnings({"serial", "unused"})
+@SuppressWarnings({"serial"})
 class Background extends JPanel {
 	
     private Image image;
@@ -22,10 +22,10 @@ class Background extends JPanel {
 		
 		try {
 			if(type.equals("quaridor"))
-				image = ImageIO.read(new File(getClass().getResource("images/quaridor.png").toURI()));
+				image = ImageIO.read(HoverPanel.class.getResourceAsStream("images/quaridor.png"));
 			else if(type.equals("back"))
-				image = ImageIO.read(new File(getClass().getResource("images/regras_background.png").toURI()));
-		} catch (IOException | URISyntaxException e) {
+				image = ImageIO.read(HoverPanel.class.getResourceAsStream("images/regras_background.png"));
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		

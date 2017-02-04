@@ -25,6 +25,7 @@ public class Wall extends JPanel {
 	private Orientation orientation;
 	private boolean set = false;
 	private boolean hover = false;
+	private static int hoverID = 1;
 	private VDMSeq dependenthover = null;
 	
 	public Wall(int col, int row, int x, int y, Orientation or) {
@@ -64,7 +65,7 @@ public class Wall extends JPanel {
 						first = ((Long)dependenthover.get(0)).intValue();
 						second = ((Long)dependenthover.get(1)).intValue();
 							
-						((Wall)QuaridorGui.boardGUI.get(first-1).get(second-1)).hoverWall();
+						((Wall)QuaridorGui.boardGUI.get(first-1).get(second-1)).hoverWall(QuaridorGui.game.getCurrentPlayer().intValue());
 
 						hover = true;
 						draw();
@@ -95,8 +96,24 @@ public class Wall extends JPanel {
 	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		if(set | hover)
+		if(set)
 			g.setColor(new Color(161,65,24,255));
+		else if (hover) {
+			switch (hoverID) {
+			case 1:
+				g.setColor(new Color(200,0,0,255));
+				break;
+			case 2:
+				g.setColor(new Color(0,200,0,255));
+				break;
+			case 3:
+				g.setColor(new Color(200,200,0,255));
+				break;
+			case 4:
+				g.setColor(new Color(140,140,200,255));
+				break;
+			}
+		}
 		else
 			g.setColor(new Color(250,150,120,100));
 		g.fillRect(0, 0, width, height);
@@ -106,7 +123,10 @@ public class Wall extends JPanel {
 		this.set = true;
 	}
 	
-	public void hoverWall() {
+	@SuppressWarnings("static-access")
+	public void hoverWall(int playerID) {
+
+		this.hoverID = playerID;
 		this.hover = true;
 		draw();
 	}
